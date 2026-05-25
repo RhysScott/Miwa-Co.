@@ -6,7 +6,7 @@
             <div class="menu-button" @click="toggleMenuState">
                 <!-- 根据菜单状态切换图标 -->
                 <Menu v-if="!isMenuActive" color="white" />
-                <CircleX v-else />
+                <CircleX color="white" v-else />
             </div>
         </div>
 
@@ -230,7 +230,7 @@ import { useRouter } from 'vue-router';
 <style lang="scss" scoped>
     :root {
         --logo-color: white;
-        --logo-color-menu: white;
+        --logo-color-menu: #111;
     }
 
     .nav-wrapper {
@@ -277,7 +277,7 @@ import { useRouter } from 'vue-router';
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: #0d0d0d;
+        background-color: #f8f8f8;
         z-index: 1;
         clip-path: url(#menuClip);
         pointer-events: none;
@@ -310,7 +310,7 @@ import { useRouter } from 'vue-router';
 
             h1 {
                 margin: 0;
-                color: #fff;
+                color: #111;
                 font-weight: bold;
                 display: flex;
                 flex-direction: column;
@@ -323,20 +323,20 @@ import { useRouter } from 'vue-router';
                 .en {
                     font-size: 1.25rem;
                     font-weight: normal;
-                    color: #888;
+                    color: #999;
                 }
             }
 
             p {
                 margin: 0;
-                color: #999;
+                color: #666;
                 font-size: 2rem;
                 transition: color 0.3s ease, transform 0.3s ease;
                 cursor: default;
             }
 
             p:hover {
-                color: #fff;
+                color: #111;
                 transform: translateX(6px);
             }
         }
@@ -351,7 +351,7 @@ import { useRouter } from 'vue-router';
             gap: 1rem;
 
             .nav-item {
-                color: #fff;
+                color: #111;
                 text-decoration: none;
                 display: flex;
                 flex-direction: column;
@@ -368,25 +368,23 @@ import { useRouter } from 'vue-router';
                 .en {
                     font-size: 1rem;
                     font-weight: normal;
-                    color: #888;
+                    color: #999;
                 }
             }
 
-            // 鼠标悬停任一链接时，所有链接变暗
             &:hover .nav-item {
-                color: #555;
+                color: #ccc;
             }
             &:hover .nav-item .en {
-                color: #555;
+                color: #ccc;
             }
 
-            // 当前悬停的链接高亮白并左移
             .nav-item:hover {
-                color: #fff;
+                color: #111;
                 transform: translateX(-8px);
             }
             .nav-item:hover .en {
-                color: #fff;
+                color: #111;
             }
         }
     }
