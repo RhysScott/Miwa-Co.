@@ -223,29 +223,32 @@ onMounted(async () => {
         { y: 0, opacity: 1, stagger: 0.02, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
     );
 
-    // 服务卡片滚动入场
+    // 服务卡片滚动入场（awwwards 风格：弹性缩放 + 交错延迟）
     gsap.fromTo('.service-card',
-        { y: 80, opacity: 0 },
+        { y: 120, opacity: 0, scale: 0.85, rotation: 1 },
         {
-            y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power3.out',
-            scrollTrigger: { trigger: '.services', start: 'top 70%' }
+            y: 0, opacity: 1, scale: 1, rotation: 0,
+            stagger: 0.12, duration: 1, ease: 'expo.out',
+            scrollTrigger: { trigger: '.services', start: 'top 75%' }
         }
     );
 
-    // 项目卡片滚动入场
+    // 项目卡片滚动入场（awwwards 风格：缩放弹入）
     gsap.fromTo('.project-card',
-        { y: 100, opacity: 0, scale: 0.95 },
+        { y: 120, opacity: 0, scale: 0.88 },
         {
-            y: 0, opacity: 1, scale: 1, stagger: 0.15, duration: 0.9, ease: 'power3.out',
+            y: 0, opacity: 1, scale: 1,
+            stagger: 0.14, duration: 1, ease: 'expo.out',
             scrollTrigger: { trigger: '.projects', start: 'top 75%' }
         }
     );
 
-    // 流程卡片滚动入场
+    // 流程步骤滚动入场（awwwards 风格：左侧滑入 + 淡入）
     gsap.fromTo('.process-step',
-        { y: 60, opacity: 0 },
+        { x: -80, opacity: 0 },
         {
-            y: 0, opacity: 1, stagger: 0.15, duration: 0.7, ease: 'power3.out',
+            x: 0, opacity: 1,
+            stagger: 0.18, duration: 0.9, ease: 'expo.out',
             scrollTrigger: { trigger: '.process', start: 'top 80%' }
         }
     );
@@ -321,7 +324,7 @@ onMounted(async () => {
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.35);
+        background: rgba(0, 0, 0, 0.25);
     }
 
     .hero-text {
@@ -631,41 +634,33 @@ onMounted(async () => {
 }
 
 .process-track {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-    }
+    display: flex;
+    flex-direction: column;
+    max-width: 650px;
 }
 
 .process-step {
     display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-    padding: 2rem 1.75rem;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem 0;
     position: relative;
     transition: transform 0.4s ease;
 
     &:hover {
-        transform: translateY(-4px);
+        transform: translateX(8px);
     }
 
-    // 连接线：在非最后一个步骤右侧画一条水平虚线
+    // 垂直连接线
     &:not(:last-child)::after {
         content: '';
         position: absolute;
-        top: calc(2rem + 24px); // align with marker center
-        right: 0;
-        width: calc(100% - 48px - 1.75rem); // marker width + padding
-        height: 1px;
-        border-top: 1px dashed rgba(0, 0, 0, 0.12);
+        left: 23px;
+        top: calc(2rem + 48px);
+        bottom: -2rem;
+        width: 0;
+        border-left: 1px dashed rgba(0, 0, 0, 0.12);
         pointer-events: none;
-
-        @media (max-width: 768px) {
-            display: none;
-        }
     }
 
     .step-marker {
@@ -677,12 +672,14 @@ onMounted(async () => {
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        position: relative;
+        z-index: 1;
         transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
     &:hover .step-marker {
-        transform: scale(1.1);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        transform: scale(1.15);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     .step-num {
@@ -695,10 +692,11 @@ onMounted(async () => {
         display: flex;
         flex-direction: column;
         gap: 0.3rem;
+        padding-top: 0.35rem;
     }
 
     .step-zh {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         font-weight: bold;
         letter-spacing: -0.01em;
         white-space: nowrap;
@@ -712,10 +710,11 @@ onMounted(async () => {
     }
 
     .step-desc {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         opacity: 0.35;
         line-height: 1.6;
-        margin-top: 0.2rem;
+        margin-top: 0.25rem;
+        max-width: 420px;
     }
 }
 
