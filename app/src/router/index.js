@@ -12,7 +12,7 @@ const router = createRouter({
         { path: '/about', name: 'about', component: () => import('../views/about/AboutView.vue') },
     ],
     scrollBehavior() {
-        return { top: 0 };
+        return { top: 0, behavior: 'smooth' };
     },
 });
 

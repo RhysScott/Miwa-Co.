@@ -86,7 +86,6 @@ onMounted(async () => {
 
 watch(() => route.params.id, (newId) => {
     loadArticle(newId);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
 
