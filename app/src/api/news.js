@@ -1,4 +1,4 @@
-import { request, MOCK_SWITCH } from "./request";
+import { request, MOCK_SWITCH } from "@/common/request";
 
 const mock = [
     { date: '2026.04', title: 'Miwa 发布企业级 AI Agent 开发框架 v2.0' },

@@ -1,4 +1,4 @@
-import { request, MOCK_SWITCH } from "./request";
+import { request, MOCK_SWITCH } from "@/common/request";
 
 const mock = [
     { zh: '需求诊断', en: 'Discovery & Analysis' },

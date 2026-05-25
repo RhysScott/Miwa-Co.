@@ -1,4 +1,4 @@
-import { request, MOCK_SWITCH } from "./request";
+import { request, MOCK_SWITCH } from "@/common/request";
 
 const mock = [
     { icon: 'brain', zh: '人工智能', en: 'AI Solutions', desc: '大模型应用、智能体开发、NLP 与计算机视觉 —— 为企业注入 AI 能力' },

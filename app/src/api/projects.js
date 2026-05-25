@@ -1,4 +1,4 @@
-import { request, MOCK_SWITCH } from "./request";
+import { request, MOCK_SWITCH } from "@/common/request";
 
 const mock = [
     { zh: '智能客服平台', en: 'AI Customer Service', image: '/images/1.jpg' },
