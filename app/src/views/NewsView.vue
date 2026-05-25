@@ -9,18 +9,7 @@
 
         <section class="news-grid-section">
             <div class="news-grid">
-                <router-link v-for="item in news" :key="item.id" :to="`/news/${item.id}`" class="news-card">
-                    <div class="card-image">
-                        <img v-if="item.image" :src="item.image" :alt="item.title" />
-                        <div v-else class="card-image-placeholder" />
-                    </div>
-                    <div class="card-body">
-                        <span class="card-date">{{ item.date }}</span>
-                        <h2 class="card-title">{{ item.title }}</h2>
-                        <p class="card-excerpt">{{ item.excerpt }}</p>
-                        <span class="card-arrow">→</span>
-                    </div>
-                </router-link>
+                <NewsCard v-for="item in news" :key="item.id" :item="item" variant="full" :to="`/news/${item.id}`" />
             </div>
         </section>
 
@@ -32,6 +21,7 @@
 import { onMounted, ref } from 'vue';
 import { getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
+import NewsCard from '@/components/home/NewsCard.vue';
 import SiteFooter from '@/components/home/Footer.vue';
 
 const news = ref([]);
@@ -103,81 +93,4 @@ onMounted(async () => {
     }
 }
 
-.news-card {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 20px;
-    color: #1a1a1a;
-    text-decoration: none;
-    overflow: hidden;
-    transition:
-        border-color 0.4s ease,
-        background 0.4s ease,
-        transform 0.4s ease;
-
-    &:hover {
-        border-color: rgba(0, 0, 0, 0.15);
-        background: rgba(0, 0, 0, 0.01);
-        transform: translateY(-4px);
-
-        .card-arrow {
-            opacity: 0.4;
-            transform: translateX(4px);
-        }
-    }
-}
-
-.card-image {
-    img {
-        width: 100%;
-        aspect-ratio: 16 / 10;
-        object-fit: cover;
-        display: block;
-    }
-
-    .card-image-placeholder {
-        width: 100%;
-        aspect-ratio: 16 / 10;
-        background: rgba(0, 0, 0, 0.04);
-    }
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1.5rem;
-    flex: 1;
-}
-
-.card-date {
-    font-size: 0.75rem;
-    opacity: 0.3;
-    white-space: nowrap;
-}
-
-.card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin: 0;
-    letter-spacing: -0.01em;
-    line-height: 1.35;
-}
-
-.card-excerpt {
-    font-size: 0.85rem;
-    opacity: 0.4;
-    line-height: 1.6;
-    margin: 0;
-    flex: 1;
-}
-
-.card-arrow {
-    font-size: 0.9rem;
-    opacity: 0;
-    align-self: flex-end;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    margin-top: 0.25rem;
-}
 </style>
