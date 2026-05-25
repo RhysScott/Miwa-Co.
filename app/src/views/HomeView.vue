@@ -3,8 +3,8 @@
         <!-- Hero 大字标语 -->
         <section class="hero">
             <div class="hero-text font-error">
-                <h1 class="hero-zh">创造有意义的品牌</h1>
-                <p class="hero-en">We craft brands that matter.</p>
+                <h1 class="hero-zh">用技术驱动未来</h1>
+                <p class="hero-en">AI · Software · IoT — We build what's next.</p>
             </div>
             <div class="scroll-hint" aria-hidden="true">↓</div>
         </section>
@@ -13,46 +13,46 @@
         <section class="marquee">
             <div class="marquee-inner">
                 <div class="marquee-track">
-                    <span class="marquee-item">品牌设计</span>
+                    <span class="marquee-item">人工智能</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Branding</span>
+                    <span class="marquee-item">AI</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">视觉识别</span>
+                    <span class="marquee-item">软件开发</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Visual Identity</span>
+                    <span class="marquee-item">Software</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">数字体验</span>
+                    <span class="marquee-item">物联网</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Digital</span>
+                    <span class="marquee-item">IoT</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">空间设计</span>
+                    <span class="marquee-item">云计算</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Spatial</span>
+                    <span class="marquee-item">Cloud</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">内容策划</span>
+                    <span class="marquee-item">数字转型</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Content</span>
+                    <span class="marquee-item">DX</span>
                 </div>
                 <div class="marquee-track" aria-hidden="true">
-                    <span class="marquee-item">品牌设计</span>
+                    <span class="marquee-item">人工智能</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Branding</span>
+                    <span class="marquee-item">AI</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">视觉识别</span>
+                    <span class="marquee-item">软件开发</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Visual Identity</span>
+                    <span class="marquee-item">Software</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">数字体验</span>
+                    <span class="marquee-item">物联网</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Digital</span>
+                    <span class="marquee-item">IoT</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">空间设计</span>
+                    <span class="marquee-item">云计算</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Spatial</span>
+                    <span class="marquee-item">Cloud</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">内容策划</span>
+                    <span class="marquee-item">数字转型</span>
                     <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Content</span>
+                    <span class="marquee-item">DX</span>
                 </div>
             </div>
         </section>
@@ -141,8 +141,8 @@
         <!-- 品牌理念 -->
         <section class="philosophy">
             <div class="philosophy-quote font-error">
-                <p class="quote-zh">"好设计不喧哗，它只是恰到好处地存在"</p>
-                <p class="quote-en">Good design is not loud. It simply exists, just right.</p>
+                <p class="quote-zh">"技术不应是黑箱，它应当透明、可靠、为人所用"</p>
+                <p class="quote-en">Technology should not be a black box. It should be transparent, reliable, and human.</p>
             </div>
         </section>
 
@@ -169,11 +169,11 @@
             </div>
             <div class="about-grid">
                 <div class="about-text font-error">
-                    <p>Miwa & Co. 是一家独立创意工作室，</p>
-                    <p>专注于品牌策略、视觉设计与数字体验。</p>
-                    <p>我们相信好设计来自于对细节的偏执热爱。</p>
-                    <p class="about-en">An independent studio obsessed with brand strategy,</p>
-                    <p class="about-en">visual identity, and digital craft.</p>
+                    <p>Miwa & Co. 是一家技术驱动的创新公司，</p>
+                    <p>专注 AI 应用、软件工程与物联网解决方案。</p>
+                    <p>我们相信技术的力量在于让它变得简单可靠。</p>
+                    <p class="about-en">A tech-driven company focused on AI applications,</p>
+                    <p class="about-en">software engineering, and IoT solutions.</p>
                 </div>
                 <div class="about-cta">
                     <p class="cta-text">有项目想聊？</p>
@@ -191,7 +191,7 @@
 </template>
 
 <script setup>
-import { Sparkles, Shapes, Monitor, Layers } from '@lucide/vue';
+import { Brain, Code, Cpu, Globe } from '@lucide/vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
@@ -207,7 +207,7 @@ const clients = mockClients;
 const news = mockNews;
 const stats = mockStats;
 
-const iconMap = { sparkles: Sparkles, shapes: Shapes, monitor: Monitor, layers: Layers };
+const iconMap = { brain: Brain, code: Code, cpu: Cpu, globe: Globe };
 
 onMounted(() => {
     // Hero 逐字弹跳入场

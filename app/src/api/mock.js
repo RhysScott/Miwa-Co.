@@ -1,45 +1,46 @@
 // Mock 数据 —— MOCK_SWITCH = true 时使用
 
 export const mockServices = [
-    { icon: 'sparkles', zh: '品牌策略', en: 'Brand Strategy', desc: '从洞察到定位，构建品牌的核心叙事与价值体系，让品牌在市场中脱颖而出' },
-    { icon: 'shapes', zh: '视觉识别', en: 'Visual Identity', desc: '标志、字体、色彩系统 —— 打造独特而统一的品牌视觉语言' },
-    { icon: 'monitor', zh: '数字体验', en: 'Digital Experience', desc: '网站、应用、交互设计，每一个触点都经过精心打磨与反复推敲' },
-    { icon: 'layers', zh: '空间设计', en: 'Spatial Design', desc: '零售空间、展览、装置 —— 品牌在物理世界中的沉浸式延伸' },
+    { icon: 'brain', zh: '人工智能', en: 'AI Solutions', desc: '大模型应用、智能体开发、NLP 与计算机视觉 —— 为企业注入 AI 能力' },
+    { icon: 'code', zh: '软件开发', en: 'Software Dev', desc: 'Web / 移动端 / 后端系统全栈开发，从原型到上线的完整交付' },
+    { icon: 'cpu', zh: '物联网', en: 'IoT', desc: '设备接入、边缘计算、数据中台 —— 连接物理世界与数字世界' },
+    { icon: 'globe', zh: '数字转型', en: 'Digital Transformation', desc: '技术咨询、架构设计、系统集成，助力企业完成数字化升级' },
 ];
 
 export const mockProjects = [
-    { zh: '东方意境', en: 'Oriental Aesthetics', image: '/images/1.jpg' },
-    { zh: '现代极简', en: 'Modern Minimal', image: '/images/2.jpg' },
-    { zh: '城市脉搏', en: 'Urban Pulse', image: '/images/3.jpg' },
-    { zh: '自然共生', en: 'Nature & Co', image: '/images/4.jpg' },
+    { zh: '智能客服平台', en: 'AI Customer Service', image: '/images/1.jpg' },
+    { zh: '工业 IoT 中台', en: 'Industrial IoT Platform', image: '/images/2.jpg' },
+    { zh: '企业数据大脑', en: 'Enterprise Data Brain', image: '/images/3.jpg' },
+    { zh: '智慧零售系统', en: 'Smart Retail System', image: '/images/4.jpg' },
 ];
 
 export const mockClients = [
-    { name: '悦己', en: 'YUÈ JI' },
-    { name: '山海间', en: 'SHAN HAI JIAN' },
-    { name: '未央', en: 'WEI YANG' },
-    { name: '方所', en: 'FANG SUO' },
-    { name: '云迹', en: 'YUN JI' },
-    { name: '半山', en: 'BAN SHAN' },
-    { name: '渡口', en: 'DU KOU' },
-    { name: '花间', en: 'HUA JIAN' },
+    { name: '蔚来', en: 'NIO' },
+    { name: '比亚迪', en: 'BYD' },
+    { name: '华为', en: 'HUAWEI' },
+    { name: '招商银行', en: 'CMB' },
+    { name: '顺丰', en: 'SF Express' },
+    { name: '万科', en: 'VANKE' },
+    { name: '字节跳动', en: 'ByteDance' },
+    { name: '美的', en: 'MIDEA' },
 ];
 
 export const mockStats = [
-    { num: '50+', label: '项目作品' },
-    { num: '12', label: '合作品牌' },
-    { num: '8', label: '年经验' },
-    { num: '100%', label: '热情投入' },
+    { num: '200+', label: '交付项目' },
+    { num: '50+', label: '服务企业' },
+    { num: '99.9%', label: '系统可用率' },
+    { num: '24/7', label: '运维保障' },
 ];
 
 export const mockNews = [
-    { date: '2026.04', title: '山海间品牌全案上线' },
-    { date: '2026.02', title: 'Miwa 荣获 ADC 年度设计奖' },
-    { date: '2025.12', title: '方所书店空间焕新完成' },
+    { date: '2026.04', title: 'Miwa 发布企业级 AI Agent 开发框架 v2.0' },
+    { date: '2026.02', title: '与华为联合打造工业 IoT 边缘计算方案落地' },
+    { date: '2025.12', title: '智能客服平台日均调用量突破 5000 万次' },
 ];
 
 export const mockProcess = [
-    { zh: '聆听与洞察', en: 'Listen & Understand' },
-    { zh: '构思与设计', en: 'Ideate & Design' },
-    { zh: '打磨与交付', en: 'Refine & Deliver' },
+    { zh: '需求诊断', en: 'Discovery & Analysis' },
+    { zh: '方案架构', en: 'Architecture & Design' },
+    { zh: '敏捷交付', en: 'Agile Development' },
+    { zh: '持续运维', en: 'Operations & Scale' },
 ];
