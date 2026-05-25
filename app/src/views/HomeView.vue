@@ -1,109 +1,122 @@
 <template>
     <div class="home">
-        <!-- Hero 大字标语 -->
-        <section class="hero" v-if="hero">
-            <div class="hero-text font-error">
-                <h1 class="hero-zh">{{ hero.zh }}</h1>
-                <p class="hero-en">{{ hero.en }}</p>
-                <p class="hero-sub">{{ hero.sub }}</p>
-            </div>
-            <div class="scroll-hint" aria-hidden="true">↓</div>
-        </section>
+        <el-skeleton :loading="!loaded" animated>
+            <template #template>
+                <section class="hero" style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0b0b12">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:1rem">
+                        <el-skeleton-item variant="text" style="width:clamp(200px,40vw,500px);height:clamp(3rem,8vw,8rem)" />
+                        <el-skeleton-item variant="text" style="width:clamp(120px,20vw,260px);height:1.5rem" />
+                        <el-skeleton-item variant="text" style="width:clamp(160px,28vw,360px);height:1rem;margin-top:0.5rem" />
+                    </div>
+                </section>
+            </template>
+            <template #default>
+                <!-- Hero 大字标语 -->
+                <section class="hero" v-if="hero">
+                    <div class="hero-text font-error">
+                        <h1 class="hero-zh">{{ hero.zh }}</h1>
+                        <p class="hero-en">{{ hero.en }}</p>
+                        <p class="hero-sub">{{ hero.sub }}</p>
+                    </div>
+                    <div class="scroll-hint" aria-hidden="true">↓</div>
+                </section>
 
-        <!-- 横向滚动服务词条 -->
-        <section class="marquee" v-if="marquee.length">
-            <div class="marquee-inner">
-                <div class="marquee-track">
-                    <template v-for="(m, i) in marquee" :key="i">
-                        <span class="marquee-item">{{ m.zh }}</span>
-                        <span class="marquee-divider">/</span>
-                        <span class="marquee-item">{{ m.en }}</span>
-                        <span v-if="i < marquee.length - 1" class="marquee-divider">/</span>
-                    </template>
-                </div>
-                <div class="marquee-track" aria-hidden="true">
-                    <template v-for="(m, i) in marquee" :key="i">
-                        <span class="marquee-item">{{ m.zh }}</span>
-                        <span class="marquee-divider">/</span>
-                        <span class="marquee-item">{{ m.en }}</span>
-                        <span v-if="i < marquee.length - 1" class="marquee-divider">/</span>
-                    </template>
-                </div>
-            </div>
-        </section>
+                <!-- 横向滚动服务词条 -->
+                <section class="marquee" v-if="marquee.length">
+                    <div class="marquee-inner">
+                        <div class="marquee-track">
+                            <template v-for="(m, i) in marquee" :key="i">
+                                <span class="marquee-item">{{ m.zh }}</span>
+                                <span class="marquee-divider">/</span>
+                                <span class="marquee-item">{{ m.en }}</span>
+                                <span v-if="i < marquee.length - 1" class="marquee-divider">/</span>
+                            </template>
+                        </div>
+                        <div class="marquee-track" aria-hidden="true">
+                            <template v-for="(m, i) in marquee" :key="i">
+                                <span class="marquee-item">{{ m.zh }}</span>
+                                <span class="marquee-divider">/</span>
+                                <span class="marquee-item">{{ m.en }}</span>
+                                <span v-if="i < marquee.length - 1" class="marquee-divider">/</span>
+                            </template>
+                        </div>
+                    </div>
+                </section>
 
-        <!-- 服务能力 — 全页 -->
-        <section class="services" v-if="services.length">
-            <SectionHeader zh="我们的服务" en="What We Do" />
-            <div class="service-grid">
-                <ServiceCard v-for="s in services" :key="s.zh" :service="s" :icon="iconMap[s.icon]" />
-            </div>
-        </section>
+                <!-- 服务能力 — 全页 -->
+                <section class="services" v-if="services.length">
+                    <SectionHeader zh="我们的服务" en="What We Do" />
+                    <div class="service-grid">
+                        <ServiceCard v-for="s in services" :key="s.zh" :service="s" :icon="iconMap[s.icon]" />
+                    </div>
+                </section>
 
-        <!-- 数据亮点 -->
-        <section class="stats" v-if="stats.length">
-            <div class="stats-grid">
-                <StatItem v-for="s in stats" :key="s.num" :stat="s" />
-            </div>
-        </section>
+                <!-- 数据亮点 -->
+                <section class="stats" v-if="stats.length">
+                    <div class="stats-grid">
+                        <StatItem v-for="s in stats" :key="s.num" :stat="s" />
+                    </div>
+                </section>
 
-        <!-- 精选项目 -->
-        <section class="projects" v-if="projects.length">
-            <SectionHeader zh="精选项目" en="Selected Works" />
-            <div class="project-grid">
-                <ProjectCard v-for="(p, i) in projects" :key="i" :project="p" :index="i" />
-            </div>
-        </section>
+                <!-- 精选项目 -->
+                <section class="projects" v-if="projects.length">
+                    <SectionHeader zh="精选项目" en="Selected Works" />
+                    <div class="project-grid">
+                        <ProjectCard v-for="(p, i) in projects" :key="i" :project="p" :index="i" />
+                    </div>
+                </section>
 
-        <!-- 工作流程 -->
-        <section class="process" v-if="process.length">
-            <SectionHeader zh="工作流程" en="How We Work" />
-            <div class="process-track">
-                <ProcessStep v-for="(step, i) in process" :key="i" :step="step" :index="i" />
-            </div>
-        </section>
+                <!-- 工作流程 -->
+                <section class="process" v-if="process.length">
+                    <SectionHeader zh="工作流程" en="How We Work" />
+                    <div class="process-track">
+                        <ProcessStep v-for="(step, i) in process" :key="i" :step="step" :index="i" />
+                    </div>
+                </section>
 
-        <!-- 合作客户 -->
-        <section class="clients" v-if="clients.length">
-            <SectionHeader zh="合作客户" en="Clients & Partners" />
-            <div class="client-grid">
-                <ClientCard v-for="c in clients" :key="c.name" :client="c" />
-            </div>
-        </section>
+                <!-- 合作客户 -->
+                <section class="clients" v-if="clients.length">
+                    <SectionHeader zh="合作客户" en="Clients & Partners" />
+                    <div class="client-grid">
+                        <ClientCard v-for="c in clients" :key="c.name" :client="c" />
+                    </div>
+                </section>
 
-        <!-- 品牌理念 — 全页 -->
-        <section class="philosophy" v-if="philosophy">
-            <div class="philosophy-quote font-error">
-                <p class="quote-zh">{{ philosophy.zh }}</p>
-                <p class="quote-sub">{{ philosophy.sub }}</p>
-                <p class="quote-en">{{ philosophy.en }}</p>
-            </div>
-        </section>
+                <!-- 品牌理念 — 全页 -->
+                <section class="philosophy" v-if="philosophy">
+                    <div class="philosophy-quote font-error">
+                        <p class="quote-zh">{{ philosophy.zh }}</p>
+                        <p class="quote-sub">{{ philosophy.sub }}</p>
+                        <p class="quote-en">{{ philosophy.en }}</p>
+                    </div>
+                </section>
 
-        <!-- 最新动态 -->
-        <section class="news-preview" v-if="news.length">
-            <SectionHeader zh="最新动态" en="Latest" />
-            <div class="news-grid">
-                <NewsCard v-for="n in news" :key="n.id" :item="n" :to="`/news/${n.id}`" />
-            </div>
-        </section>
+                <!-- 最新动态 -->
+                <section class="news-preview" v-if="news.length">
+                    <SectionHeader zh="最新动态" en="Latest" />
+                    <div class="news-grid">
+                        <NewsCard v-for="n in news" :key="n.id" :item="n" :to="`/news/${n.id}`" />
+                    </div>
+                </section>
 
-        <!-- 品牌简介 — 全页 -->
-        <section class="about" v-if="about">
-            <SectionHeader zh="关于我们" en="About" />
-            <div class="about-grid">
-                <div class="about-text font-error">
-                    <p v-for="(p, i) in about.zh" :key="'zh'+i">{{ p }}</p>
-                    <p v-for="(p, i) in about.en" :key="'en'+i" class="about-en">{{ p }}</p>
-                </div>
-                <div class="about-cta">
-                    <p class="cta-text">{{ about.cta.zh }}</p>
-                    <a :href="'mailto:' + about.cta.email" class="cta-link">{{ about.cta.email }} →</a>
-                </div>
-            </div>
-        </section>
+                <!-- 品牌简介 — 全页 -->
+                <section class="about" v-if="about">
+                    <SectionHeader zh="关于我们" en="About" />
+                    <div class="about-grid">
+                        <div class="about-text font-error">
+                            <p v-for="(p, i) in about.zh" :key="'zh'+i">{{ p }}</p>
+                            <p v-for="(p, i) in about.en" :key="'en'+i" class="about-en">{{ p }}</p>
+                        </div>
+                        <div class="about-cta">
+                            <p class="cta-text">{{ about.cta.zh }}</p>
+                            <a :href="'mailto:' + about.cta.email" class="cta-link">{{ about.cta.email }} →</a>
+                        </div>
+                    </div>
+                </section>
 
-        <SiteFooter v-if="footer" :footer="footer" />
+                <SiteFooter v-if="footer" :footer="footer" />
+            </template>
+        </el-skeleton>
     </div>
 </template>
 
@@ -125,6 +138,7 @@ import StatItem from '@/components/home/StatItem.vue';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
+const loaded = ref(false);
 const hero = ref(null);
 const marquee = ref([]);
 const services = ref([]);
@@ -152,7 +166,7 @@ onMounted(async () => {
     philosophy.value = data.philosophy;
     about.value = data.about;
     footer.value = data.footer;
-
+    loaded.value = true;
     await nextTick();
 
     // Hero 逐字弹跳入场
