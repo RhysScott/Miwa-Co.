@@ -23,6 +23,28 @@
             </div>
         </section>
 
+        <!-- 项目作品 -->
+        <section class="explore-projects">
+            <h2 class="section-title font-error">
+                <span class="zh">项目作品</span>
+                <span class="label-en">Selected Works</span>
+            </h2>
+            <div class="projects-grid">
+                <div v-for="(p, i) in data.projects" :key="i" class="project-card">
+                    <div class="project-image">
+                        <img :src="p.image" :alt="p.zh" />
+                    </div>
+                    <div class="project-body">
+                        <span class="project-num">{{ String(i + 1).padStart(2, '0') }}</span>
+                        <h3>{{ p.zh }}</h3>
+                        <p class="project-en">{{ p.en }}</p>
+                        <p class="project-desc">{{ p.desc }}</p>
+                        <p class="project-detail">{{ p.detail }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 案例 -->
         <section class="explore-cases">
             <h2 class="section-title font-error">
@@ -170,6 +192,93 @@ onMounted(async () => {
         opacity: 0.35;
         line-height: 1.6;
         margin: 0;
+    }
+}
+
+.explore-projects {
+    padding: 5rem 2rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.projects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.project-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+
+    &:nth-child(even) {
+        .project-image { order: 2; }
+        .project-body { order: 1; }
+    }
+}
+
+.project-image img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
+}
+
+.project-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.project-num {
+    font-size: 3rem;
+    font-weight: bold;
+    opacity: 0.08;
+    line-height: 1;
+}
+
+.project-body h3 {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.project-en {
+    font-size: 0.75rem;
+    opacity: 0.25;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.project-desc {
+    font-size: 0.95rem;
+    opacity: 0.5;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.project-detail {
+    font-size: 0.85rem;
+    opacity: 0.35;
+    line-height: 1.6;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 640px) {
+    .project-card,
+    .project-card:nth-child(even) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+
+        .project-image,
+        .project-body {
+            order: unset;
+        }
     }
 }
 

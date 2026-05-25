@@ -23,6 +23,12 @@ const contactMock = {
 };
 
 const exploreMock = {
+    projects: [
+        { zh: '智能客服平台', en: 'AI Customer Service', desc: '基于自研 NLP 引擎，日均处理 5000 万次对话', image: '/images/1.jpg', detail: '为某头部互联网企业打造的全渠道智能客服平台，整合文本、语音、图像多模态交互，支持 30+ 语种。采用自研 NLP 引擎，意图识别准确率 97.8%，日均处理对话量突破 5000 万次，人工客服转接率降低 60%。' },
+        { zh: '工业 IoT 中台', en: 'Industrial IoT Platform', desc: '接入 10 万+ 设备，实时数据管道与预测性维护', image: '/images/2.jpg', detail: '为某新能源车企构建的工业 IoT 数据中台，接入产线设备、AGV、环境传感器等 10 万+ 终端。通过边缘计算节点实现毫秒级数据响应，结合 ML 模型实现设备预测性维护，非计划停机减少 45%。' },
+        { zh: '企业数据大脑', en: 'Enterprise Data Brain', desc: '统一多源异构数据，构建企业级知识图谱与 BI 看板', image: '/images/3.jpg', detail: '为某股份制银行打造的统一数据平台，整合 200+ 业务系统数据源，构建企业级知识图谱。支持自然语言查询的 BI 看板让业务人员无需 SQL 即可自助分析，报表产出效率提升 10 倍。' },
+        { zh: '智慧零售系统', en: 'Smart Retail System', desc: '线上线下全渠道打通，AI 驱动库存优化与精准营销', image: '/images/4.jpg', detail: '为某跨国零售集团打造的 O2O 全渠道中台，统一线上商城与线下 3000+ 门店的会员、库存、营销体系。AI 驱动的智能补货与动态定价系统将库存周转率提升 30%，支撑日均千万级订单并发。' },
+    ],
     services: [
         { zh: '人工智能', en: 'AI Solutions', desc: '大模型应用、智能体开发、NLP 与计算机视觉', detail: '从模型选型到上线调优，我们帮助企业将 AI 从概念验证推向生产环境。服务涵盖大语言模型微调、RAG 知识库构建、多智能体协作系统、以及端到端的 MLOps 流水线搭建。' },
         { zh: '软件开发', en: 'Software Dev', desc: 'Web / 移动端 / 后端全栈工程', detail: '采用敏捷开发与 DevOps 最佳实践，从原型验证到大规模上线，全程透明交付。技术栈覆盖 React、Vue、Node.js、Go、Python，支持云原生与微服务架构。' },
