@@ -112,7 +112,7 @@ import { Brain, Code, Cpu, Globe } from '@lucide/vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, nextTick } from 'vue';
 import { getHomeData } from '@/api/home';
 import ClientCard from '@/components/home/ClientCard.vue';
 import NewsCard from '@/components/home/NewsCard.vue';
@@ -152,6 +152,8 @@ onMounted(async () => {
     philosophy.value = data.philosophy;
     about.value = data.about;
     footer.value = data.footer;
+
+    await nextTick();
 
     // Hero 逐字弹跳入场
     const heroSplit = SplitText.create('.hero-zh, .hero-en, .hero-sub', { type: 'chars,words' });
