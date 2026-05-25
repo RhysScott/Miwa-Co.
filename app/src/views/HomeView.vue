@@ -73,21 +73,12 @@
             </div>
         </section>
 
-        <!-- 工作流程 -->
-        <section class="process">
-            <div class="section-header font-error">
-                <span class="label-zh">工作流程</span>
-                <span class="label-en">How We Work</span>
-            </div>
-            <div class="process-track">
-                <div class="process-step" v-for="(step, i) in process" :key="i">
-                    <div class="step-marker">
-                        <span class="step-num">0{{ i + 1 }}</span>
-                    </div>
-                    <div class="step-text">
-                        <span class="step-zh">{{ step.zh }}</span>
-                        <span class="step-en">{{ step.en }}</span>
-                    </div>
+        <!-- 数据亮点 -->
+        <section class="stats">
+            <div class="stats-grid">
+                <div class="stat-item" v-for="s in stats" :key="s.num">
+                    <span class="stat-num">{{ s.num }}</span>
+                    <span class="stat-label">{{ s.label }}</span>
                 </div>
             </div>
         </section>
@@ -116,12 +107,21 @@
             </div>
         </section>
 
-        <!-- 数据亮点 -->
-        <section class="stats">
-            <div class="stats-grid">
-                <div class="stat-item" v-for="s in stats" :key="s.num">
-                    <span class="stat-num">{{ s.num }}</span>
-                    <span class="stat-label">{{ s.label }}</span>
+        <!-- 工作流程 -->
+        <section class="process">
+            <div class="section-header font-error">
+                <span class="label-zh">工作流程</span>
+                <span class="label-en">How We Work</span>
+            </div>
+            <div class="process-track">
+                <div class="process-step" v-for="(step, i) in process" :key="i">
+                    <div class="step-marker">
+                        <span class="step-num">0{{ i + 1 }}</span>
+                    </div>
+                    <div class="step-text">
+                        <span class="step-zh">{{ step.zh }}</span>
+                        <span class="step-en">{{ step.en }}</span>
+                    </div>
                 </div>
             </div>
         </section>
