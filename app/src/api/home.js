@@ -49,25 +49,74 @@ const statsMock = [
     { num: '24/7', label: '运维保障' },
 ];
 
+const heroMock = {
+    zh: '用技术驱动未来',
+    en: 'AI · Software · IoT — We build what\'s next.',
+    sub: '我们相信，每一行代码都应当创造真实价值。从 AI 到物联网，从上海到世界。',
+};
+
+const marqueeMock = [
+    { zh: '人工智能', en: 'AI' },
+    { zh: '软件开发', en: 'Software' },
+    { zh: '物联网', en: 'IoT' },
+    { zh: '云计算', en: 'Cloud' },
+    { zh: '数字转型', en: 'DX' },
+];
+
+const philosophyMock = {
+    zh: '"技术不应是黑箱，它应当透明、可靠、为人所用"',
+    sub: '这是 Miwa 每一个项目背后的核心信念。我们拒绝过度包装，坚持技术向善，让复杂的事情变得清晰简单。',
+    en: 'Technology should not be a black box. It should be transparent, reliable, and human.',
+};
+
+const aboutMock = {
+    zh: [
+        'Miwa & Co. 是一家技术驱动的创新公司，成立于上海。',
+        '我们专注 AI 应用、软件工程与物联网解决方案，帮助企业跨越从技术到产品的最后一公里。',
+        '我们的团队来自全球顶尖科技公司与实验室，相信技术的力量在于让它变得简单、可靠、可及。',
+    ],
+    en: [
+        'A tech-driven company born in Shanghai, focused on AI applications,',
+        'software engineering, and IoT solutions. We exist to close the gap',
+        'between technology and real-world impact.',
+    ],
+    cta: { zh: '有项目想聊？', email: 'hello@miwa-co.com' },
+};
+
+const footerMock = {
+    copyright: '© 2026 Miwa & Co.',
+    location: 'Shanghai, China',
+};
+
 export function getHomeData() {
     if (MOCK_SWITCH) {
         return Promise.resolve({
+            hero: heroMock,
+            marquee: marqueeMock,
             services: servicesMock,
             projects: projectsMock,
             process: processMock,
             clients: clientsMock,
             news: newsMock,
             stats: statsMock,
+            philosophy: philosophyMock,
+            about: aboutMock,
+            footer: footerMock,
         });
     }
     return Promise.all([
+        request.get("/hero").then(r => r.data),
+        request.get("/marquee").then(r => r.data),
         request.get("/services").then(r => r.data),
         request.get("/projects").then(r => r.data),
         request.get("/process").then(r => r.data),
         request.get("/clients").then(r => r.data),
         request.get("/news").then(r => r.data),
         request.get("/stats").then(r => r.data),
-    ]).then(([services, projects, process, clients, news, stats]) => ({
-        services, projects, process, clients, news, stats,
+        request.get("/philosophy").then(r => r.data),
+        request.get("/about").then(r => r.data),
+        request.get("/footer").then(r => r.data),
+    ]).then(([hero, marquee, services, projects, process, clients, news, stats, philosophy, about, footer]) => ({
+        hero, marquee, services, projects, process, clients, news, stats, philosophy, about, footer,
     }));
 }

@@ -1,59 +1,33 @@
 <template>
     <div class="home">
         <!-- Hero 大字标语 -->
-        <section class="hero">
+        <section class="hero" v-if="hero">
             <div class="hero-text font-error">
-                <h1 class="hero-zh">用技术驱动未来</h1>
-                <p class="hero-en">AI · Software · IoT — We build what's next.</p>
-                <p class="hero-sub">我们相信，每一行代码都应当创造真实价值。从 AI 到物联网，从上海到世界。</p>
+                <h1 class="hero-zh">{{ hero.zh }}</h1>
+                <p class="hero-en">{{ hero.en }}</p>
+                <p class="hero-sub">{{ hero.sub }}</p>
             </div>
             <div class="scroll-hint" aria-hidden="true">↓</div>
         </section>
 
         <!-- 横向滚动服务词条 -->
-        <section class="marquee">
+        <section class="marquee" v-if="marquee.length">
             <div class="marquee-inner">
                 <div class="marquee-track">
-                    <span class="marquee-item">人工智能</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">AI</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">软件开发</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Software</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">物联网</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">IoT</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">云计算</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Cloud</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">数字转型</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">DX</span>
+                    <template v-for="(m, i) in marquee" :key="i">
+                        <span class="marquee-item">{{ m.zh }}</span>
+                        <span class="marquee-divider">/</span>
+                        <span class="marquee-item">{{ m.en }}</span>
+                        <span v-if="i < marquee.length - 1" class="marquee-divider">/</span>
+                    </template>
                 </div>
                 <div class="marquee-track" aria-hidden="true">
-                    <span class="marquee-item">人工智能</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">AI</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">软件开发</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Software</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">物联网</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">IoT</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">云计算</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">Cloud</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">数字转型</span>
-                    <span class="marquee-divider">/</span>
-                    <span class="marquee-item">DX</span>
+                    <template v-for="(m, i) in marquee" :key="i">
+                        <span class="marquee-item">{{ m.zh }}</span>
+                        <span class="marquee-divider">/</span>
+                        <span class="marquee-item">{{ m.en }}</span>
+                        <span v-if="i < marquee.length - 1" class="marquee-divider">/</span>
+                    </template>
                 </div>
             </div>
         </section>
@@ -62,25 +36,14 @@
         <section class="services" v-if="services.length">
             <SectionHeader zh="我们的服务" en="What We Do" />
             <div class="service-grid">
-                <div class="service-card" v-for="s in services" :key="s.zh">
-                    <div class="card-icon-ring">
-                        <img v-if="s.image" :src="s.image" :alt="s.zh" class="service-img" />
-                        <component v-else :is="iconMap[s.icon]" :size="32" />
-                    </div>
-                    <h3 class="service-zh">{{ s.zh }}</h3>
-                    <p class="service-en">{{ s.en }}</p>
-                    <p class="service-desc">{{ s.desc }}</p>
-                </div>
+                <ServiceCard v-for="s in services" :key="s.zh" :service="s" :icon="iconMap[s.icon]" />
             </div>
         </section>
 
         <!-- 数据亮点 -->
         <section class="stats" v-if="stats.length">
             <div class="stats-grid">
-                <div class="stat-item" v-for="s in stats" :key="s.num">
-                    <span class="stat-num">{{ s.num }}</span>
-                    <span class="stat-label">{{ s.label }}</span>
-                </div>
+                <StatItem v-for="s in stats" :key="s.num" :stat="s" />
             </div>
         </section>
 
@@ -88,21 +51,7 @@
         <section class="projects" v-if="projects.length">
             <SectionHeader zh="精选项目" en="Selected Works" />
             <div class="project-grid">
-                <div
-                    class="project-card"
-                    v-for="(p, i) in projects"
-                    :key="i"
-                    :style="{ backgroundImage: `url(${p.image})` }"
-                >
-                    <div class="card-gradient">
-                        <span class="card-num">0{{ i + 1 }}</span>
-                        <div class="card-info">
-                            <span class="card-zh">{{ p.zh }}</span>
-                            <span class="card-en">{{ p.en }}</span>
-                            <span class="card-desc">{{ p.desc }}</span>
-                        </div>
-                    </div>
-                </div>
+                <ProjectCard v-for="(p, i) in projects" :key="i" :project="p" :index="i" />
             </div>
         </section>
 
@@ -110,16 +59,7 @@
         <section class="process" v-if="process.length">
             <SectionHeader zh="工作流程" en="How We Work" />
             <div class="process-track">
-                <div class="process-step" v-for="(step, i) in process" :key="i">
-                    <div class="step-marker">
-                        <span class="step-num">0{{ i + 1 }}</span>
-                    </div>
-                    <div class="step-text">
-                        <span class="step-zh">{{ step.zh }}</span>
-                        <span class="step-en">{{ step.en }}</span>
-                        <span class="step-desc">{{ step.desc }}</span>
-                    </div>
-                </div>
+                <ProcessStep v-for="(step, i) in process" :key="i" :step="step" :index="i" />
             </div>
         </section>
 
@@ -127,23 +67,16 @@
         <section class="clients" v-if="clients.length">
             <SectionHeader zh="合作客户" en="Clients & Partners" />
             <div class="client-grid">
-                <div class="client-card" v-for="c in clients" :key="c.name">
-                    <img v-if="c.image" :src="c.image" :alt="c.name" class="client-logo" />
-                    <div v-else class="client-avatar">{{ c.name[0] }}</div>
-                    <div class="client-text">
-                        <span class="client-zh">{{ c.name }}</span>
-                        <span class="client-en">{{ c.en }}</span>
-                    </div>
-                </div>
+                <ClientCard v-for="c in clients" :key="c.name" :client="c" />
             </div>
         </section>
 
         <!-- 品牌理念 — 全页 -->
-        <section class="philosophy">
+        <section class="philosophy" v-if="philosophy">
             <div class="philosophy-quote font-error">
-                <p class="quote-zh">"技术不应是黑箱，它应当透明、可靠、为人所用"</p>
-                <p class="quote-sub">这是 Miwa 每一个项目背后的核心信念。我们拒绝过度包装，坚持技术向善，让复杂的事情变得清晰简单。</p>
-                <p class="quote-en">Technology should not be a black box. It should be transparent, reliable, and human.</p>
+                <p class="quote-zh">{{ philosophy.zh }}</p>
+                <p class="quote-sub">{{ philosophy.sub }}</p>
+                <p class="quote-en">{{ philosophy.en }}</p>
             </div>
         </section>
 
@@ -151,38 +84,29 @@
         <section class="news-preview" v-if="news.length">
             <SectionHeader zh="最新动态" en="Latest" />
             <div class="news-grid">
-                <router-link to="/news" class="news-card" v-for="(n, idx) in news" :key="idx">
-                    <img v-if="n.image" :src="n.image" :alt="n.title" class="news-thumb" />
-                    <span class="news-date">{{ n.date }}</span>
-                    <span class="news-title">{{ n.title }}</span>
-                    <span class="news-arrow">→</span>
-                </router-link>
+                <NewsCard v-for="(n, idx) in news" :key="idx" :item="n" />
             </div>
         </section>
 
         <!-- 品牌简介 — 全页 -->
-        <section class="about">
+        <section class="about" v-if="about">
             <SectionHeader zh="关于我们" en="About" />
             <div class="about-grid">
                 <div class="about-text font-error">
-                    <p>Miwa & Co. 是一家技术驱动的创新公司，成立于上海。</p>
-                    <p>我们专注 AI 应用、软件工程与物联网解决方案，帮助企业跨越从技术到产品的最后一公里。</p>
-                    <p>我们的团队来自全球顶尖科技公司与实验室，相信技术的力量在于让它变得简单、可靠、可及。</p>
-                    <p class="about-en">A tech-driven company born in Shanghai, focused on AI applications,</p>
-                    <p class="about-en">software engineering, and IoT solutions. We exist to close the gap</p>
-                    <p class="about-en">between technology and real-world impact.</p>
+                    <p v-for="(p, i) in about.zh" :key="'zh'+i">{{ p }}</p>
+                    <p v-for="(p, i) in about.en" :key="'en'+i" class="about-en">{{ p }}</p>
                 </div>
                 <div class="about-cta">
-                    <p class="cta-text">有项目想聊？</p>
-                    <a href="mailto:hello@miwa-co.com" class="cta-link">hello@miwa-co.com →</a>
+                    <p class="cta-text">{{ about.cta.zh }}</p>
+                    <a :href="'mailto:' + about.cta.email" class="cta-link">{{ about.cta.email }} →</a>
                 </div>
             </div>
         </section>
 
         <!-- 页脚 -->
-        <footer class="footer">
-            <span>&copy; 2026 Miwa & Co.</span>
-            <span>Shanghai, China</span>
+        <footer class="footer" v-if="footer">
+            <span>{{ footer.copyright }}</span>
+            <span>{{ footer.location }}</span>
         </footer>
     </div>
 </template>
@@ -194,27 +118,43 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { onMounted, ref } from 'vue';
 import { getHomeData } from '@/api/home';
-import SectionHeader from '@/components/SectionHeader.vue';
+import ClientCard from '@/components/home/ClientCard.vue';
+import NewsCard from '@/components/home/NewsCard.vue';
+import ProcessStep from '@/components/home/ProcessStep.vue';
+import ProjectCard from '@/components/home/ProjectCard.vue';
+import SectionHeader from '@/components/shared/SectionHeader.vue';
+import ServiceCard from '@/components/home/ServiceCard.vue';
+import StatItem from '@/components/home/StatItem.vue';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
+const hero = ref(null);
+const marquee = ref([]);
 const services = ref([]);
 const projects = ref([]);
 const process = ref([]);
 const clients = ref([]);
 const news = ref([]);
 const stats = ref([]);
+const philosophy = ref(null);
+const about = ref(null);
+const footer = ref(null);
 
 const iconMap = { brain: Brain, code: Code, cpu: Cpu, globe: Globe };
 
 onMounted(async () => {
     const data = await getHomeData();
+    hero.value = data.hero;
+    marquee.value = data.marquee;
     services.value = data.services;
     projects.value = data.projects;
     process.value = data.process;
     clients.value = data.clients;
     news.value = data.news;
     stats.value = data.stats;
+    philosophy.value = data.philosophy;
+    about.value = data.about;
+    footer.value = data.footer;
 
     // Hero 逐字弹跳入场
     const heroSplit = SplitText.create('.hero-zh, .hero-en, .hero-sub', { type: 'chars,words' });
@@ -243,12 +183,12 @@ onMounted(async () => {
         }
     );
 
-    // 流程步骤滚动入场（awwwards 风格：左侧滑入 + 淡入）
+    // 流程步骤滚动入场（awwwards 风格：底部弹入）
     gsap.fromTo('.process-step',
-        { x: -80, opacity: 0 },
+        { y: 60, opacity: 0, scale: 0.9 },
         {
-            x: 0, opacity: 1,
-            stagger: 0.18, duration: 0.9, ease: 'expo.out',
+            y: 0, opacity: 1, scale: 1,
+            stagger: 0.15, duration: 0.8, ease: 'expo.out',
             scrollTrigger: { trigger: '.process', start: 'top 80%' }
         }
     );
@@ -428,73 +368,6 @@ onMounted(async () => {
     }
 }
 
-.service-card {
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 32px;
-    padding: 2.5rem 2rem;
-    transition:
-        transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
-        box-shadow 0.5s ease,
-        border-color 0.5s ease;
-
-    &:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-        border-color: rgba(0, 0, 0, 0.12);
-    }
-
-    .card-icon-ring {
-        width: 56px;
-        height: 56px;
-        border-radius: 16px;
-        background: rgba(0, 0, 0, 0.04);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 2rem;
-        color: rgba(0, 0, 0, 0.55);
-        overflow: hidden;
-        transition: background 0.5s ease, color 0.5s ease, transform 0.5s ease;
-    }
-
-    .service-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    &:hover .card-icon-ring {
-        background: rgba(0, 0, 0, 0.08);
-        color: rgba(0, 0, 0, 0.85);
-        transform: scale(1.05);
-    }
-
-    .service-zh {
-        margin: 0 0 0.25rem;
-        font-size: 1.5rem;
-        font-weight: bold;
-        letter-spacing: -0.01em;
-        white-space: nowrap;
-    }
-
-    .service-en {
-        margin: 0 0 1.25rem;
-        font-size: 0.75rem;
-        opacity: 0.3;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        white-space: nowrap;
-    }
-
-    .service-desc {
-        margin: 0;
-        font-size: 0.9rem;
-        opacity: 0.45;
-        line-height: 1.75;
-    }
-}
-
 // ---------- Stats ----------
 .stats {
     padding: 4rem 2rem;
@@ -515,32 +388,6 @@ onMounted(async () => {
     }
 }
 
-.stat-item {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-
-    .stat-num {
-        font-size: 4.5rem;
-        font-weight: 800;
-        line-height: 1;
-        letter-spacing: -0.03em;
-        white-space: nowrap;
-        background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .stat-label {
-        font-size: 0.85rem;
-        opacity: 0.35;
-        font-weight: 500;
-        white-space: nowrap;
-    }
-}
 
 // ---------- Projects ----------
 .projects {
@@ -560,69 +407,11 @@ onMounted(async () => {
     }
 }
 
-.project-card {
-    aspect-ratio: 3 / 2;
-    background-size: cover;
-    background-position: center;
-    border-radius: 24px;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-    transition:
-        transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
-        box-shadow 0.6s ease,
-        opacity 0.5s ease;
-
-    .card-gradient {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.05) 55%, transparent 100%);
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .card-num {
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        color: rgba(255, 255, 255, 0.55);
-    }
-
-    .card-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-        color: #fff;
-
-        .card-zh {
-            font-size: 1.35rem;
-            font-weight: bold;
-            letter-spacing: -0.01em;
-            white-space: nowrap;
-        }
-
-        .card-en {
-            font-size: 0.75rem;
-            opacity: 0.5;
-            white-space: nowrap;
-        }
-
-        .card-desc {
-            font-size: 0.75rem;
-            opacity: 0.35;
-            margin-top: 0.35rem;
-            line-height: 1.5;
-        }
-    }
-}
-
-.project-grid:hover .project-card:not(:hover) {
+.project-grid:hover :deep(.project-card:not(:hover)) {
     opacity: 0.3;
 }
 
-.project-card:hover {
+.project-grid :deep(.project-card:hover) {
     transform: scale(1.02);
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.13);
     z-index: 2;
@@ -635,86 +424,38 @@ onMounted(async () => {
 
 .process-track {
     display: flex;
-    flex-direction: column;
-    max-width: 650px;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
 }
 
-.process-step {
-    display: flex;
-    align-items: flex-start;
-    gap: 2rem;
-    padding: 2rem 0;
-    position: relative;
-    transition: transform 0.4s ease;
+// 水平连接线
+.process-track::before {
+    content: '';
+    position: absolute;
+    top: calc(1.5rem + 24px);
+    left: calc(1rem + 24px);
+    right: calc(1rem + 24px);
+    height: 0;
+    border-top: 1px dashed rgba(0, 0, 0, 0.12);
+    z-index: 0;
+}
 
-    &:hover {
-        transform: translateX(8px);
-    }
-
-    // 垂直连接线
-    &:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        left: 23px;
-        top: calc(2rem + 48px);
-        bottom: -2rem;
-        width: 0;
-        border-left: 1px dashed rgba(0, 0, 0, 0.12);
-        pointer-events: none;
-    }
-
-    .step-marker {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: #1a1a1a;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        position: relative;
-        z-index: 1;
-        transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    &:hover .step-marker {
-        transform: scale(1.15);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .step-num {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: rgba(255, 255, 255, 0.8);
-    }
-
-    .step-text {
-        display: flex;
+@media (max-width: 768px) {
+    .process-track {
         flex-direction: column;
-        gap: 0.3rem;
-        padding-top: 0.35rem;
+        align-items: flex-start;
     }
 
-    .step-zh {
-        font-size: 1.6rem;
-        font-weight: bold;
-        letter-spacing: -0.01em;
-        white-space: nowrap;
-    }
-
-    .step-en {
-        font-size: 0.8rem;
-        opacity: 0.3;
-        letter-spacing: 0.03em;
-        white-space: nowrap;
-    }
-
-    .step-desc {
-        font-size: 0.85rem;
-        opacity: 0.35;
-        line-height: 1.6;
-        margin-top: 0.25rem;
-        max-width: 420px;
+    .process-track::before {
+        top: calc(1.5rem + 24px);
+        bottom: 1.5rem;
+        left: 24px;
+        right: auto;
+        width: 0;
+        height: auto;
+        border-top: none;
+        border-left: 1px dashed rgba(0, 0, 0, 0.12);
     }
 }
 
@@ -733,71 +474,6 @@ onMounted(async () => {
     }
 }
 
-.client-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 20px;
-    border-left: 3px solid transparent;
-    transition:
-        border-color 0.4s ease,
-        border-left-color 0.4s ease,
-        background 0.4s ease,
-        transform 0.4s ease;
-
-    &:hover {
-        border-color: rgba(0, 0, 0, 0.12);
-        border-left-color: #1a1a1a;
-        background: rgba(0, 0, 0, 0.02);
-        transform: translateX(4px);
-    }
-
-    .client-logo {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        object-fit: cover;
-        flex-shrink: 0;
-    }
-
-    .client-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        background: rgba(0, 0, 0, 0.06);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: rgba(0, 0, 0, 0.35);
-        flex-shrink: 0;
-    }
-
-    .client-text {
-        display: flex;
-        flex-direction: column;
-        gap: 0.15rem;
-        min-width: 0;
-    }
-
-    .client-zh {
-        font-size: 1.3rem;
-        font-weight: bold;
-        letter-spacing: -0.01em;
-        white-space: nowrap;
-    }
-
-    .client-en {
-        font-size: 0.65rem;
-        opacity: 0.28;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        white-space: nowrap;
-    }
-}
 
 // ---------- Philosophy (full-page) ----------
 .philosophy {
@@ -858,64 +534,6 @@ onMounted(async () => {
     }
 }
 
-.news-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 20px;
-    color: #1a1a1a;
-    text-decoration: none;
-    overflow: hidden;
-    transition:
-        border-color 0.4s ease,
-        background 0.4s ease,
-        transform 0.4s ease;
-
-    &:hover {
-        border-color: rgba(0, 0, 0, 0.15);
-        background: rgba(0, 0, 0, 0.02);
-        transform: translateY(-4px);
-    }
-
-    .news-thumb {
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        object-fit: cover;
-        display: block;
-    }
-
-    .news-date {
-        font-size: 0.75rem;
-        opacity: 0.3;
-        padding: 0 1.5rem;
-        white-space: nowrap;
-    }
-
-    .news-date:first-child {
-        padding-top: 1.5rem;
-    }
-
-    .news-title {
-        font-size: 1.1rem;
-        line-height: 1.4;
-        flex: 1;
-        padding: 0 1.5rem;
-    }
-
-    .news-arrow {
-        font-size: 0.9rem;
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        align-self: flex-end;
-        padding: 0 1.5rem 1.5rem;
-    }
-
-    &:hover .news-arrow {
-        opacity: 0.4;
-        transform: translateX(4px);
-    }
-}
 
 // ---------- About (full-page) ----------
 .about {
