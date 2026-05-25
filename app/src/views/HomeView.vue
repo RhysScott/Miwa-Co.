@@ -472,6 +472,7 @@ onMounted(async () => {
         font-size: 1.5rem;
         font-weight: bold;
         letter-spacing: -0.01em;
+        white-space: nowrap;
     }
 
     .service-en {
@@ -480,6 +481,7 @@ onMounted(async () => {
         opacity: 0.3;
         text-transform: uppercase;
         letter-spacing: 0.08em;
+        white-space: nowrap;
     }
 
     .service-desc {
@@ -522,6 +524,7 @@ onMounted(async () => {
         font-weight: 800;
         line-height: 1;
         letter-spacing: -0.03em;
+        white-space: nowrap;
         background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 100%);
         background-clip: text;
         -webkit-background-clip: text;
@@ -532,6 +535,7 @@ onMounted(async () => {
         font-size: 0.85rem;
         opacity: 0.35;
         font-weight: 500;
+        white-space: nowrap;
     }
 }
 
@@ -593,11 +597,13 @@ onMounted(async () => {
             font-size: 1.35rem;
             font-weight: bold;
             letter-spacing: -0.01em;
+            white-space: nowrap;
         }
 
         .card-en {
             font-size: 0.75rem;
             opacity: 0.5;
+            white-space: nowrap;
         }
 
         .card-desc {
@@ -695,12 +701,14 @@ onMounted(async () => {
         font-size: 1.5rem;
         font-weight: bold;
         letter-spacing: -0.01em;
+        white-space: nowrap;
     }
 
     .step-en {
         font-size: 0.8rem;
         opacity: 0.3;
         letter-spacing: 0.03em;
+        white-space: nowrap;
     }
 
     .step-desc {
@@ -780,6 +788,7 @@ onMounted(async () => {
         font-size: 1.3rem;
         font-weight: bold;
         letter-spacing: -0.01em;
+        white-space: nowrap;
     }
 
     .client-en {
@@ -787,6 +796,7 @@ onMounted(async () => {
         opacity: 0.28;
         letter-spacing: 0.08em;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 }
 
@@ -880,6 +890,7 @@ onMounted(async () => {
         font-size: 0.75rem;
         opacity: 0.3;
         padding: 0 1.5rem;
+        white-space: nowrap;
     }
 
     .news-date:first-child {

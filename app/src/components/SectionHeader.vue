@@ -29,6 +29,7 @@ defineProps({
         font-size: 2.75rem;
         font-weight: bold;
         letter-spacing: -0.02em;
+        white-space: nowrap;
     }
 }
 </style>
