@@ -2,7 +2,6 @@
     <div class="detail-page" v-if="article">
         <section class="detail-hero">
             <div class="detail-hero-text font-error">
-                <router-link to="/news" class="back-link">← 返回动态</router-link>
                 <h1>{{ article.title }}</h1>
                 <p class="detail-date">{{ article.date }}</p>
             </div>
@@ -12,13 +11,7 @@
             <div class="detail-image" v-if="article.image">
                 <img :src="article.image" :alt="article.title" />
             </div>
-            <div class="detail-content" v-for="(p, i) in paragraphs" :key="i">
-                <p>{{ p }}</p>
-            </div>
-        </section>
-
-        <section class="detail-back">
-            <router-link to="/news" class="back-btn">← 返回动态列表</router-link>
+            <p v-for="(p, i) in paragraphs" :key="i" class="detail-p">{{ p }}</p>
         </section>
 
         <SiteFooter v-if="footer" :footer="footer" />
@@ -27,7 +20,6 @@
         <section class="detail-hero">
             <div class="detail-hero-text font-error">
                 <h1>文章不存在</h1>
-                <router-link to="/news" class="back-link">← 返回动态列表</router-link>
             </div>
         </section>
     </div>
@@ -99,19 +91,6 @@ onMounted(async () => {
         color: rgba(255, 255, 255, 0.95);
         max-width: 700px;
 
-        .back-link {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-            transition: color 0.3s ease;
-
-            &:hover {
-                color: rgba(255, 255, 255, 0.9);
-            }
-        }
-
         h1 {
             font-size: clamp(2rem, 5vw, 3.5rem);
             margin: 0;
@@ -143,27 +122,10 @@ onMounted(async () => {
     }
 }
 
-.detail-content p {
+.detail-p {
     font-size: 1.05rem;
     line-height: 1.85;
     opacity: 0.55;
     margin: 0 0 1.75rem;
-}
-
-.detail-back {
-    text-align: center;
-    padding: 0 2rem 4rem;
-}
-
-.back-btn {
-    font-size: 0.9rem;
-    color: #1a1a1a;
-    text-decoration: none;
-    opacity: 0.3;
-    transition: opacity 0.3s ease;
-
-    &:hover {
-        opacity: 0.6;
-    }
 }
 </style>
