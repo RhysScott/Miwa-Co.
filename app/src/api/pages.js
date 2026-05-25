@@ -271,10 +271,10 @@ const contactMock = {
 
 const exploreMock = {
     projects: [
-        { zh: '智能客服平台', en: 'AI Customer Service', desc: '基于自研 NLP 引擎，日均处理 5000 万次对话', image: 'https://picsum.photos/seed/ep-cs/800/500', detail: '为某头部互联网企业打造的全渠道智能客服平台，整合文本、语音、图像多模态交互，支持 30+ 语种。采用自研 NLP 引擎，意图识别准确率 97.8%，日均处理对话量突破 5000 万次，人工客服转接率降低 60%。' },
-        { zh: '工业 IoT 中台', en: 'Industrial IoT Platform', desc: '接入 10 万+ 设备，实时数据管道与预测性维护', image: 'https://picsum.photos/seed/ep-iot/800/500', detail: '为某新能源车企构建的工业 IoT 数据中台，接入产线设备、AGV、环境传感器等 10 万+ 终端。通过边缘计算节点实现毫秒级数据响应，结合 ML 模型实现设备预测性维护，非计划停机减少 45%。' },
-        { zh: '企业数据大脑', en: 'Enterprise Data Brain', desc: '统一多源异构数据，构建企业级知识图谱与 BI 看板', image: 'https://picsum.photos/seed/ep-data/800/500', detail: '为某股份制银行打造的统一数据平台，整合 200+ 业务系统数据源，构建企业级知识图谱。支持自然语言查询的 BI 看板让业务人员无需 SQL 即可自助分析，报表产出效率提升 10 倍。' },
-        { zh: '智慧零售系统', en: 'Smart Retail System', desc: '线上线下全渠道打通，AI 驱动库存优化与精准营销', image: 'https://picsum.photos/seed/ep-retail/800/500', detail: '为某跨国零售集团打造的 O2O 全渠道中台，统一线上商城与线下 3000+ 门店的会员、库存、营销体系。AI 驱动的智能补货与动态定价系统将库存周转率提升 30%，支撑日均千万级订单并发。' },
+        { id: 1, zh: '智能客服平台', en: 'AI Customer Service', desc: '基于自研 NLP 引擎，日均处理 5000 万次对话', image: 'https://picsum.photos/seed/ep-cs/800/500', detail: '为某头部互联网企业打造的全渠道智能客服平台，整合文本、语音、图像多模态交互，支持 30+ 语种。采用自研 NLP 引擎，意图识别准确率 97.8%，日均处理对话量突破 5000 万次，人工客服转接率降低 60%。' },
+        { id: 2, zh: '工业 IoT 中台', en: 'Industrial IoT Platform', desc: '接入 10 万+ 设备，实时数据管道与预测性维护', image: 'https://picsum.photos/seed/ep-iot/800/500', detail: '为某新能源车企构建的工业 IoT 数据中台，接入产线设备、AGV、环境传感器等 10 万+ 终端。通过边缘计算节点实现毫秒级数据响应，结合 ML 模型实现设备预测性维护，非计划停机减少 45%。' },
+        { id: 3, zh: '企业数据大脑', en: 'Enterprise Data Brain', desc: '统一多源异构数据，构建企业级知识图谱与 BI 看板', image: 'https://picsum.photos/seed/ep-data/800/500', detail: '为某股份制银行打造的统一数据平台，整合 200+ 业务系统数据源，构建企业级知识图谱。支持自然语言查询的 BI 看板让业务人员无需 SQL 即可自助分析，报表产出效率提升 10 倍。' },
+        { id: 4, zh: '智慧零售系统', en: 'Smart Retail System', desc: '线上线下全渠道打通，AI 驱动库存优化与精准营销', image: 'https://picsum.photos/seed/ep-retail/800/500', detail: '为某跨国零售集团打造的 O2O 全渠道中台，统一线上商城与线下 3000+ 门店的会员、库存、营销体系。AI 驱动的智能补货与动态定价系统将库存周转率提升 30%，支撑日均千万级订单并发。' },
     ],
     services: [
         { zh: '人工智能', en: 'AI Solutions', desc: '大模型应用、智能体开发、NLP 与计算机视觉', detail: '从模型选型到上线调优，我们帮助企业将 AI 从概念验证推向生产环境。服务涵盖大语言模型微调、RAG 知识库构建、多智能体协作系统、以及端到端的 MLOps 流水线搭建。' },
@@ -288,6 +288,39 @@ const exploreMock = {
         { zh: '某跨国零售集团 — 全渠道 O2O 中台', detail: '统一线上商城与线下 3000+ 门店的库存、会员、营销体系，支撑日均千万级订单并发。' },
     ],
 };
+
+const peopleMock = [
+    { id: 1, name: '陈思远', en: 'Siyuan Chen', role: '创始人 / CEO', roleEn: 'Founder & CEO', bio: '前 Google Brain 研究员，CMU 计算机博士。专注 AI 系统工程化十余年，相信好的技术应该像水电一样随处可得。', image: 'https://picsum.photos/seed/team-ceo/400/400', detail: `陈思远在创立 Miwa 之前，曾在 Google Brain 从事大规模机器学习系统的研发工作，参与了 TensorFlow 早期核心模块的设计与实现。
+
+在 CMU 攻读博士期间，他的研究方向为分布式机器学习系统，多篇论文发表于 OSDI、SOSP 等顶级系统会议。博士毕业后，他意识到 AI 从实验室走向产业的最大障碍不是模型精度，而是工程化落地能力——这一洞察直接催生了 Miwa 的创立。
+
+陈思远持有 CMU 计算机科学博士学位及清华大学计算机科学与技术学士学位。工作之余，他是一名马拉松跑者和开源社区的活跃贡献者。` },
+    { id: 2, name: '林知夏', en: 'Zhixia Lin', role: 'CTO', roleEn: 'CTO', bio: '前阿里云分布式系统架构师，开源项目 Apache Kvrocks PMC 成员。对高并发、高可用的系统设计有近乎偏执的追求。', image: 'https://picsum.photos/seed/team-cto/400/400', detail: `林知夏拥有超过十年的分布式系统设计经验。在加入 Miwa 之前，他在阿里云负责核心中间件团队，主导设计了日调用量超千亿次的分布式缓存平台。
+
+他是 Apache Kvrocks 项目的 PMC 成员，也是多个知名开源项目的活跃贡献者。在 Miwa，他负责所有技术架构决策，推动端-边-云协同架构从概念走向规模化落地。
+
+林知夏毕业于上海交通大学计算机系，曾就职于百度、阿里云。他主张"好的架构是演进出来的，不是设计出来的"，在团队内部推行基于 SLO 的架构治理方法。` },
+    { id: 3, name: '王若溪', en: 'Ruoxi Wang', role: '设计总监', roleEn: 'Head of Design', bio: '前 frog design 资深设计师，RCA 服务设计硕士。主张技术产品需要与之匹配的人文温度。', image: 'https://picsum.photos/seed/team-design/400/400', detail: `王若溪负责 Miwa 全线产品的设计策略与品牌体验。她曾在全球顶尖设计咨询公司 frog design 工作五年，为多家 Fortune 500 企业提供产品设计服务。
+
+她在 RCA（英国皇家艺术学院）取得服务设计硕士学位，本科毕业于中央美术学院。她的设计理念是"技术产品不应是冰冷的工具，而应像好的建筑一样——功能强大，同时让人感到舒适和愉悦"。
+
+在 Miwa，她主导了从品牌视觉到 B 端产品交互的完整设计体系搭建，推动设计系统从零到一的建设。` },
+    { id: 4, name: '赵一宁', en: 'Yining Zhao', role: 'AI 研究负责人', roleEn: 'Head of AI Research', bio: '前腾讯 AI Lab 高级研究员，清华计算机博士。追求从 research 到 production 的最短路径。', image: 'https://picsum.photos/seed/team-ai/400/400', detail: `赵一宁在清华大学取得计算机科学与技术博士学位，师从自然语言处理领域的知名学者。博士期间，他在 ACL、EMNLP 等顶会发表论文十余篇，引用量超过 3000 次。
+
+在腾讯 AI Lab 工作期间，他主导了多个千亿参数大模型的训练与部署优化。加入 Miwa 后，他带领团队从零搭建了自研 NLP 引擎，在意图识别、多轮对话等核心任务上达到工业级精度。
+
+赵一宁相信"最好的 AI 研究不是发论文，而是让用户在不知不觉中享受 AI 带来的便利"。他目前专注于多智能体协作框架和大模型推理优化方向。` },
+    { id: 5, name: '周涵宇', en: 'Hanyu Zhou', role: '工程 VP', roleEn: 'VP of Engineering', bio: '前字节跳动基础架构负责人，主导了抖音服务端架构从单体到微服务的演进。', image: 'https://picsum.photos/seed/team-eng/400/400', detail: `周涵宇在字节跳动工作了七年，亲历了抖音从百万 DAU 到十亿用户的技术演进全过程。他主导了服务端架构从单体应用到微服务体系的彻底重构，将系统可用性从 99.9% 提升至 99.99%。
+
+在 Miwa，他负责工程团队管理和交付质量保障，推动 DevOps 文化和自动化测试体系建设。他坚信"工程效率是技术组织的核心竞争力"，在团队内部推行 AI 辅助编程和自动化代码审查。
+
+周涵宇毕业于浙江大学软件工程专业，是一位狂热的登山爱好者和业余无线电操作员。` },
+    { id: 6, name: '张明薇', en: 'Mingwei Zhang', role: '产品负责人', roleEn: 'Head of Product', bio: '前蚂蚁集团高级产品专家，深谙金融科技与企业服务领域的产品方法论。', image: 'https://picsum.photos/seed/team-pm/400/400', detail: `张明薇拥有十年企业服务产品经验，在蚂蚁集团期间负责过多款面向金融机构的 SaaS 产品，服务客户包括国有大行、股份制银行和头部券商。
+
+她擅长在复杂技术能力与客户真实需求之间找到最优产品路径。在 Miwa，她主导了 AI Agent 框架和智能客服平台的产品定义与迭代，推动产品从"技术 demo"进化为"客户愿意付费的商业产品"。
+
+张明薇毕业于复旦大学管理学院，拥有 MBA 学位。她相信"好的产品经理应该像翻译官一样，能把技术语言翻译成客户价值"。` },
+];
 
 const aboutMock = {
     zh: [
@@ -313,7 +346,7 @@ const aboutMock = {
 
 export function getPageData(page) {
     if (MOCK_SWITCH) {
-        const map = { news: newsMock, contact: contactMock, explore: exploreMock, about: aboutMock };
+        const map = { news: newsMock, contact: contactMock, explore: exploreMock, about: aboutMock, people: peopleMock };
         return Promise.resolve(map[page] || null);
     }
     return request.get(`/${page}`).then(r => r.data);
@@ -325,4 +358,20 @@ export function getNewsById(id) {
         return Promise.resolve(item || null);
     }
     return request.get(`/news/${id}`).then(r => r.data);
+}
+
+export function getProjectById(id) {
+    if (MOCK_SWITCH) {
+        const item = exploreMock.projects.find(p => p.id === Number(id));
+        return Promise.resolve(item || null);
+    }
+    return request.get(`/projects/${id}`).then(r => r.data);
+}
+
+export function getPersonById(id) {
+    if (MOCK_SWITCH) {
+        const item = peopleMock.find(p => p.id === Number(id));
+        return Promise.resolve(item || null);
+    }
+    return request.get(`/people/${id}`).then(r => r.data);
 }

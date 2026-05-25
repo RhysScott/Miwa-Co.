@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ElMessage } from "element-plus";
 
 export const MOCK_SWITCH = true;
 
@@ -9,22 +10,21 @@ export const request = axios.create({
 
 request.interceptors.request.use(
   (config) => {
-    // 在发送请求之前做些什么
     return config;
   },
   (error) => {
-    // 对请求错误做些什么
+    ElMessage.error("请求发送失败，请检查网络连接");
     return Promise.reject(error);
   }
 );
 
 request.interceptors.response.use(
   (response) => {
-    // 对响应数据做点什么
     return response;
   },
   (error) => {
-    // 对响应错误做点什么
+    const msg = error.response?.data?.message || error.message || "服务器异常，请稍后重试";
+    ElMessage.error(msg);
     return Promise.reject(error);
   }
 );

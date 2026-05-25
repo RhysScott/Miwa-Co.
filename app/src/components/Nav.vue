@@ -48,6 +48,10 @@
                         <span class="zh">探索</span>
                         <span class="en">Explore</span>
                     </router-link>
+                    <router-link to="/people" class="nav-item">
+                        <span class="zh">团队</span>
+                        <span class="en">People</span>
+                    </router-link>
                     <router-link to="/about" class="nav-item">
                         <span class="zh">关于</span>
                         <span class="en">About</span>

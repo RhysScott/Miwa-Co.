@@ -32,7 +32,7 @@
                 <span class="label-en">Selected Works</span>
             </h2>
             <div class="projects-grid">
-                <div v-for="(p, i) in data.projects" :key="i" class="project-card">
+                <router-link v-for="(p, i) in data.projects" :key="i" :to="`/explore/project/${p.id}`" class="project-card">
                     <div class="project-image">
                         <img :src="p.image" :alt="p.zh" />
                     </div>
@@ -43,7 +43,7 @@
                         <p class="project-desc">{{ p.desc }}</p>
                         <p class="project-detail">{{ p.detail }}</p>
                     </div>
-                </div>
+                </router-link>
             </div>
         </section>
 
@@ -227,10 +227,16 @@ onMounted(async () => {
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
     align-items: center;
+    color: inherit;
+    text-decoration: none;
 
     &:nth-child(even) {
         .project-image { order: 2; }
         .project-body { order: 1; }
+    }
+
+    &:hover .project-image img {
+        transform: scale(1.03);
     }
 }
 
@@ -240,6 +246,7 @@ onMounted(async () => {
     object-fit: cover;
     border-radius: 16px;
     display: block;
+    transition: transform 0.5s ease;
 }
 
 .project-body {
@@ -347,4 +354,5 @@ onMounted(async () => {
         margin: 0;
     }
 }
+
 </style>
