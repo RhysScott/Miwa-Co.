@@ -79,9 +79,11 @@
                 <span class="label-zh">工作流程</span>
                 <span class="label-en">How We Work</span>
             </div>
-            <div class="process-list">
+            <div class="process-track">
                 <div class="process-step" v-for="(step, i) in process" :key="i">
-                    <span class="step-num">0{{ i + 1 }}</span>
+                    <div class="step-marker">
+                        <span class="step-num">0{{ i + 1 }}</span>
+                    </div>
                     <div class="step-text">
                         <span class="step-zh">{{ step.zh }}</span>
                         <span class="step-en">{{ step.en }}</span>
@@ -195,21 +197,30 @@ import { Brain, Code, Cpu, Globe } from '@lucide/vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { onMounted } from 'vue';
-import { mockServices, mockProjects, mockProcess, mockClients, mockNews, mockStats } from '@/api/mock';
+import { onMounted, ref } from 'vue';
+import { fetchHomeData } from '@/api/mock';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
-const services = mockServices;
-const projects = mockProjects;
-const process = mockProcess;
-const clients = mockClients;
-const news = mockNews;
-const stats = mockStats;
+const services = ref([]);
+const projects = ref([]);
+const process = ref([]);
+const clients = ref([]);
+const news = ref([]);
+const stats = ref([]);
 
 const iconMap = { brain: Brain, code: Code, cpu: Cpu, globe: Globe };
 
-onMounted(() => {
+onMounted(async () => {
+    // 通过 API 获取数据
+    const data = await fetchHomeData();
+    services.value = data.services;
+    projects.value = data.projects;
+    process.value = data.process;
+    clients.value = data.clients;
+    news.value = data.news;
+    stats.value = data.stats;
+
     // Hero 逐字弹跳入场
     const heroSplit = SplitText.create('.hero-zh, .hero-en', { type: 'chars,words' });
     gsap.fromTo(heroSplit.chars,
@@ -471,25 +482,45 @@ onMounted(() => {
     padding: 6rem 2rem;
 }
 
-.process-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    max-width: 700px;
+.process-track {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .process-step {
     display: flex;
-    align-items: baseline;
-    gap: 2rem;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    transition: border-color 0.4s ease, background 0.4s ease;
+
+    &:hover {
+        border-color: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .step-marker {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
 
     .step-num {
-        font-size: 0.8rem;
-        opacity: 0.3;
-        flex-shrink: 0;
-        width: 2rem;
+        font-size: 0.75rem;
+        opacity: 0.4;
+        font-weight: bold;
     }
 
     .step-text {
@@ -499,12 +530,12 @@ onMounted(() => {
     }
 
     .step-zh {
-        font-size: 1.75rem;
+        font-size: 1.35rem;
         font-weight: bold;
     }
 
     .step-en {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         opacity: 0.35;
     }
 }
