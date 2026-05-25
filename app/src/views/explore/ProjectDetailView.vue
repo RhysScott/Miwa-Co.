@@ -25,7 +25,7 @@
                 <router-link
                     v-for="p in otherProjects"
                     :key="p.id"
-                    :to="`/explore/project/${p.id}`"
+                    :to="`/projects/${p.id}`"
                     class="others-item"
                     :class="{ active: p.id === project.id }"
                 >

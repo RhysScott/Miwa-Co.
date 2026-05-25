@@ -40,9 +40,9 @@
                         <span class="zh">动态</span>
                         <span class="en">News</span>
                     </router-link>
-                    <router-link to="/contact" class="nav-item">
-                        <span class="zh">联系</span>
-                        <span class="en">Contact</span>
+                    <router-link to="/projects" class="nav-item">
+                        <span class="zh">项目</span>
+                        <span class="en">Projects</span>
                     </router-link>
                     <router-link to="/explore" class="nav-item">
                         <span class="zh">探索</span>

@@ -1,49 +1,75 @@
 <template>
     <div class="about-page">
-        <LoadingSpinner v-if="!loaded" />
-        <template v-else-if="data">
-        <section class="about-hero">
-            <div class="about-hero-text font-error">
-                <h1>关于 Miwa</h1>
-                <p class="en">About Us</p>
-            </div>
-        </section>
-
-        <!-- 公司介绍 -->
-        <section class="about-intro">
-            <div class="intro-zh">
-                <p v-for="(p, i) in data.zh" :key="'zh'+i">{{ p }}</p>
-            </div>
-            <div class="intro-en">
-                <p v-for="(p, i) in data.en" :key="'en'+i">{{ p }}</p>
-            </div>
-        </section>
-
-        <!-- 价值观 -->
-        <section class="about-values">
-            <h2 class="section-title font-error">
-                <span class="zh">我们的价值观</span>
-                <span class="label-en">Our Values</span>
-            </h2>
-            <div class="values-grid">
-                <div v-for="v in data.values" :key="v.zh" class="value-card">
-                    <h3>{{ v.zh }}</h3>
-                    <p class="value-en">{{ v.en }}</p>
-                    <p class="value-desc">{{ v.desc }}</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <section class="about-cta">
-            <div class="cta-inner">
-                <p class="cta-zh">有项目想聊？</p>
-                <a href="mailto:hello@miwa-co.com" class="cta-email">hello@miwa-co.com →</a>
-            </div>
-        </section>
-
-        <SiteFooter v-if="footer" :footer="footer" />
-        </template>
+        <el-skeleton :loading="!loaded" animated>
+            <template #template>
+                <section class="about-hero">
+                    <div class="about-hero-text font-error">
+                        <el-skeleton-item variant="h1" style="width:240px" />
+                        <el-skeleton-item variant="text" style="width:100px;margin-top:0.75rem" />
+                    </div>
+                </section>
+                <section class="about-intro">
+                    <div class="intro-zh">
+                        <el-skeleton-item v-for="i in 4" :key="i" variant="text" style="width:100%;height:1.5rem;margin-bottom:1rem" />
+                    </div>
+                    <div class="intro-en" style="margin-top:2.5rem">
+                        <el-skeleton-item v-for="i in 4" :key="i" variant="text" style="width:80%;margin-bottom:0.3rem" />
+                    </div>
+                </section>
+                <section class="about-values">
+                    <div class="section-title font-error" style="text-align:center;margin-bottom:3rem">
+                        <el-skeleton-item variant="text" style="width:160px;margin:0 auto" />
+                        <el-skeleton-item variant="text" style="width:80px;margin:0.3rem auto 0" />
+                    </div>
+                    <div class="values-grid">
+                        <div v-for="i in 4" :key="i" class="sk-value-card">
+                            <el-skeleton-item variant="h3" style="width:120px" />
+                            <el-skeleton-item variant="text" style="width:80px;margin-top:0.3rem" />
+                            <el-skeleton-item variant="text" style="width:100%;margin-top:1rem" />
+                            <el-skeleton-item variant="text" style="width:70%;margin-top:0.4rem" />
+                        </div>
+                    </div>
+                </section>
+            </template>
+            <template #default>
+                <template v-if="data">
+                <section class="about-hero">
+                    <div class="about-hero-text font-error">
+                        <h1>关于 Miwa</h1>
+                        <p class="en">About Us</p>
+                    </div>
+                </section>
+                <section class="about-intro">
+                    <div class="intro-zh">
+                        <p v-for="(p, i) in data.zh" :key="'zh'+i">{{ p }}</p>
+                    </div>
+                    <div class="intro-en">
+                        <p v-for="(p, i) in data.en" :key="'en'+i">{{ p }}</p>
+                    </div>
+                </section>
+                <section class="about-values">
+                    <h2 class="section-title font-error">
+                        <span class="zh">我们的价值观</span>
+                        <span class="label-en">Our Values</span>
+                    </h2>
+                    <div class="values-grid">
+                        <div v-for="v in data.values" :key="v.zh" class="value-card">
+                            <h3>{{ v.zh }}</h3>
+                            <p class="value-en">{{ v.en }}</p>
+                            <p class="value-desc">{{ v.desc }}</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="about-cta">
+                    <div class="cta-inner">
+                        <p class="cta-zh">有项目想聊？</p>
+                        <a href="mailto:hello@miwa-co.com" class="cta-email">hello@miwa-co.com →</a>
+                    </div>
+                </section>
+                <SiteFooter v-if="footer" :footer="footer" />
+                </template>
+            </template>
+        </el-skeleton>
     </div>
 </template>
 

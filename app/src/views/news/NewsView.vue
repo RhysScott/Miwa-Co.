@@ -1,23 +1,40 @@
 <template>
     <div class="news-page">
-        <LoadingSpinner v-if="!loaded" />
-
-        <template v-else-if="news.length">
-            <section class="news-hero">
-                <div class="news-hero-text font-error">
-                    <h1>最新动态</h1>
-                    <p class="en">Latest News</p>
-                </div>
-            </section>
-
-            <section class="news-grid-section">
-                <div class="news-grid">
-                    <NewsCard v-for="item in news" :key="item.id" :item="item" variant="full" :to="`/news/${item.id}`" />
-                </div>
-            </section>
-
-            <SiteFooter v-if="footer" :footer="footer" />
-        </template>
+        <el-skeleton :loading="!loaded" animated>
+            <template #template>
+                <section class="news-hero">
+                    <div class="news-hero-text font-error">
+                        <el-skeleton-item variant="h1" style="width:200px" />
+                        <el-skeleton-item variant="text" style="width:120px;margin-top:0.75rem" />
+                    </div>
+                </section>
+                <section class="news-grid-section">
+                    <div class="news-grid">
+                        <div v-for="i in 4" :key="i" class="sk-card">
+                            <el-skeleton-item variant="image" style="width:100%;height:200px;border-radius:24px" />
+                            <el-skeleton-item variant="text" style="width:30%;margin-top:1rem" />
+                            <el-skeleton-item variant="text" style="width:80%;margin-top:0.5rem" />
+                        </div>
+                    </div>
+                </section>
+            </template>
+            <template #default>
+                <template v-if="news.length">
+                    <section class="news-hero">
+                        <div class="news-hero-text font-error">
+                            <h1>最新动态</h1>
+                            <p class="en">Latest News</p>
+                        </div>
+                    </section>
+                    <section class="news-grid-section">
+                        <div class="news-grid">
+                            <NewsCard v-for="item in news" :key="item.id" :item="item" variant="full" :to="`/news/${item.id}`" />
+                        </div>
+                    </section>
+                    <SiteFooter v-if="footer" :footer="footer" />
+                </template>
+            </template>
+        </el-skeleton>
     </div>
 </template>
 
@@ -25,7 +42,6 @@
 import { onMounted, ref } from 'vue';
 import { getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
-import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import NewsCard from '@/components/home/NewsCard.vue';
 import SiteFooter from '@/components/home/Footer.vue';
 
