@@ -1,7 +1,7 @@
 <template>
     <div class="nav-wrapper">
         <div class="nav-header">
-            <div class="brand font-error" @click="router.push('/')">Miwa & Co.</div>
+            <div class="brand font-error">Miwa & Co.</div>
             <div class="menu-button" @click="toggleMenuState">
                 <!-- 根据菜单状态切换图标 -->
                 <Menu v-if="!isMenuActive" color="white" />
@@ -248,7 +248,6 @@ import { useRouter } from 'vue-router';
         font-size: 3rem;
         font-weight: bold;
         color: var(--logo-color);
-        pointer-events: all;
     }
 
     .menu-button {
