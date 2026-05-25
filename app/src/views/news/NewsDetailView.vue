@@ -147,12 +147,12 @@ watch(() => route.params.id, (newId) => {
 }
 
 .detail-layout {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 4rem 2rem;
     display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 4rem;
+    grid-template-columns: 1fr 220px;
+    gap: 2.5rem;
     align-items: flex-start;
 
     @media (max-width: 768px) {
