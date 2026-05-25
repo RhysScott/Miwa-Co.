@@ -1,3 +1,4 @@
+import 'highlight.js/styles/github.css'
 import './styles/main.css'
 
 import { createPinia } from 'pinia'

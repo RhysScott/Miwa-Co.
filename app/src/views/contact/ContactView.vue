@@ -151,6 +151,20 @@ a.info-value:hover {
     opacity: 0.6;
 }
 
+@media (max-width: 640px) {
+    .contact-body {
+        padding: 3rem 1.25rem;
+    }
+
+    .info-value {
+        font-size: 1.2rem;
+    }
+
+    .info-item {
+        gap: 0.25rem;
+    }
+}
+
 .contact-extra {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -80,5 +80,21 @@ defineProps({
         text-transform: uppercase;
         white-space: nowrap;
     }
+
+    @media (max-width: 640px) {
+        padding: 1rem;
+        gap: 0.75rem;
+
+        .client-zh {
+            font-size: 1.05rem;
+        }
+
+        .client-logo,
+        .client-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
+    }
 }
 </style>

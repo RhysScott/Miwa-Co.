@@ -50,6 +50,7 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { marked } from 'marked';
+import hljs from 'highlight.js';
 import { getNewsById, getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
 import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
@@ -60,6 +61,15 @@ const allNews = ref([]);
 const article = ref(null);
 const footer = ref(null);
 const loaded = ref(false);
+
+marked.setOptions({
+    highlight(code, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+            return hljs.highlight(code, { language: lang }).value;
+        }
+        return hljs.highlightAuto(code).value;
+    },
+});
 
 const htmlContent = computed(() => {
     if (!article.value) return '';
@@ -147,17 +157,18 @@ watch(() => route.params.id, (newId) => {
 }
 
 .detail-layout {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 4rem 2rem;
+    padding: 4rem 3rem;
     display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 3rem;
     align-items: flex-start;
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
+        padding: 2.5rem 1.25rem;
     }
 }
 
@@ -166,22 +177,50 @@ watch(() => route.params.id, (newId) => {
 }
 
 .detail-image {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 
     img {
         width: 100%;
         border-radius: 16px;
         display: block;
     }
+
+    @media (max-width: 640px) {
+        margin-bottom: 1.5rem;
+
+        img { border-radius: 12px; }
+    }
 }
 
 .detail-content {
+    :deep(img) {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        display: block;
+    }
+
     :deep(h2) {
         font-size: 1.5rem;
         font-weight: bold;
         margin: 3rem 0 1rem;
         letter-spacing: -0.01em;
         color: #1a1a1a;
+    }
+
+    :deep(h3) {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 2rem 0 0.75rem;
+        color: #1a1a1a;
+    }
+
+    :deep(h4) {
+        font-size: 1.05rem;
+        font-weight: bold;
+        margin: 1.5rem 0 0.5rem;
+        color: #333;
     }
 
     :deep(p) {
@@ -191,8 +230,20 @@ watch(() => route.params.id, (newId) => {
         margin: 0 0 1.5rem;
     }
 
-    :deep(ul) {
-        padding-left: 1.25rem;
+    :deep(a) {
+        color: #1a1a1a;
+        text-decoration: underline;
+        text-decoration-color: rgba(0, 0, 0, 0.2);
+        text-underline-offset: 0.2em;
+        transition: text-decoration-color 0.2s;
+
+        &:hover {
+            text-decoration-color: rgba(0, 0, 0, 0.6);
+        }
+    }
+
+    :deep(ul), :deep(ol) {
+        padding-left: 1.5rem;
         margin: 0 0 1.5rem;
     }
 
@@ -201,11 +252,80 @@ watch(() => route.params.id, (newId) => {
         line-height: 1.75;
         opacity: 0.5;
         margin-bottom: 0.4rem;
+
+        &::marker {
+            opacity: 0.3;
+        }
     }
 
     :deep(strong) {
         color: #1a1a1a;
         opacity: 0.8;
+    }
+
+    :deep(em) {
+        opacity: 0.65;
+    }
+
+    // inline code
+    :deep(code) {
+        font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+        font-size: 0.85em;
+        background: rgba(0, 0, 0, 0.05);
+        padding: 0.15em 0.4em;
+        border-radius: 4px;
+        color: #333;
+    }
+
+    // code blocks
+    :deep(pre) {
+        background: #f6f8fa;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        margin: 1.5rem 0;
+        overflow-x: auto;
+        font-size: 0.85rem;
+        line-height: 1.65;
+
+        code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            font-size: inherit;
+            color: inherit;
+        }
+    }
+
+    // tables
+    :deep(table) {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-size: 0.9rem;
+    }
+
+    :deep(th) {
+        text-align: left;
+        font-weight: 600;
+        opacity: 0.6;
+        padding: 0.6rem 0.75rem;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    :deep(td) {
+        padding: 0.6rem 0.75rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        opacity: 0.55;
+    }
+
+    :deep(hr) {
+        border: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        margin: 2.5rem 0;
     }
 
     :deep(blockquote) {
@@ -218,6 +338,42 @@ watch(() => route.params.id, (newId) => {
             opacity: 0.45;
             font-style: italic;
             margin-bottom: 0.5rem;
+        }
+    }
+
+    @media (max-width: 640px) {
+        :deep(img) {
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        :deep(h2) {
+            font-size: 1.25rem;
+            margin: 2rem 0 0.75rem;
+        }
+
+        :deep(h3) {
+            font-size: 1.1rem;
+        }
+
+        :deep(p) {
+            font-size: 0.95rem;
+            line-height: 1.75;
+            margin-bottom: 1.25rem;
+        }
+
+        :deep(pre) {
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        :deep(table) {
+            font-size: 0.8rem;
+        }
+
+        :deep(th), :deep(td) {
+            padding: 0.4rem 0.5rem;
         }
     }
 }
@@ -282,5 +438,20 @@ watch(() => route.params.id, (newId) => {
     font-size: 0.9rem;
     line-height: 1.35;
     opacity: 0.4;
+}
+
+@media (max-width: 640px) {
+    .detail-hero {
+        min-height: 25vh;
+        padding: 5rem 1.25rem 2.5rem;
+
+        .detail-hero-text h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+        }
+    }
+
+    .sidebar-item {
+        padding: 0.7rem 0;
+    }
 }
 </style>

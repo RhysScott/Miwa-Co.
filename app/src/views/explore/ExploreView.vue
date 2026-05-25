@@ -148,6 +148,14 @@ onMounted(async () => {
         letter-spacing: 0.06em;
         white-space: nowrap;
     }
+
+    @media (max-width: 640px) {
+        margin-bottom: 2rem;
+
+        .zh {
+            font-size: 1.75rem;
+        }
+    }
 }
 
 .explore-services {
@@ -276,6 +284,12 @@ onMounted(async () => {
 }
 
 @media (max-width: 640px) {
+    .explore-services,
+    .explore-projects,
+    .explore-cases {
+        padding: 3rem 1.25rem;
+    }
+
     .project-card,
     .project-card:nth-child(even) {
         grid-template-columns: 1fr;
@@ -285,6 +299,14 @@ onMounted(async () => {
         .project-body {
             order: unset;
         }
+    }
+
+    .project-body h3 {
+        font-size: 1.3rem;
+    }
+
+    .project-num {
+        font-size: 2rem;
     }
 }
 

@@ -290,6 +290,11 @@ import { useRouter } from 'vue-router';
         justify-content: space-between;
         align-items: center;
         padding: 1rem;
+
+        @media (max-width: 640px) {
+            padding: 0.75rem;
+        }
+
         position: relative;
         z-index: 2;
     }
@@ -308,6 +313,10 @@ import { useRouter } from 'vue-router';
         &:hover {
             transform: scale(1.05);
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 640px) {
+            font-size: 1.75rem;
         }
     }
 
@@ -387,6 +396,17 @@ import { useRouter } from 'vue-router';
                 color: #111;
                 transform: translateX(6px);
             }
+
+            @media (max-width: 640px) {
+                bottom: 1.25rem;
+                left: 1.25rem;
+                gap: 0.5rem;
+
+                h1 .zh { font-size: 1.75rem; }
+                h1 .en { font-size: 0.9rem; }
+
+                p { font-size: 1.1rem; }
+            }
         }
 
         .links-section {
@@ -435,6 +455,15 @@ import { useRouter } from 'vue-router';
             }
             .nav-item:hover .en {
                 color: #111;
+            }
+
+            @media (max-width: 640px) {
+                bottom: 1.25rem;
+                right: 1.25rem;
+                gap: 0.6rem;
+
+                .nav-item .zh { font-size: 2.5rem; }
+                .nav-item .en { font-size: 0.8rem; }
             }
         }
     }

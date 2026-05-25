@@ -31,5 +31,13 @@ defineProps({
         letter-spacing: -0.02em;
         white-space: nowrap;
     }
+
+    @media (max-width: 640px) {
+        margin-bottom: 1.5rem;
+
+        .label-en {
+            font-size: 1.75rem;
+        }
+    }
 }
 </style>

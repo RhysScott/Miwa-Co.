@@ -19,5 +19,13 @@ defineProps({
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     font-size: 0.8rem;
     opacity: 0.25;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1.5rem;
+        font-size: 0.75rem;
+    }
 }
 </style>

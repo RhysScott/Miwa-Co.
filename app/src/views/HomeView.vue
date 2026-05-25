@@ -336,6 +336,13 @@ onMounted(async () => {
         font-size: 1.5rem;
         color: rgba(0, 0, 0, 0.12);
     }
+
+    @media (max-width: 640px) {
+        padding: 1rem 0;
+
+        .marquee-item { font-size: 1.5rem; }
+        .marquee-divider { font-size: 1rem; }
+    }
 }
 
 @keyframes marquee {
@@ -567,6 +574,17 @@ onMounted(async () => {
         opacity: 0.28;
         margin-bottom: 0.5rem;
     }
+
+    @media (max-width: 640px) {
+        p {
+            font-size: 1.15rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .about-en {
+            font-size: 0.85rem;
+        }
+    }
 }
 
 .about-cta {
@@ -596,6 +614,10 @@ onMounted(async () => {
 
         &:hover {
             border-color: rgba(0, 0, 0, 0.6);
+        }
+
+        @media (max-width: 640px) {
+            font-size: 1.5rem;
         }
     }
 }

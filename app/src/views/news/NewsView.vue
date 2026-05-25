@@ -88,6 +88,10 @@ onMounted(async () => {
     max-width: 960px;
     margin: 0 auto;
     padding: 4rem 2rem;
+
+    @media (max-width: 640px) {
+        padding: 2.5rem 1.25rem;
+    }
 }
 
 .news-grid {

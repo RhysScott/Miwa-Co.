@@ -37,5 +37,15 @@ defineProps({
         font-weight: 500;
         white-space: nowrap;
     }
+
+    @media (max-width: 640px) {
+        .stat-num {
+            font-size: 2.75rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+        }
+    }
 }
 </style>

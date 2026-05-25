@@ -83,5 +83,24 @@ defineProps({
         opacity: 0.45;
         line-height: 1.75;
     }
+
+    @media (max-width: 640px) {
+        padding: 1.75rem 1.5rem;
+
+        .card-icon-ring {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            margin-bottom: 1.25rem;
+        }
+
+        .service-zh {
+            font-size: 1.25rem;
+        }
+
+        .service-desc {
+            font-size: 0.85rem;
+        }
+    }
 }
 </style>

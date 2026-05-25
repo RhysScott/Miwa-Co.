@@ -129,6 +129,14 @@ onMounted(async () => {
         letter-spacing: 0.06em;
         white-space: nowrap;
     }
+
+    @media (max-width: 640px) {
+        margin-bottom: 2rem;
+
+        .zh {
+            font-size: 1.75rem;
+        }
+    }
 }
 
 .about-intro {
@@ -143,6 +151,33 @@ onMounted(async () => {
     line-height: 1.6;
     letter-spacing: -0.01em;
     margin: 0 0 1rem;
+}
+
+@media (max-width: 640px) {
+    .about-intro {
+        padding: 3rem 1.25rem;
+    }
+
+    .intro-zh p {
+        font-size: 1.15rem;
+        line-height: 1.55;
+    }
+
+    .intro-en p {
+        font-size: 0.85rem;
+    }
+
+    .about-values {
+        padding: 3rem 1.25rem;
+    }
+
+    .about-cta {
+        padding: 3rem 1.25rem;
+    }
+
+    .cta-email {
+        font-size: 1.5rem;
+    }
 }
 
 .intro-en {
