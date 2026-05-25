@@ -196,11 +196,11 @@ import { useRouter } from 'vue-router';
     };
 
     onMounted(() => {
-        // 品牌文字入场：从左侧滑入
+        // 品牌文字入场：从左侧弹跳滑入
         gsap.from('.brand', {
             x: '-100%',
-            duration: 1,
-            ease: 'power4.out'
+            duration: 1.2,
+            ease: 'elastic.out(1, 0.5)'
         });
 
         // 初始化 clip-path 为闭合状态
@@ -319,7 +319,7 @@ import { useRouter } from 'vue-router';
                 gap: 0.25rem;
 
                 .zh {
-                    font-size: 3rem;
+                    font-size: 3.5rem;
                 }
 
                 .en {
@@ -332,7 +332,7 @@ import { useRouter } from 'vue-router';
             p {
                 margin: 0;
                 color: #555;
-                font-size: 1.25rem;
+                font-size: 2rem;
                 transition: color 0.3s ease, transform 0.3s ease;
                 cursor: default;
             }

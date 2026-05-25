@@ -84,28 +84,28 @@ const onCardLeave = () => {
 };
 
 onMounted(() => {
-    // Hero 逐字入场
+    // Hero 逐字弹跳入场
     const heroSplit = SplitText.create('.hero-zh, .hero-en', { type: 'chars,words' });
     gsap.fromTo(heroSplit.chars,
         { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.02, duration: 0.8, ease: 'power3.out' }
+        { y: 0, opacity: 1, stagger: 0.02, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
     );
 
-    // 项目卡片滚动入场
+    // 项目卡片弹跳滚动入场
     gsap.fromTo('.project-card',
         { y: 80, opacity: 0 },
         {
-            y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'power3.out',
+            y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'elastic.out(1, 0.5)',
             scrollTrigger: { trigger: '.projects', start: 'top 80%' }
         }
     );
 
-    // About 文本滚动入场
+    // About 文本弹跳滚动入场
     const aboutSplit = SplitText.create('.about-text p', { type: 'lines' });
     gsap.fromTo(aboutSplit.lines,
         { y: 40, opacity: 0 },
         {
-            y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out',
+            y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'elastic.out(1, 0.5)',
             scrollTrigger: { trigger: '.about', start: 'top 85%' }
         }
     );
