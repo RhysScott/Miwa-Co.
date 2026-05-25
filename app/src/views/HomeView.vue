@@ -60,10 +60,7 @@
 
         <!-- 服务能力 — 全页 -->
         <section class="services" v-if="services.length">
-            <div class="section-header font-error">
-                <span class="label-zh">我们的服务</span>
-                <span class="label-en">What We Do</span>
-            </div>
+            <SectionHeader zh="我们的服务" en="What We Do" />
             <div class="service-grid">
                 <div class="service-card" v-for="s in services" :key="s.zh">
                     <div class="card-icon-ring">
@@ -89,10 +86,7 @@
 
         <!-- 精选项目 -->
         <section class="projects" v-if="projects.length">
-            <div class="section-header font-error">
-                <span class="label-zh">精选项目</span>
-                <span class="label-en">Selected Works</span>
-            </div>
+            <SectionHeader zh="精选项目" en="Selected Works" />
             <div class="project-grid">
                 <div
                     class="project-card"
@@ -114,10 +108,7 @@
 
         <!-- 工作流程 -->
         <section class="process" v-if="process.length">
-            <div class="section-header font-error">
-                <span class="label-zh">工作流程</span>
-                <span class="label-en">How We Work</span>
-            </div>
+            <SectionHeader zh="工作流程" en="How We Work" />
             <div class="process-track">
                 <div class="process-step" v-for="(step, i) in process" :key="i">
                     <div class="step-marker">
@@ -134,10 +125,7 @@
 
         <!-- 合作客户 -->
         <section class="clients" v-if="clients.length">
-            <div class="section-header font-error">
-                <span class="label-zh">合作客户</span>
-                <span class="label-en">Clients & Partners</span>
-            </div>
+            <SectionHeader zh="合作客户" en="Clients & Partners" />
             <div class="client-grid">
                 <div class="client-card" v-for="c in clients" :key="c.name">
                     <img v-if="c.image" :src="c.image" :alt="c.name" class="client-logo" />
@@ -161,10 +149,7 @@
 
         <!-- 最新动态 -->
         <section class="news-preview" v-if="news.length">
-            <div class="section-header font-error">
-                <span class="label-zh">最新动态</span>
-                <span class="label-en">Latest</span>
-            </div>
+            <SectionHeader zh="最新动态" en="Latest" />
             <div class="news-grid">
                 <router-link to="/news" class="news-card" v-for="(n, idx) in news" :key="idx">
                     <img v-if="n.image" :src="n.image" :alt="n.title" class="news-thumb" />
@@ -177,10 +162,7 @@
 
         <!-- 品牌简介 — 全页 -->
         <section class="about">
-            <div class="section-header font-error">
-                <span class="label-zh">关于我们</span>
-                <span class="label-en">About</span>
-            </div>
+            <SectionHeader zh="关于我们" en="About" />
             <div class="about-grid">
                 <div class="about-text font-error">
                     <p>Miwa & Co. 是一家技术驱动的创新公司，成立于上海。</p>
@@ -212,6 +194,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { onMounted, ref } from 'vue';
 import { getHomeData } from '@/api/home';
+import SectionHeader from '@/components/SectionHeader.vue';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -383,26 +366,6 @@ onMounted(async () => {
     50% { transform: translateY(8px); }
 }
 
-// ---------- Section header ----------
-.section-header {
-    margin-bottom: 2rem;
-
-    .label-zh {
-        font-size: 0.75rem;
-        opacity: 0.3;
-        display: block;
-        text-transform: uppercase;
-        letter-spacing: 0.15em;
-        margin-bottom: 0.35rem;
-    }
-
-    .label-en {
-        font-size: 2.75rem;
-        font-weight: bold;
-        letter-spacing: -0.02em;
-    }
-}
-
 // ---------- Marquee ----------
 .marquee {
     width: 100%;
@@ -529,7 +492,7 @@ onMounted(async () => {
 
 // ---------- Stats ----------
 .stats {
-    padding: 6rem 2rem;
+    padding: 4rem 2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -750,7 +713,7 @@ onMounted(async () => {
 
 // ---------- Clients ----------
 .clients {
-    padding: 8rem 2rem;
+    padding: 5rem 2rem;
 }
 
 .client-grid {
@@ -833,7 +796,7 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4rem 2rem;
+    padding: 2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 
     .philosophy-quote {
@@ -869,7 +832,7 @@ onMounted(async () => {
 
 // ---------- News ----------
 .news-preview {
-    padding: 8rem 2rem;
+    padding: 5rem 2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -950,7 +913,7 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 6rem 2rem;
+    padding: 3rem 2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
