@@ -237,14 +237,8 @@ import { useRouter } from 'vue-router';
         position: fixed;
         width: 100%;
         z-index: 10;
-        // pointer-events: none 让点击穿透导航容器，仅品牌文字和菜单按钮可交互
         pointer-events: none;
         user-select: none;
-        // 深色玻璃效果
-        background: rgba(10, 10, 10, 0.65);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .nav-header {
