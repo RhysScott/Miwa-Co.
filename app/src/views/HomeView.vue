@@ -306,8 +306,8 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .home {
-    color: white;
-    background: #0d0d0d;
+    color: #1a1a1a;
+    background: #f8f8f8;
 }
 
 // Hero
@@ -382,8 +382,8 @@ onMounted(async () => {
 .marquee {
     width: 100%;
     overflow: hidden;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     padding: 2.5rem 0;
 
     .marquee-inner {
@@ -406,7 +406,7 @@ onMounted(async () => {
 
     .marquee-divider {
         font-size: 1.5rem;
-        color: rgba(255, 255, 255, 0.12);
+        color: rgba(0, 0, 0, 0.12);
     }
 }
 
@@ -434,15 +434,15 @@ onMounted(async () => {
 }
 
 .service-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 24px;
     padding: 2.5rem 2rem;
     transition: background 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(0, 0, 0, 0.06);
+        border-color: rgba(0, 0, 0, 0.18);
         transform: translateY(-6px);
     }
 
@@ -497,20 +497,20 @@ onMounted(async () => {
     flex-direction: column;
     gap: 1.25rem;
     padding: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     transition: border-color 0.4s ease, background 0.4s ease;
 
     &:hover {
-        border-color: rgba(255, 255, 255, 0.15);
-        background: rgba(255, 255, 255, 0.02);
+        border-color: rgba(0, 0, 0, 0.15);
+        background: rgba(0, 0, 0, 0.02);
     }
 
     .step-marker {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(0, 0, 0, 0.06);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -612,8 +612,8 @@ onMounted(async () => {
 // Stats
 .stats {
     padding: 5rem 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .stats-grid {
@@ -672,13 +672,13 @@ onMounted(async () => {
     flex-direction: column;
     gap: 0.3rem;
     padding: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 16px;
     transition: border-color 0.4s ease, background 0.4s ease;
 
     &:hover {
-        border-color: rgba(255, 255, 255, 0.2);
-        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.03);
     }
 
     .client-zh {
@@ -721,7 +721,7 @@ onMounted(async () => {
 // News Preview
 .news-preview {
     padding: 6rem 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .news-list {
@@ -735,8 +735,8 @@ onMounted(async () => {
     align-items: baseline;
     gap: 1.5rem;
     padding: 1.25rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    color: #1a1a1a;
     text-decoration: none;
     transition: opacity 0.3s ease;
 
@@ -770,7 +770,7 @@ onMounted(async () => {
 // About
 .about {
     padding: 8rem 2rem 4rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .about-grid {
@@ -811,15 +811,15 @@ onMounted(async () => {
 
     .cta-link {
         font-size: 2rem;
-        color: white;
+        color: #1a1a1a;
         text-decoration: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
         padding-bottom: 0.25rem;
         transition: border-color 0.3s ease, opacity 0.3s ease;
         display: inline-block;
 
         &:hover {
-            border-color: rgba(255, 255, 255, 0.6);
+            border-color: rgba(0, 0, 0, 0.6);
         }
     }
 }
@@ -829,7 +829,7 @@ onMounted(async () => {
     display: flex;
     justify-content: space-between;
     padding: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
     font-size: 0.8rem;
     opacity: 0.3;
 }
