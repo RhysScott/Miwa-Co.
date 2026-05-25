@@ -5,6 +5,7 @@
             <div class="hero-text font-error">
                 <h1 class="hero-zh">用技术驱动未来</h1>
                 <p class="hero-en">AI · Software · IoT — We build what's next.</p>
+                <p class="hero-sub">我们相信，每一行代码都应当创造真实价值。从 AI 到物联网，从上海到世界。</p>
             </div>
             <div class="scroll-hint" aria-hidden="true">↓</div>
         </section>
@@ -104,6 +105,7 @@
                         <div class="card-info">
                             <span class="card-zh">{{ p.zh }}</span>
                             <span class="card-en">{{ p.en }}</span>
+                            <span class="card-desc">{{ p.desc }}</span>
                         </div>
                     </div>
                 </div>
@@ -124,6 +126,7 @@
                     <div class="step-text">
                         <span class="step-zh">{{ step.zh }}</span>
                         <span class="step-en">{{ step.en }}</span>
+                        <span class="step-desc">{{ step.desc }}</span>
                     </div>
                 </div>
             </div>
@@ -151,6 +154,7 @@
         <section class="philosophy">
             <div class="philosophy-quote font-error">
                 <p class="quote-zh">"技术不应是黑箱，它应当透明、可靠、为人所用"</p>
+                <p class="quote-sub">这是 Miwa 每一个项目背后的核心信念。我们拒绝过度包装，坚持技术向善，让复杂的事情变得清晰简单。</p>
                 <p class="quote-en">Technology should not be a black box. It should be transparent, reliable, and human.</p>
             </div>
         </section>
@@ -163,6 +167,7 @@
             </div>
             <div class="news-grid">
                 <router-link to="/news" class="news-card" v-for="(n, idx) in news" :key="idx">
+                    <img v-if="n.image" :src="n.image" :alt="n.title" class="news-thumb" />
                     <span class="news-date">{{ n.date }}</span>
                     <span class="news-title">{{ n.title }}</span>
                     <span class="news-arrow">→</span>
@@ -178,11 +183,12 @@
             </div>
             <div class="about-grid">
                 <div class="about-text font-error">
-                    <p>Miwa & Co. 是一家技术驱动的创新公司，</p>
-                    <p>专注 AI 应用、软件工程与物联网解决方案。</p>
-                    <p>我们相信技术的力量在于让它变得简单可靠。</p>
-                    <p class="about-en">A tech-driven company focused on AI applications,</p>
-                    <p class="about-en">software engineering, and IoT solutions.</p>
+                    <p>Miwa & Co. 是一家技术驱动的创新公司，成立于上海。</p>
+                    <p>我们专注 AI 应用、软件工程与物联网解决方案，帮助企业跨越从技术到产品的最后一公里。</p>
+                    <p>我们的团队来自全球顶尖科技公司与实验室，相信技术的力量在于让它变得简单、可靠、可及。</p>
+                    <p class="about-en">A tech-driven company born in Shanghai, focused on AI applications,</p>
+                    <p class="about-en">software engineering, and IoT solutions. We exist to close the gap</p>
+                    <p class="about-en">between technology and real-world impact.</p>
                 </div>
                 <div class="about-cta">
                     <p class="cta-text">有项目想聊？</p>
@@ -228,7 +234,7 @@ onMounted(async () => {
     stats.value = data.stats;
 
     // Hero 逐字弹跳入场
-    const heroSplit = SplitText.create('.hero-zh, .hero-en', { type: 'chars,words' });
+    const heroSplit = SplitText.create('.hero-zh, .hero-en, .hero-sub', { type: 'chars,words' });
     gsap.fromTo(heroSplit.chars,
         { y: 80, opacity: 0 },
         { y: 0, opacity: 1, stagger: 0.02, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
@@ -289,7 +295,7 @@ onMounted(async () => {
     );
 
     // 理念语录入场
-    const quoteSplit = SplitText.create('.quote-zh, .quote-en', { type: 'chars,words' });
+    const quoteSplit = SplitText.create('.quote-zh, .quote-sub, .quote-en', { type: 'chars,words' });
     gsap.fromTo(quoteSplit.chars,
         { y: 40, opacity: 0 },
         {
@@ -352,6 +358,14 @@ onMounted(async () => {
         font-size: clamp(1rem, 2.5vw, 2rem);
         margin-top: 1rem;
         opacity: 0.6;
+    }
+
+    .hero-sub {
+        font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+        margin-top: 1.5rem;
+        opacity: 0.4;
+        max-width: 600px;
+        line-height: 1.6;
     }
 
     .scroll-hint {
@@ -622,6 +636,13 @@ onMounted(async () => {
             font-size: 0.75rem;
             opacity: 0.5;
         }
+
+        .card-desc {
+            font-size: 0.75rem;
+            opacity: 0.35;
+            margin-top: 0.35rem;
+            line-height: 1.5;
+        }
     }
 }
 
@@ -717,6 +738,13 @@ onMounted(async () => {
         font-size: 0.8rem;
         opacity: 0.3;
         letter-spacing: 0.03em;
+    }
+
+    .step-desc {
+        font-size: 0.8rem;
+        opacity: 0.35;
+        line-height: 1.6;
+        margin-top: 0.2rem;
     }
 }
 
@@ -820,6 +848,16 @@ onMounted(async () => {
             letter-spacing: -0.02em;
         }
 
+        .quote-sub {
+            font-size: 1rem;
+            opacity: 0.4;
+            line-height: 1.7;
+            margin: 0 0 1.5rem;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         .quote-en {
             font-size: 1.15rem;
             opacity: 0.3;
@@ -852,11 +890,11 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    padding: 1.75rem;
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 20px;
     color: #1a1a1a;
     text-decoration: none;
+    overflow: hidden;
     transition:
         border-color 0.4s ease,
         background 0.4s ease,
@@ -868,15 +906,28 @@ onMounted(async () => {
         transform: translateY(-4px);
     }
 
+    .news-thumb {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        display: block;
+    }
+
     .news-date {
         font-size: 0.75rem;
         opacity: 0.3;
+        padding: 0 1.5rem;
+    }
+
+    .news-date:first-child {
+        padding-top: 1.5rem;
     }
 
     .news-title {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         line-height: 1.4;
         flex: 1;
+        padding: 0 1.5rem;
     }
 
     .news-arrow {
@@ -884,6 +935,7 @@ onMounted(async () => {
         opacity: 0;
         transition: opacity 0.3s ease, transform 0.3s ease;
         align-self: flex-end;
+        padding: 0 1.5rem 1.5rem;
     }
 
     &:hover .news-arrow {
