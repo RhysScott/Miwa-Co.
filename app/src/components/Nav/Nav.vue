@@ -1,7 +1,8 @@
 <template>
     <div class="nav-wrapper">
         <div class="nav-header">
-            <div class="brand font-error">Miwa & Co.</div>
+            <!-- logo 展示，点击返回首页 -->
+<div class="brand font-error" @click="router.push('/')">Miwa & Co.</div>
             <div class="menu-button" @click="toggleMenuState">
                 <!-- 根据菜单状态切换图标 -->
                 <Menu v-if="!isMenuActive" color="white" />
@@ -248,6 +249,8 @@ import { useRouter } from 'vue-router';
         font-size: 3rem;
         font-weight: bold;
         color: var(--logo-color);
+        pointer-events: all;
+        cursor: pointer;
     }
 
     .menu-button {
@@ -302,11 +305,11 @@ import { useRouter } from 'vue-router';
                 gap: 0.25rem;
 
                 .zh {
-                    font-size: 2rem;
+                    font-size: 3rem;
                 }
 
                 .en {
-                    font-size: 1rem;
+                    font-size: 1.25rem;
                     font-weight: normal;
                     color: #666;
                 }
@@ -315,7 +318,7 @@ import { useRouter } from 'vue-router';
             p {
                 margin: 0;
                 color: #555;
-                font-size: 1rem;
+                font-size: 1.25rem;
                 transition: color 0.3s ease, transform 0.3s ease;
                 cursor: default;
             }
