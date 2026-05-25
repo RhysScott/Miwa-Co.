@@ -26,7 +26,6 @@
                 </section>
             </template>
             <template #default>
-                <template v-if="people.length">
                 <section class="people-hero">
                     <div class="people-hero-text font-error">
                         <h1>团队成员</h1>
@@ -34,7 +33,7 @@
                     </div>
                 </section>
                 <section class="people-grid-section">
-                    <div class="people-grid">
+                    <div v-if="people.length" class="people-grid">
                         <router-link v-for="p in people" :key="p.id" :to="`/people/${p.id}`" class="person-card">
                             <div class="person-avatar">
                                 <img :src="p.image" :alt="p.name" />
@@ -47,9 +46,12 @@
                             </div>
                         </router-link>
                     </div>
+                    <div v-else class="empty-state font-error">
+                        <p>暂无成员</p>
+                        <p class="en">No people yet</p>
+                    </div>
                 </section>
-                <SiteFooter v-if="footer" :footer="footer" />
-                </template>
+                <SiteFooter v-if="footer && (footer.copyright || footer.location)" :footer="footer" />
             </template>
         </el-skeleton>
     </div>
@@ -78,6 +80,12 @@ onMounted(async () => {
 .people-page {
     color: #1a1a1a;
     background: #f8f8f8;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    opacity: 0.2;
 }
 
 .people-hero {

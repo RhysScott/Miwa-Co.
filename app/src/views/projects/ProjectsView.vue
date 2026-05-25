@@ -34,8 +34,8 @@
                     </div>
                 </section>
                 <section class="projects-grid-section">
-                    <div class="projects-list">
-                        <router-link v-for="(p, i) in data.projects" :key="p.id" :to="`/projects/${p.id}`" class="project-card">
+                    <div v-if="data.length" class="projects-list">
+                        <router-link v-for="(p, i) in data" :key="p.id" :to="`/projects/${p.id}`" class="project-card">
                             <div class="project-image">
                                 <img :src="p.image" :alt="p.zh" />
                             </div>
@@ -48,8 +48,12 @@
                             </div>
                         </router-link>
                     </div>
+                    <div v-else class="empty-state font-error">
+                        <p>暂无项目</p>
+                        <p class="en">No projects yet</p>
+                    </div>
                 </section>
-                <SiteFooter v-if="footer" :footer="footer" />
+                <SiteFooter v-if="footer && (footer.copyright || footer.location)" :footer="footer" />
                 </template>
             </template>
         </el-skeleton>
@@ -68,7 +72,7 @@ const footer = ref(null);
 const loaded = ref(false);
 
 onMounted(async () => {
-    const [pageData, home] = await Promise.all([getPageData('explore'), getHomeData()]);
+    const [pageData, home] = await Promise.all([getPageData('projects'), getHomeData()]);
     data.value = pageData;
     footer.value = home.footer;
     loaded.value = true;
@@ -79,6 +83,12 @@ onMounted(async () => {
 .projects-page {
     color: #1a1a1a;
     background: #f8f8f8;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    opacity: 0.2;
 }
 
 .projects-hero {

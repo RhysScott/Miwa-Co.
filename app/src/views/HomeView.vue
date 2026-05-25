@@ -22,8 +22,8 @@
                 </section>
 
                 <!-- 横向滚动服务词条 -->
-                <section class="marquee" v-if="marquee.length">
-                    <div class="marquee-inner">
+                <section class="marquee">
+                    <div v-if="marquee.length" class="marquee-inner">
                         <div class="marquee-track">
                             <template v-for="(m, i) in marquee" :key="i">
                                 <span class="marquee-item">{{ m.zh }}</span>
@@ -44,46 +44,61 @@
                 </section>
 
                 <!-- 服务能力 — 全页 -->
-                <section class="services" v-if="services.length">
+                <section class="services">
                     <SectionHeader zh="我们的服务" en="What We Do" />
-                    <div class="service-grid">
+                    <div v-if="services.length" class="service-grid">
                         <ServiceCard v-for="s in services" :key="s.zh" :service="s" :icon="iconMap[s.icon]" />
+                    </div>
+                    <div v-else class="empty-hint font-error">
+                        <p class="en">No services yet</p>
                     </div>
                 </section>
 
                 <!-- 数据亮点 -->
-                <section class="stats" v-if="stats.length">
-                    <div class="stats-grid">
+                <section class="stats">
+                    <div v-if="stats.length" class="stats-grid">
                         <StatItem v-for="s in stats" :key="s.num" :stat="s" />
+                    </div>
+                    <div v-else class="empty-hint font-error">
+                        <p class="en">No stats yet</p>
                     </div>
                 </section>
 
                 <!-- 精选项目 -->
-                <section class="projects" v-if="projects.length">
+                <section class="projects">
                     <SectionHeader zh="精选项目" en="Selected Works" />
-                    <div class="project-grid">
+                    <div v-if="projects.length" class="project-grid">
                         <ProjectCard v-for="(p, i) in projects" :key="i" :project="p" :index="i" />
+                    </div>
+                    <div v-else class="empty-hint font-error">
+                        <p class="en">No projects yet</p>
                     </div>
                 </section>
 
                 <!-- 工作流程 -->
-                <section class="process" v-if="process.length">
+                <section class="process">
                     <SectionHeader zh="工作流程" en="How We Work" />
-                    <div class="process-track">
+                    <div v-if="process.length" class="process-track">
                         <ProcessStep v-for="(step, i) in process" :key="i" :step="step" :index="i" />
+                    </div>
+                    <div v-else class="empty-hint font-error">
+                        <p class="en">No process steps yet</p>
                     </div>
                 </section>
 
                 <!-- 合作客户 -->
-                <section class="clients" v-if="clients.length">
+                <section class="clients">
                     <SectionHeader zh="合作客户" en="Clients & Partners" />
-                    <div class="client-grid">
+                    <div v-if="clients.length" class="client-grid">
                         <ClientCard v-for="c in clients" :key="c.name" :client="c" />
+                    </div>
+                    <div v-else class="empty-hint font-error">
+                        <p class="en">No clients yet</p>
                     </div>
                 </section>
 
                 <!-- 品牌理念 — 全页 -->
-                <section class="philosophy" v-if="philosophy">
+                <section class="philosophy" v-if="philosophy && philosophy.zh">
                     <div class="philosophy-quote font-error">
                         <p class="quote-zh">{{ philosophy.zh }}</p>
                         <p class="quote-sub">{{ philosophy.sub }}</p>
@@ -92,15 +107,18 @@
                 </section>
 
                 <!-- 最新动态 -->
-                <section class="news-preview" v-if="news.length">
+                <section class="news-preview">
                     <SectionHeader zh="最新动态" en="Latest" />
-                    <div class="news-grid">
+                    <div v-if="news.length" class="news-grid">
                         <NewsCard v-for="n in news" :key="n.id" :item="n" :to="`/news/${n.id}`" />
+                    </div>
+                    <div v-else class="empty-hint font-error">
+                        <p class="en">No news yet</p>
                     </div>
                 </section>
 
                 <!-- 品牌简介 — 全页 -->
-                <section class="about" v-if="about">
+                <section class="about" v-if="about && about.zh && about.zh.length">
                     <SectionHeader zh="关于我们" en="About" />
                     <div class="about-grid">
                         <div class="about-text font-error">
@@ -114,7 +132,7 @@
                     </div>
                 </section>
 
-                <SiteFooter v-if="footer" :footer="footer" />
+                <SiteFooter v-if="footer && (footer.copyright || footer.location)" :footer="footer" />
             </template>
         </el-skeleton>
     </div>
@@ -259,6 +277,13 @@ onMounted(async () => {
 .home {
     color: #1a1a1a;
     background: #f8f8f8;
+}
+
+.empty-hint {
+    text-align: center;
+    padding: 3rem 2rem;
+    opacity: 0.2;
+    font-size: 0.9rem;
 }
 
 // ---------- Hero ----------

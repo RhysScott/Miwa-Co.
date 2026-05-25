@@ -1,30 +1,21 @@
-import axios from "axios";
-import { ElMessage } from "element-plus";
-
-export const MOCK_SWITCH = true;
+import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
 export const request = axios.create({
-  baseURL: "http://localhost:3000",
-  timeout: 5000,
+    baseURL: '/api',
+    timeout: 15000
 });
 
-request.interceptors.request.use(
-  (config) => {
-    return config;
-  },
-  (error) => {
-    ElMessage.error("请求发送失败，请检查网络连接");
-    return Promise.reject(error);
-  }
-);
-
 request.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    const msg = error.response?.data?.message || error.message || "服务器异常，请稍后重试";
-    ElMessage.error(msg);
-    return Promise.reject(error);
-  }
+    (res) => {
+        const { code, message, data } = res.data;
+        if (code === 200) return data;
+        ElMessage.error(message || '请求失败');
+        return Promise.reject(new Error(message));
+    },
+    (error) => {
+        const msg = error.response?.data?.message || error.message || '服务器异常，请稍后重试';
+        ElMessage.error(msg);
+        return Promise.reject(error);
+    }
 );

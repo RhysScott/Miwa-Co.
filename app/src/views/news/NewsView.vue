@@ -19,20 +19,22 @@
                 </section>
             </template>
             <template #default>
-                <template v-if="news.length">
-                    <section class="news-hero">
-                        <div class="news-hero-text font-error">
-                            <h1>最新动态</h1>
-                            <p class="en">Latest News</p>
-                        </div>
-                    </section>
-                    <section class="news-grid-section">
-                        <div class="news-grid">
-                            <NewsCard v-for="item in news" :key="item.id" :item="item" variant="full" :to="`/news/${item.id}`" />
-                        </div>
-                    </section>
-                    <SiteFooter v-if="footer" :footer="footer" />
-                </template>
+                <section class="news-hero">
+                    <div class="news-hero-text font-error">
+                        <h1>最新动态</h1>
+                        <p class="en">Latest News</p>
+                    </div>
+                </section>
+                <section class="news-grid-section">
+                    <div class="news-grid" v-if="news.length">
+                        <NewsCard v-for="item in news" :key="item.id" :item="item" variant="full" :to="`/news/${item.id}`" />
+                    </div>
+                    <div v-else class="empty-state font-error">
+                        <p>暂无新闻</p>
+                        <p class="en">No news yet</p>
+                    </div>
+                </section>
+                <SiteFooter v-if="footer" :footer="footer" />
             </template>
         </el-skeleton>
     </div>
@@ -61,6 +63,12 @@ onMounted(async () => {
 .news-page {
     color: #1a1a1a;
     background: #f8f8f8;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    opacity: 0.2;
 }
 
 .news-hero {
