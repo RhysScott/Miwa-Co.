@@ -22,17 +22,35 @@
 
             <div class="menu-content font-error">
                 <div class="info-section">
-                    <h1>Get in touch</h1>
+                    <h1>
+                        <span class="zh">联系我们</span>
+                        <span class="en">Get in touch</span>
+                    </h1>
                     <p>hello@miwa-co.com</p>
                     <p>+88 123 456789</p>
                     <p>Shanghai, China</p>
                 </div>
                 <div class="links-section">
-                    <router-link to="/" class="nav-item">Home</router-link>
-                    <router-link to="/news" class="nav-item">News</router-link>
-                    <router-link to="/contact" class="nav-item">Contact</router-link>
-                    <router-link to="/explore" class="nav-item">Explore</router-link>
-                    <router-link to="/about" class="nav-item">About</router-link>
+                    <router-link to="/" class="nav-item">
+                        <span class="zh">首页</span>
+                        <span class="en">Home</span>
+                    </router-link>
+                    <router-link to="/news" class="nav-item">
+                        <span class="zh">动态</span>
+                        <span class="en">News</span>
+                    </router-link>
+                    <router-link to="/contact" class="nav-item">
+                        <span class="zh">联系</span>
+                        <span class="en">Contact</span>
+                    </router-link>
+                    <router-link to="/explore" class="nav-item">
+                        <span class="zh">探索</span>
+                        <span class="en">Explore</span>
+                    </router-link>
+                    <router-link to="/about" class="nav-item">
+                        <span class="zh">关于</span>
+                        <span class="en">About</span>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -103,30 +121,34 @@ import { useRouter } from 'vue-router';
                         // 动画开始时把品牌色切为菜单态颜色
                         onStart: () => gsap.to('.brand', { color: 'var(--logo-color-menu)', duration: 0.3 }),
                         onComplete: () => {
-                            // links 从右侧弹入
-                            const linksSplit = SplitText.create('.links-section > .nav-item', { type: 'chars,words' });
+                            // links 中文大字从右侧弹入
+                            const linksSplit = SplitText.create('.links-section .nav-item .zh', { type: 'chars,words' });
                             splitInstances.push(linksSplit);
                             gsap.fromTo(
                                 linksSplit.chars,
                                 { x: 100, opacity: 0 },
                                 { stagger: 0.01, x: 0, opacity: 1, duration: 1, ease: 'elastic.out(1, 0.5)' }
                             );
-                            // info-section 从左侧弹入
-                            const infoSplit = SplitText.create('.info-section h1, .info-section p', { type: 'chars,words' });
+                            // links 英文副标题淡入
+                            gsap.fromTo('.links-section .nav-item .en', { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.05 });
+                            // info-section 中文从左侧弹入
+                            const infoSplit = SplitText.create('.info-section h1 .zh, .info-section p', { type: 'chars,words' });
                             splitInstances.push(infoSplit);
                             gsap.fromTo(
                                 infoSplit.chars,
                                 { x: -100, opacity: 0 },
                                 { stagger: 0.01, x: 0, opacity: 1, duration: 1, ease: 'elastic.out(1, 0.5)' }
                             );
+                            // info 英文副标题淡入
+                            gsap.fromTo('.info-section h1 .en', { opacity: 0 }, { opacity: 1, duration: 0.6 });
                         }
                     }
                 )
                 .to(clipPathElement, { attr: { d: fullOpenPath.value }, duration: 0.3 });
         } else {
             // 关闭：先让文字侧滑出去，再收起 clip-path
-            // links 向右侧滑出
-            const linksSplit = SplitText.create('.links-section > .nav-item', { type: 'chars,words' });
+            // links 中文向右侧滑出，英文淡出
+            const linksSplit = SplitText.create('.links-section .nav-item .zh', { type: 'chars,words' });
             splitInstances.push(linksSplit);
             gsap.to(linksSplit.chars, {
                 x: 100,
@@ -135,8 +157,9 @@ import { useRouter } from 'vue-router';
                 duration: 0.4,
                 ease: 'power2.in'
             });
-            // info-section 向左侧滑出
-            const infoSplit = SplitText.create('.info-section h1, .info-section p', { type: 'chars,words' });
+            gsap.to('.links-section .nav-item .en', { opacity: 0, duration: 0.3 });
+            // info-section 中文向左侧滑出，英文淡出
+            const infoSplit = SplitText.create('.info-section h1 .zh, .info-section p', { type: 'chars,words' });
             splitInstances.push(infoSplit);
             gsap.to(infoSplit.chars, {
                 x: -100,
@@ -145,6 +168,7 @@ import { useRouter } from 'vue-router';
                 duration: 0.4,
                 ease: 'power2.in'
             });
+            gsap.to('.info-section h1 .en', { opacity: 0, duration: 0.3 });
 
             gsap.timeline()
                 .fromTo(
@@ -266,10 +290,41 @@ import { useRouter } from 'vue-router';
             position: absolute;
             bottom: 2rem;
             left: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
 
             h1 {
                 margin: 0;
                 color: #000;
+                font-weight: bold;
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+
+                .zh {
+                    font-size: 2rem;
+                }
+
+                .en {
+                    font-size: 1rem;
+                    font-weight: normal;
+                    color: #666;
+                }
+            }
+
+            p {
+                margin: 0;
+                color: #555;
+                font-size: 1rem;
+                transition: color 0.3s ease, transform 0.3s ease;
+                cursor: default;
+            }
+
+            // 悬停时整体微调
+            p:hover {
+                color: #000;
+                transform: translateX(6px);
             }
         }
 
@@ -277,28 +332,47 @@ import { useRouter } from 'vue-router';
             position: absolute;
             bottom: 2rem;
             right: 2rem;
-            font-size: 5rem;
-            font-weight: bold;
             text-align: right;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 1rem;
 
             .nav-item {
                 color: black;
                 text-decoration: none;
-                position: relative;
-                display: inline-block;
-                transition: color 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 0.15rem;
+                line-height: 1;
+                transition: color 0.3s ease, transform 0.3s ease;
+
+                .zh {
+                    font-size: 5rem;
+                    font-weight: bold;
+                }
+
+                .en {
+                    font-size: 1rem;
+                    font-weight: normal;
+                    color: #666;
+                }
             }
 
             // 鼠标悬停任一链接时，所有链接变灰
             &:hover .nav-item {
                 color: #999;
             }
+            &:hover .nav-item .en {
+                color: #aaa;
+            }
 
-            // 当前悬停的链接保持黑色
+            // 当前悬停的链接保持黑色并左移
             .nav-item:hover {
+                color: #000;
+                transform: translateX(-8px);
+            }
+            .nav-item:hover .en {
                 color: #000;
             }
         }
