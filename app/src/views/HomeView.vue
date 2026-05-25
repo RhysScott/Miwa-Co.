@@ -73,6 +73,23 @@
             </div>
         </section>
 
+        <!-- 工作流程 -->
+        <section class="process">
+            <div class="section-header font-error">
+                <span class="label-zh">工作流程</span>
+                <span class="label-en">How We Work</span>
+            </div>
+            <div class="process-list">
+                <div class="process-step" v-for="(step, i) in process" :key="i">
+                    <span class="step-num">0{{ i + 1 }}</span>
+                    <div class="step-text">
+                        <span class="step-zh">{{ step.zh }}</span>
+                        <span class="step-en">{{ step.en }}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 精选项目 -->
         <section class="projects">
             <div class="section-header font-error">
@@ -107,11 +124,37 @@
             </div>
         </section>
 
+        <!-- 合作客户 -->
+        <section class="clients">
+            <div class="section-header font-error">
+                <span class="label-zh">合作客户</span>
+                <span class="label-en">Clients & Partners</span>
+            </div>
+            <div class="client-grid">
+                <span class="client-name" v-for="c in clients" :key="c">{{ c }}</span>
+            </div>
+        </section>
+
         <!-- 品牌理念 -->
         <section class="philosophy">
             <div class="philosophy-quote font-error">
                 <p class="quote-zh">"好设计不喧哗，它只是恰到好处地存在"</p>
                 <p class="quote-en">Good design is not loud. It simply exists, just right.</p>
+            </div>
+        </section>
+
+        <!-- 最新动态 -->
+        <section class="news-preview">
+            <div class="section-header font-error">
+                <span class="label-zh">最新动态</span>
+                <span class="label-en">Latest</span>
+            </div>
+            <div class="news-list">
+                <router-link to="/news" class="news-item" v-for="n in news" :key="n.date">
+                    <span class="news-date">{{ n.date }}</span>
+                    <span class="news-title">{{ n.title }}</span>
+                    <span class="news-arrow">→</span>
+                </router-link>
             </div>
         </section>
 
@@ -166,6 +209,22 @@ const projects = reactive([
     { zh: '自然共生', en: 'Nature & Co', image: '/images/4.jpg' },
 ]);
 
+const process = reactive([
+    { zh: '聆听与洞察', en: 'Listen & Understand' },
+    { zh: '构思与设计', en: 'Ideate & Design' },
+    { zh: '打磨与交付', en: 'Refine & Deliver' },
+]);
+
+const clients = reactive([
+    '悦己', '山海间', '未央', '方所', '云迹', '半山', '渡口', '花间',
+]);
+
+const news = reactive([
+    { date: '2026.04', title: '山海间品牌全案上线' },
+    { date: '2026.02', title: 'Miwa 荣获 ADC 年度设计奖' },
+    { date: '2025.12', title: '方所书店空间焕新完成' },
+]);
+
 const stats = reactive([
     { num: '50+', label: '项目作品' },
     { num: '12', label: '合作品牌' },
@@ -196,6 +255,33 @@ onMounted(() => {
         {
             y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'elastic.out(1, 0.5)',
             scrollTrigger: { trigger: '.projects', start: 'top 80%' }
+        }
+    );
+
+    // 流程卡片滚动入场
+    gsap.fromTo('.process-step',
+        { x: -40, opacity: 0 },
+        {
+            x: 0, opacity: 1, stagger: 0.2, duration: 0.6, ease: 'power3.out',
+            scrollTrigger: { trigger: '.process', start: 'top 80%' }
+        }
+    );
+
+    // 客户名称滚动入场
+    gsap.fromTo('.client-name',
+        { y: 30, opacity: 0 },
+        {
+            y: 0, opacity: 1, stagger: 0.05, duration: 0.5, ease: 'power3.out',
+            scrollTrigger: { trigger: '.clients', start: 'top 85%' }
+        }
+    );
+
+    // 新闻列表滚动入场
+    gsap.fromTo('.news-item',
+        { y: 30, opacity: 0 },
+        {
+            y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power3.out',
+            scrollTrigger: { trigger: '.news-preview', start: 'top 85%' }
         }
     );
 
@@ -397,6 +483,49 @@ onMounted(() => {
     }
 }
 
+// Process
+.process {
+    padding: 6rem 2rem;
+}
+
+.process-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 700px;
+}
+
+.process-step {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    .step-num {
+        font-size: 0.8rem;
+        opacity: 0.3;
+        flex-shrink: 0;
+        width: 2rem;
+    }
+
+    .step-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .step-zh {
+        font-size: 1.75rem;
+        font-weight: bold;
+    }
+
+    .step-en {
+        font-size: 0.9rem;
+        opacity: 0.35;
+    }
+}
+
 // Projects
 .projects {
     padding: 6rem 2rem 8rem;
@@ -509,6 +638,29 @@ onMounted(() => {
     }
 }
 
+// Clients
+.clients {
+    padding: 6rem 2rem;
+}
+
+.client-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+    max-width: 800px;
+}
+
+.client-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
 // Philosophy
 .philosophy {
     padding: 8rem 2rem;
@@ -531,6 +683,55 @@ onMounted(() => {
             opacity: 0.35;
             margin: 0;
         }
+    }
+}
+
+// News Preview
+.news-preview {
+    padding: 6rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.news-list {
+    display: flex;
+    flex-direction: column;
+    max-width: 700px;
+}
+
+.news-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+        opacity: 0.6;
+    }
+
+    .news-date {
+        font-size: 0.8rem;
+        opacity: 0.35;
+        flex-shrink: 0;
+        width: 5rem;
+    }
+
+    .news-title {
+        font-size: 1.25rem;
+        flex: 1;
+    }
+
+    .news-arrow {
+        font-size: 1rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    &:hover .news-arrow {
+        opacity: 0.4;
     }
 }
 
