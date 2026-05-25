@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <!-- Hero 大字标语 -->
-        <section class="hero snap-section">
+        <section class="hero">
             <div class="hero-text font-error">
                 <h1 class="hero-zh">用技术驱动未来</h1>
                 <p class="hero-en">AI · Software · IoT — We build what's next.</p>
@@ -58,7 +58,7 @@
         </section>
 
         <!-- 服务能力 — 全页 -->
-        <section class="services snap-section">
+        <section class="services" v-if="services.length">
             <div class="section-header font-error">
                 <span class="label-zh">我们的服务</span>
                 <span class="label-en">What We Do</span>
@@ -76,7 +76,7 @@
         </section>
 
         <!-- 数据亮点 -->
-        <section class="stats">
+        <section class="stats" v-if="stats.length">
             <div class="stats-grid">
                 <div class="stat-item" v-for="s in stats" :key="s.num">
                     <span class="stat-num">{{ s.num }}</span>
@@ -86,7 +86,7 @@
         </section>
 
         <!-- 精选项目 -->
-        <section class="projects">
+        <section class="projects" v-if="projects.length">
             <div class="section-header font-error">
                 <span class="label-zh">精选项目</span>
                 <span class="label-en">Selected Works</span>
@@ -110,7 +110,7 @@
         </section>
 
         <!-- 工作流程 -->
-        <section class="process">
+        <section class="process" v-if="process.length">
             <div class="section-header font-error">
                 <span class="label-zh">工作流程</span>
                 <span class="label-en">How We Work</span>
@@ -129,21 +129,25 @@
         </section>
 
         <!-- 合作客户 -->
-        <section class="clients">
+        <section class="clients" v-if="clients.length">
             <div class="section-header font-error">
                 <span class="label-zh">合作客户</span>
                 <span class="label-en">Clients & Partners</span>
             </div>
             <div class="client-grid">
                 <div class="client-card" v-for="c in clients" :key="c.name">
-                    <span class="client-zh">{{ c.name }}</span>
-                    <span class="client-en">{{ c.en }}</span>
+                    <img v-if="c.image" :src="c.image" :alt="c.name" class="client-logo" />
+                    <div v-else class="client-avatar">{{ c.name[0] }}</div>
+                    <div class="client-text">
+                        <span class="client-zh">{{ c.name }}</span>
+                        <span class="client-en">{{ c.en }}</span>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- 品牌理念 — 全页 -->
-        <section class="philosophy snap-section">
+        <section class="philosophy">
             <div class="philosophy-quote font-error">
                 <p class="quote-zh">"技术不应是黑箱，它应当透明、可靠、为人所用"</p>
                 <p class="quote-en">Technology should not be a black box. It should be transparent, reliable, and human.</p>
@@ -151,22 +155,24 @@
         </section>
 
         <!-- 最新动态 -->
-        <section class="news-preview">
+        <section class="news-preview" v-if="news.length">
             <div class="section-header font-error">
                 <span class="label-zh">最新动态</span>
                 <span class="label-en">Latest</span>
             </div>
-            <div class="news-list">
-                <router-link to="/news" class="news-item" v-for="n in news" :key="n.date">
-                    <span class="news-date">{{ n.date }}</span>
-                    <span class="news-title">{{ n.title }}</span>
-                    <span class="news-arrow">→</span>
-                </router-link>
+            <div class="news-scroll">
+                <div class="news-list">
+                    <router-link to="/news" class="news-item" v-for="(n, idx) in news" :key="idx">
+                        <span class="news-date">{{ n.date }}</span>
+                        <span class="news-title">{{ n.title }}</span>
+                        <span class="news-arrow">→</span>
+                    </router-link>
+                </div>
             </div>
         </section>
 
         <!-- 品牌简介 — 全页 -->
-        <section class="about snap-section">
+        <section class="about">
             <div class="section-header font-error">
                 <span class="label-zh">关于我们</span>
                 <span class="label-en">About</span>
@@ -309,11 +315,6 @@ onMounted(async () => {
 .home {
     color: #1a1a1a;
     background: #f8f8f8;
-}
-
-// ---------- Scroll-snap sections ----------
-.snap-section {
-    scroll-snap-align: start;
 }
 
 // ---------- Hero ----------
@@ -558,19 +559,22 @@ onMounted(async () => {
 
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 640px) {
         grid-template-columns: 1fr;
     }
 }
 
 .project-card {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 2;
     background-size: cover;
     background-position: center;
-    border-radius: 28px;
+    border-radius: 24px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
@@ -582,35 +586,35 @@ onMounted(async () => {
     .card-gradient {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
-        padding: 2rem;
+        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.05) 55%, transparent 100%);
+        padding: 1.5rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
     .card-num {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 600;
         letter-spacing: 0.06em;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.55);
     }
 
     .card-info {
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        gap: 0.2rem;
         color: #fff;
 
         .card-zh {
-            font-size: 2rem;
+            font-size: 1.35rem;
             font-weight: bold;
             letter-spacing: -0.01em;
         }
 
         .card-en {
-            font-size: 0.9rem;
-            opacity: 0.55;
+            font-size: 0.75rem;
+            opacity: 0.5;
         }
     }
 }
@@ -621,7 +625,7 @@ onMounted(async () => {
 
 .project-card:hover {
     transform: scale(1.02);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.13);
     z-index: 2;
 }
 
@@ -727,9 +731,9 @@ onMounted(async () => {
 
 .client-card {
     display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    padding: 2rem 1.75rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 20px;
     border-left: 3px solid transparent;
@@ -746,14 +750,43 @@ onMounted(async () => {
         transform: translateX(4px);
     }
 
+    .client-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .client-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.35);
+        flex-shrink: 0;
+    }
+
+    .client-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        min-width: 0;
+    }
+
     .client-zh {
-        font-size: 1.6rem;
+        font-size: 1.3rem;
         font-weight: bold;
         letter-spacing: -0.01em;
     }
 
     .client-en {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         opacity: 0.28;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -796,17 +829,29 @@ onMounted(async () => {
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.news-scroll {
+    max-height: 480px;
+    overflow-y: auto;
+    max-width: 700px;
+
+    // 滚动条美化
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.12);
+        border-radius: 2px;
+    }
+}
+
 .news-list {
     display: flex;
     flex-direction: column;
-    max-width: 700px;
 }
 
 .news-item {
     display: flex;
     align-items: baseline;
     gap: 1.5rem;
-    padding: 1.5rem 0;
+    padding: 1.25rem 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     color: #1a1a1a;
     text-decoration: none;
@@ -825,7 +870,7 @@ onMounted(async () => {
     }
 
     .news-title {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         flex: 1;
     }
 
@@ -917,12 +962,5 @@ onMounted(async () => {
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     font-size: 0.8rem;
     opacity: 0.25;
-}
-</style>
-
-<!-- 全局 scroll-snap，非 scoped -->
-<style>
-html {
-    scroll-snap-type: y proximity;
 }
 </style>

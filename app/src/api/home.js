@@ -1,4 +1,4 @@
-import { request, MOCK_SWITCH } from "@/common/request";
+import { MOCK_SWITCH, request } from "@/common/request";
 
 const servicesMock = [
     { icon: 'brain', zh: '人工智能', en: 'AI Solutions', desc: '大模型应用、智能体开发、NLP 与计算机视觉 —— 为企业注入 AI 能力' },
@@ -22,20 +22,24 @@ const processMock = [
 ];
 
 const clientsMock = [
-    { name: '蔚来', en: 'NIO' },
-    { name: '比亚迪', en: 'BYD' },
-    { name: '华为', en: 'HUAWEI' },
-    { name: '招商银行', en: 'CMB' },
-    { name: '顺丰', en: 'SF Express' },
-    { name: '万科', en: 'VANKE' },
-    { name: '字节跳动', en: 'ByteDance' },
-    { name: '美的', en: 'MIDEA' },
+    { name: '蔚来', en: 'NIO', image: '' },
+    { name: '比亚迪', en: 'BYD', image: '' },
+    { name: '华为', en: 'HUAWEI', image: '' },
+    { name: '招商银行', en: 'CMB', image: '' },
+    { name: '顺丰', en: 'SF Express', image: '' },
+    { name: '万科', en: 'VANKE', image: '' },
+    { name: '字节跳动', en: 'ByteDance', image: '' },
+    { name: '美的', en: 'MIDEA', image: '' },
 ];
 
 const newsMock = [
     { date: '2026.04', title: 'Miwa 发布企业级 AI Agent 开发框架 v2.0' },
     { date: '2026.02', title: '与华为联合打造工业 IoT 边缘计算方案落地' },
     { date: '2025.12', title: '智能客服平台日均调用量突破 5000 万次' },
+    { date: '2025.10', title: '获得 ISO 27001 信息安全认证' },
+    { date: '2025.08', title: '与蔚来达成战略合作，共建车载 AI 实验室' },
+    { date: '2025.07', title: '发布开源 IoT 中间件 MiwaLink v1.0' },
+    { date: '2025.05', title: '完成 A 轮融资，加速国际化布局' },
 ];
 
 const statsMock = [
