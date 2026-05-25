@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <!-- Hero 大字标语 -->
-        <section class="hero">
+        <section class="hero snap-section">
             <div class="hero-text font-error">
                 <h1 class="hero-zh">用技术驱动未来</h1>
                 <p class="hero-en">AI · Software · IoT — We build what's next.</p>
@@ -57,15 +57,17 @@
             </div>
         </section>
 
-        <!-- 服务能力 -->
-        <section class="services">
+        <!-- 服务能力 — 全页 -->
+        <section class="services snap-section">
             <div class="section-header font-error">
                 <span class="label-zh">我们的服务</span>
                 <span class="label-en">What We Do</span>
             </div>
             <div class="service-grid">
                 <div class="service-card" v-for="s in services" :key="s.zh">
-                    <component :is="iconMap[s.icon]" class="service-icon" :size="28" />
+                    <div class="card-icon-ring">
+                        <component :is="iconMap[s.icon]" :size="32" />
+                    </div>
                     <h3 class="service-zh">{{ s.zh }}</h3>
                     <p class="service-en">{{ s.en }}</p>
                     <p class="service-desc">{{ s.desc }}</p>
@@ -140,8 +142,8 @@
             </div>
         </section>
 
-        <!-- 品牌理念 -->
-        <section class="philosophy">
+        <!-- 品牌理念 — 全页 -->
+        <section class="philosophy snap-section">
             <div class="philosophy-quote font-error">
                 <p class="quote-zh">"技术不应是黑箱，它应当透明、可靠、为人所用"</p>
                 <p class="quote-en">Technology should not be a black box. It should be transparent, reliable, and human.</p>
@@ -163,8 +165,8 @@
             </div>
         </section>
 
-        <!-- 品牌简介 -->
-        <section class="about">
+        <!-- 品牌简介 — 全页 -->
+        <section class="about snap-section">
             <div class="section-header font-error">
                 <span class="label-zh">关于我们</span>
                 <span class="label-en">About</span>
@@ -186,7 +188,7 @@
 
         <!-- 页脚 -->
         <footer class="footer">
-            <span>© 2026 Miwa & Co.</span>
+            <span>&copy; 2026 Miwa & Co.</span>
             <span>Shanghai, China</span>
         </footer>
     </div>
@@ -217,7 +219,6 @@ const stats = ref([]);
 const iconMap = { brain: Brain, code: Code, cpu: Cpu, globe: Globe };
 
 onMounted(async () => {
-    // 通过各 API 模块获取数据
     const results = await Promise.all([getServices(), getProjects(), getProcess(), getClients(), getNewsList(), getStats()]);
     [services.value, projects.value, process.value, clients.value, news.value, stats.value] = results;
 
@@ -230,27 +231,27 @@ onMounted(async () => {
 
     // 服务卡片滚动入场
     gsap.fromTo('.service-card',
-        { y: 60, opacity: 0 },
+        { y: 80, opacity: 0 },
         {
-            y: 0, opacity: 1, stagger: 0.12, duration: 0.7, ease: 'power3.out',
-            scrollTrigger: { trigger: '.services', start: 'top 80%' }
+            y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: 'power3.out',
+            scrollTrigger: { trigger: '.services', start: 'top 70%' }
         }
     );
 
     // 项目卡片滚动入场
     gsap.fromTo('.project-card',
-        { y: 80, opacity: 0 },
+        { y: 100, opacity: 0, scale: 0.95 },
         {
-            y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: 'elastic.out(1, 0.5)',
-            scrollTrigger: { trigger: '.projects', start: 'top 80%' }
+            y: 0, opacity: 1, scale: 1, stagger: 0.15, duration: 0.9, ease: 'power3.out',
+            scrollTrigger: { trigger: '.projects', start: 'top 75%' }
         }
     );
 
     // 流程卡片滚动入场
     gsap.fromTo('.process-step',
-        { x: -40, opacity: 0 },
+        { y: 60, opacity: 0 },
         {
-            x: 0, opacity: 1, stagger: 0.2, duration: 0.6, ease: 'power3.out',
+            y: 0, opacity: 1, stagger: 0.15, duration: 0.7, ease: 'power3.out',
             scrollTrigger: { trigger: '.process', start: 'top 80%' }
         }
     );
@@ -259,7 +260,7 @@ onMounted(async () => {
     gsap.fromTo('.client-card',
         { y: 30, opacity: 0 },
         {
-            y: 0, opacity: 1, stagger: 0.05, duration: 0.5, ease: 'power3.out',
+            y: 0, opacity: 1, stagger: 0.06, duration: 0.5, ease: 'power3.out',
             scrollTrigger: { trigger: '.clients', start: 'top 85%' }
         }
     );
@@ -275,10 +276,10 @@ onMounted(async () => {
 
     // 数据数字滚动入场
     gsap.fromTo('.stat-item',
-        { y: 40, opacity: 0 },
+        { y: 60, opacity: 0, scale: 0.8 },
         {
-            y: 0, opacity: 1, stagger: 0.15, duration: 0.6, ease: 'power3.out',
-            scrollTrigger: { trigger: '.stats', start: 'top 85%' }
+            y: 0, opacity: 1, scale: 1, stagger: 0.15, duration: 0.8, ease: 'elastic.out(1, 0.7)',
+            scrollTrigger: { trigger: '.stats', start: 'top 80%' }
         }
     );
 
@@ -288,7 +289,7 @@ onMounted(async () => {
         { y: 40, opacity: 0 },
         {
             y: 0, opacity: 1, stagger: 0.015, duration: 0.6, ease: 'power3.out',
-            scrollTrigger: { trigger: '.philosophy', start: 'top 80%' }
+            scrollTrigger: { trigger: '.philosophy', start: 'top 70%' }
         }
     );
 
@@ -298,7 +299,7 @@ onMounted(async () => {
         { y: 40, opacity: 0 },
         {
             y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out',
-            scrollTrigger: { trigger: '.about', start: 'top 85%' }
+            scrollTrigger: { trigger: '.about', start: 'top 70%' }
         }
     );
 });
@@ -310,7 +311,12 @@ onMounted(async () => {
     background: #f8f8f8;
 }
 
-// Hero
+// ---------- Scroll-snap sections ----------
+.snap-section {
+    scroll-snap-align: start;
+}
+
+// ---------- Hero ----------
 .hero {
     min-height: 100vh;
     display: flex;
@@ -339,6 +345,7 @@ onMounted(async () => {
         font-size: clamp(3rem, 8vw, 8rem);
         margin: 0;
         line-height: 1.1;
+        letter-spacing: -0.02em;
     }
 
     .hero-en {
@@ -362,24 +369,27 @@ onMounted(async () => {
     50% { transform: translateY(8px); }
 }
 
-// Shared section header
+// ---------- Section header ----------
 .section-header {
     margin-bottom: 3rem;
 
     .label-zh {
-        font-size: 0.8rem;
-        opacity: 0.35;
+        font-size: 0.75rem;
+        opacity: 0.3;
         display: block;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.15em;
+        margin-bottom: 0.35rem;
     }
 
     .label-en {
-        font-size: 2.5rem;
+        font-size: 2.75rem;
+        font-weight: bold;
+        letter-spacing: -0.02em;
     }
 }
 
-// Marquee
+// ---------- Marquee ----------
 .marquee {
     width: 100%;
     overflow: hidden;
@@ -416,15 +426,19 @@ onMounted(async () => {
     to { transform: translateX(-50%); }
 }
 
-// Services
+// ---------- Services (full-page) ----------
 .services {
-    padding: 8rem 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 2rem;
 }
 
 .service-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
+    gap: 1.5rem;
 
     @media (max-width: 1024px) {
         grid-template-columns: repeat(2, 1fr);
@@ -435,115 +449,111 @@ onMounted(async () => {
 }
 
 .service-card {
-    background: rgba(0, 0, 0, 0.03);
+    background: #fff;
     border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 24px;
+    border-radius: 32px;
     padding: 2.5rem 2rem;
-    transition: background 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
+    transition:
+        transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+        box-shadow 0.5s ease,
+        border-color 0.5s ease;
 
     &:hover {
-        background: rgba(0, 0, 0, 0.06);
-        border-color: rgba(0, 0, 0, 0.18);
-        transform: translateY(-6px);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 0, 0, 0.12);
     }
 
-    .service-icon {
+    .card-icon-ring {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-bottom: 2rem;
-        opacity: 0.5;
-        transition: opacity 0.4s ease;
+        color: rgba(0, 0, 0, 0.55);
+        transition: background 0.5s ease, color 0.5s ease, transform 0.5s ease;
     }
 
-    &:hover .service-icon {
-        opacity: 0.9;
+    &:hover .card-icon-ring {
+        background: rgba(0, 0, 0, 0.08);
+        color: rgba(0, 0, 0, 0.85);
+        transform: scale(1.05);
     }
 
     .service-zh {
-        margin: 0 0 0.3rem;
-        font-size: 1.35rem;
+        margin: 0 0 0.25rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        letter-spacing: -0.01em;
     }
 
     .service-en {
-        margin: 0 0 1rem;
-        font-size: 0.8rem;
+        margin: 0 0 1.25rem;
+        font-size: 0.75rem;
         opacity: 0.3;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.08em;
     }
 
     .service-desc {
         margin: 0;
         font-size: 0.9rem;
         opacity: 0.45;
-        line-height: 1.7;
+        line-height: 1.75;
     }
 }
 
-// Process
-.process {
+// ---------- Stats ----------
+.stats {
     padding: 6rem 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.process-track {
+.stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    gap: 3rem;
+    max-width: 800px;
+    margin: 0 auto;
 
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
+    @media (max-width: 640px) {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
     }
 }
 
-.process-step {
+.stat-item {
+    text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    padding: 2rem;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 20px;
-    transition: border-color 0.4s ease, background 0.4s ease;
+    align-items: center;
+    gap: 0.5rem;
 
-    &:hover {
-        border-color: rgba(0, 0, 0, 0.15);
-        background: rgba(0, 0, 0, 0.02);
+    .stat-num {
+        font-size: 4.5rem;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    .step-marker {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.06);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .step-num {
-        font-size: 0.75rem;
-        opacity: 0.4;
-        font-weight: bold;
-    }
-
-    .step-text {
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-    }
-
-    .step-zh {
-        font-size: 1.35rem;
-        font-weight: bold;
-    }
-
-    .step-en {
-        font-size: 0.8rem;
+    .stat-label {
+        font-size: 0.85rem;
         opacity: 0.35;
+        font-weight: 500;
     }
 }
 
-// Projects
+// ---------- Projects ----------
 .projects {
-    padding: 6rem 2rem 8rem;
+    padding: 8rem 2rem;
 }
 
 .project-grid {
@@ -560,110 +570,155 @@ onMounted(async () => {
     aspect-ratio: 4 / 3;
     background-size: cover;
     background-position: center;
-    border-radius: 20px;
+    border-radius: 28px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
     transition:
-        transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1),
+        transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+        box-shadow 0.6s ease,
         opacity 0.5s ease;
 
     .card-gradient {
         position: absolute;
         inset: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 50%);
-        padding: 1.5rem;
+        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+        padding: 2rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
     .card-num {
-        font-size: 0.75rem;
-        opacity: 0.55;
-        letter-spacing: 0.05em;
-        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: rgba(255, 255, 255, 0.6);
     }
 
     .card-info {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
-        color: rgba(255, 255, 255, 0.95);
+        gap: 0.3rem;
+        color: #fff;
 
         .card-zh {
-            font-size: 1.75rem;
+            font-size: 2rem;
             font-weight: bold;
+            letter-spacing: -0.01em;
         }
 
         .card-en {
-            font-size: 0.875rem;
-            opacity: 0.45;
+            font-size: 0.9rem;
+            opacity: 0.55;
         }
     }
 }
 
 .project-grid:hover .project-card:not(:hover) {
-    opacity: 0.35;
+    opacity: 0.3;
 }
 
 .project-card:hover {
-    transform: scale(1.03);
+    transform: scale(1.02);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
     z-index: 2;
 }
 
-// Stats
-.stats {
-    padding: 5rem 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+// ---------- Process ----------
+.process {
+    padding: 8rem 2rem;
 }
 
-.stats-grid {
+.process-track {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    max-width: 900px;
-    margin: 0 auto;
+    gap: 0;
 
-    @media (max-width: 640px) {
-        grid-template-columns: repeat(2, 1fr);
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
     }
 }
 
-.stat-item {
-    text-align: center;
+.process-step {
     display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 1.75rem;
+    padding: 2rem 1.75rem;
+    position: relative;
+    transition: transform 0.4s ease;
 
-    .stat-num {
-        font-size: 3rem;
-        font-weight: bold;
-        white-space: nowrap;
-        background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    &:hover {
+        transform: translateY(-4px);
     }
 
-    .stat-label {
-        font-size: 0.85rem;
-        opacity: 0.4;
-        white-space: nowrap;
+    // 连接线：在非最后一个步骤右侧画一条水平虚线
+    &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: calc(2rem + 24px); // align with marker center
+        right: 0;
+        width: calc(100% - 48px - 1.75rem); // marker width + padding
+        height: 1px;
+        border-top: 1px dashed rgba(0, 0, 0, 0.12);
+        pointer-events: none;
+
+        @media (max-width: 768px) {
+            display: none;
+        }
+    }
+
+    .step-marker {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    &:hover .step-marker {
+        transform: scale(1.1);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .step-num {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .step-text {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .step-zh {
+        font-size: 1.5rem;
+        font-weight: bold;
+        letter-spacing: -0.01em;
+    }
+
+    .step-en {
+        font-size: 0.8rem;
+        opacity: 0.3;
+        letter-spacing: 0.03em;
     }
 }
 
-// Clients
+// ---------- Clients ----------
 .clients {
-    padding: 6rem 2rem;
+    padding: 8rem 2rem;
 }
 
 .client-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+    gap: 1rem;
 
     @media (max-width: 768px) {
         grid-template-columns: repeat(2, 1fr);
@@ -673,57 +728,71 @@ onMounted(async () => {
 .client-card {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    padding: 1.5rem;
+    gap: 0.35rem;
+    padding: 2rem 1.75rem;
     border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 16px;
-    transition: border-color 0.4s ease, background 0.4s ease;
+    border-radius: 20px;
+    border-left: 3px solid transparent;
+    transition:
+        border-color 0.4s ease,
+        border-left-color 0.4s ease,
+        background 0.4s ease,
+        transform 0.4s ease;
 
     &:hover {
-        border-color: rgba(0, 0, 0, 0.2);
-        background: rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.12);
+        border-left-color: #1a1a1a;
+        background: rgba(0, 0, 0, 0.02);
+        transform: translateX(4px);
     }
 
     .client-zh {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         font-weight: bold;
+        letter-spacing: -0.01em;
     }
 
     .client-en {
         font-size: 0.7rem;
-        opacity: 0.3;
+        opacity: 0.28;
         letter-spacing: 0.08em;
+        text-transform: uppercase;
     }
 }
 
-// Philosophy
+// ---------- Philosophy (full-page) ----------
 .philosophy {
-    padding: 8rem 2rem;
+    min-height: 100vh;
     display: flex;
+    align-items: center;
     justify-content: center;
+    padding: 4rem 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 
     .philosophy-quote {
         text-align: center;
-        max-width: 700px;
+        max-width: 750px;
 
         .quote-zh {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            line-height: 1.6;
-            margin: 0 0 1.5rem;
-            opacity: 0.9;
+            font-size: clamp(1.75rem, 4.5vw, 3rem);
+            font-weight: bold;
+            line-height: 1.5;
+            margin: 0 0 2rem;
+            letter-spacing: -0.02em;
         }
 
         .quote-en {
-            font-size: 1.1rem;
-            opacity: 0.35;
+            font-size: 1.15rem;
+            opacity: 0.3;
             margin: 0;
+            line-height: 1.6;
         }
     }
 }
 
-// News Preview
+// ---------- News ----------
 .news-preview {
-    padding: 6rem 2rem;
+    padding: 8rem 2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -737,66 +806,74 @@ onMounted(async () => {
     display: flex;
     align-items: baseline;
     gap: 1.5rem;
-    padding: 1.25rem 0;
+    padding: 1.5rem 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     color: #1a1a1a;
     text-decoration: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 
     &:hover {
-        opacity: 0.6;
+        opacity: 0.55;
+        transform: translateX(4px);
     }
 
     .news-date {
         font-size: 0.8rem;
-        opacity: 0.35;
+        opacity: 0.3;
         flex-shrink: 0;
         width: 5rem;
     }
 
     .news-title {
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         flex: 1;
     }
 
     .news-arrow {
         font-size: 1rem;
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     &:hover .news-arrow {
         opacity: 0.4;
+        transform: translateX(4px);
     }
 }
 
-// About
+// ---------- About (full-page) ----------
 .about {
-    padding: 8rem 2rem 4rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 6rem;
+    align-items: center;
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 3rem;
     }
 }
 
 .about-text {
     p {
         margin: 0 0 1.25rem;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         line-height: 1.5;
+        letter-spacing: -0.01em;
     }
 
     .about-en {
         font-size: 1rem;
-        opacity: 0.3;
+        opacity: 0.28;
         margin-bottom: 0.5rem;
     }
 }
@@ -804,22 +881,27 @@ onMounted(async () => {
 .about-cta {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    align-items: flex-end;
+
+    @media (max-width: 768px) {
+        align-items: flex-start;
+    }
 
     .cta-text {
         font-size: 1rem;
-        opacity: 0.4;
-        margin: 0 0 0.5rem;
+        opacity: 0.35;
+        margin: 0 0 0.75rem;
     }
 
     .cta-link {
-        font-size: 2rem;
+        font-size: 2.25rem;
+        font-weight: bold;
         color: #1a1a1a;
         text-decoration: none;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-        padding-bottom: 0.25rem;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+        padding-bottom: 0.35rem;
+        letter-spacing: -0.01em;
         transition: border-color 0.3s ease, opacity 0.3s ease;
-        display: inline-block;
 
         &:hover {
             border-color: rgba(0, 0, 0, 0.6);
@@ -827,13 +909,20 @@ onMounted(async () => {
     }
 }
 
-// Footer
+// ---------- Footer ----------
 .footer {
     display: flex;
     justify-content: space-between;
     padding: 2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     font-size: 0.8rem;
-    opacity: 0.3;
+    opacity: 0.25;
+}
+</style>
+
+<!-- 全局 scroll-snap，非 scoped -->
+<style>
+html {
+    scroll-snap-type: y proximity;
 }
 </style>
