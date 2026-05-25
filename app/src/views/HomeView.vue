@@ -110,7 +110,7 @@
         <!-- 品牌理念 -->
         <section class="philosophy">
             <div class="philosophy-quote font-error">
-                <p class="quote-zh">" 好设计不喧哗，它只是恰到好处地存在。"</p>
+                <p class="quote-zh">"好设计不喧哗，它只是恰到好处地存在"</p>
                 <p class="quote-en">Good design is not loud. It simply exists, just right.</p>
             </div>
         </section>
@@ -488,12 +488,14 @@ onMounted(() => {
 .stat-item {
     text-align: center;
     display: flex;
-    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
     gap: 0.5rem;
 
     .stat-num {
         font-size: 3rem;
         font-weight: bold;
+        white-space: nowrap;
         background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
         background-clip: text;
         -webkit-background-clip: text;
@@ -503,6 +505,7 @@ onMounted(() => {
     .stat-label {
         font-size: 0.85rem;
         opacity: 0.4;
+        white-space: nowrap;
     }
 }
 
