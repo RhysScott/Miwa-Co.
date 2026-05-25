@@ -1,5 +1,7 @@
 <template>
-    <div class="detail-page" v-if="article">
+    <div class="detail-page">
+        <LoadingSpinner v-if="!loaded" />
+        <template v-else-if="article">
         <section class="detail-hero">
             <div class="detail-hero-text font-error">
                 <h1>{{ article.title }}</h1>
@@ -33,13 +35,14 @@
         </section>
 
         <SiteFooter v-if="footer" :footer="footer" />
-    </div>
-    <div class="detail-page not-found" v-else-if="loaded">
-        <section class="detail-hero">
-            <div class="detail-hero-text font-error">
-                <h1>文章不存在</h1>
-            </div>
-        </section>
+        </template>
+        <div v-else class="detail-page not-found">
+            <section class="detail-hero">
+                <div class="detail-hero-text font-error">
+                    <h1>文章不存在</h1>
+                </div>
+            </section>
+        </div>
     </div>
 </template>
 
@@ -49,6 +52,7 @@ import { useRoute } from 'vue-router';
 import { marked } from 'marked';
 import { getNewsById, getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
+import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import SiteFooter from '@/components/home/Footer.vue';
 
 const route = useRoute();
@@ -67,6 +71,7 @@ const otherNews = computed(() => {
 });
 
 async function loadArticle(id) {
+    loaded.value = false;
     article.value = await getNewsById(id);
     loaded.value = true;
     if (article.value) {

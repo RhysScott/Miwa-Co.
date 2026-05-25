@@ -1,5 +1,7 @@
 <template>
-    <div class="contact-page" v-if="contact">
+    <div class="contact-page">
+        <LoadingSpinner v-if="!loaded" />
+        <template v-else-if="contact">
         <section class="contact-hero">
             <div class="contact-hero-text font-error">
                 <h1>联系我们</h1>
@@ -37,6 +39,7 @@
         </section>
 
         <SiteFooter v-if="footer" :footer="footer" />
+        </template>
     </div>
 </template>
 
@@ -44,15 +47,18 @@
 import { onMounted, ref } from 'vue';
 import { getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
+import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import SiteFooter from '@/components/home/Footer.vue';
 
 const contact = ref(null);
 const footer = ref(null);
+const loaded = ref(false);
 
 onMounted(async () => {
-    contact.value = await getPageData('contact');
-    const home = await getHomeData();
+    const [data, home] = await Promise.all([getPageData('contact'), getHomeData()]);
+    contact.value = data;
     footer.value = home.footer;
+    loaded.value = true;
 });
 </script>
 

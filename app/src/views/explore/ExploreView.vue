@@ -1,5 +1,7 @@
 <template>
-    <div class="explore-page" v-if="data">
+    <div class="explore-page">
+        <LoadingSpinner v-if="!loaded" />
+        <template v-else-if="data">
         <section class="explore-hero">
             <div class="explore-hero-text font-error">
                 <h1>探索 Miwa</h1>
@@ -60,6 +62,7 @@
         </section>
 
         <SiteFooter v-if="footer" :footer="footer" />
+        </template>
     </div>
 </template>
 
@@ -67,15 +70,18 @@
 import { onMounted, ref } from 'vue';
 import { getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
+import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import SiteFooter from '@/components/home/Footer.vue';
 
 const data = ref(null);
 const footer = ref(null);
+const loaded = ref(false);
 
 onMounted(async () => {
-    data.value = await getPageData('explore');
-    const home = await getHomeData();
+    const [pageData, home] = await Promise.all([getPageData('explore'), getHomeData()]);
+    data.value = pageData;
     footer.value = home.footer;
+    loaded.value = true;
 });
 </script>
 

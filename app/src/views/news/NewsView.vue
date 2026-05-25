@@ -1,19 +1,23 @@
 <template>
-    <div class="news-page" v-if="news.length">
-        <section class="news-hero">
-            <div class="news-hero-text font-error">
-                <h1>最新动态</h1>
-                <p class="en">Latest News</p>
-            </div>
-        </section>
+    <div class="news-page">
+        <LoadingSpinner v-if="!loaded" />
 
-        <section class="news-grid-section">
-            <div class="news-grid">
-                <NewsCard v-for="item in news" :key="item.id" :item="item" variant="full" :to="`/news/${item.id}`" />
-            </div>
-        </section>
+        <template v-else-if="news.length">
+            <section class="news-hero">
+                <div class="news-hero-text font-error">
+                    <h1>最新动态</h1>
+                    <p class="en">Latest News</p>
+                </div>
+            </section>
 
-        <SiteFooter v-if="footer" :footer="footer" />
+            <section class="news-grid-section">
+                <div class="news-grid">
+                    <NewsCard v-for="item in news" :key="item.id" :item="item" variant="full" :to="`/news/${item.id}`" />
+                </div>
+            </section>
+
+            <SiteFooter v-if="footer" :footer="footer" />
+        </template>
     </div>
 </template>
 
@@ -21,16 +25,19 @@
 import { onMounted, ref } from 'vue';
 import { getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
+import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import NewsCard from '@/components/home/NewsCard.vue';
 import SiteFooter from '@/components/home/Footer.vue';
 
 const news = ref([]);
 const footer = ref(null);
+const loaded = ref(false);
 
 onMounted(async () => {
-    news.value = await getPageData('news');
-    const home = await getHomeData();
+    const [data, home] = await Promise.all([getPageData('news'), getHomeData()]);
+    news.value = data;
     footer.value = home.footer;
+    loaded.value = true;
 });
 </script>
 
