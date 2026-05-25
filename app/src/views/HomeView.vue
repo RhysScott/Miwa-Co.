@@ -65,7 +65,7 @@
             </div>
             <div class="service-grid">
                 <div class="service-card" v-for="s in services" :key="s.zh">
-                    <div class="service-icon">{{ s.icon }}</div>
+                    <component :is="iconMap[s.icon]" class="service-icon" :size="28" />
                     <h3 class="service-zh">{{ s.zh }}</h3>
                     <p class="service-en">{{ s.en }}</p>
                     <p class="service-desc">{{ s.desc }}</p>
@@ -131,7 +131,10 @@
                 <span class="label-en">Clients & Partners</span>
             </div>
             <div class="client-grid">
-                <span class="client-name" v-for="c in clients" :key="c">{{ c }}</span>
+                <div class="client-card" v-for="c in clients" :key="c.name">
+                    <span class="client-zh">{{ c.name }}</span>
+                    <span class="client-en">{{ c.en }}</span>
+                </div>
             </div>
         </section>
 
@@ -188,49 +191,23 @@
 </template>
 
 <script setup>
+import { Sparkles, Shapes, Monitor, Layers } from '@lucide/vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { onMounted, reactive } from 'vue';
+import { onMounted } from 'vue';
+import { mockServices, mockProjects, mockProcess, mockClients, mockNews, mockStats } from '@/api/mock';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
-const services = reactive([
-    { icon: '✦', zh: '品牌策略', en: 'Brand Strategy', desc: '从洞察到定位，构建品牌的核心叙事与价值体系' },
-    { icon: '◉', zh: '视觉识别', en: 'Visual Identity', desc: '标志、字体、色彩系统 —— 让品牌一眼可辨' },
-    { icon: '◎', zh: '数字体验', en: 'Digital Experience', desc: '网站、应用、交互，每个触点都精心打磨' },
-    { icon: '◐', zh: '空间设计', en: 'Spatial Design', desc: '零售空间、展览、快闪 —— 品牌在物理世界的延伸' },
-]);
+const services = mockServices;
+const projects = mockProjects;
+const process = mockProcess;
+const clients = mockClients;
+const news = mockNews;
+const stats = mockStats;
 
-const projects = reactive([
-    { zh: '东方意境', en: 'Oriental Aesthetics', image: '/images/1.jpg' },
-    { zh: '现代极简', en: 'Modern Minimal', image: '/images/2.jpg' },
-    { zh: '城市脉搏', en: 'Urban Pulse', image: '/images/3.jpg' },
-    { zh: '自然共生', en: 'Nature & Co', image: '/images/4.jpg' },
-]);
-
-const process = reactive([
-    { zh: '聆听与洞察', en: 'Listen & Understand' },
-    { zh: '构思与设计', en: 'Ideate & Design' },
-    { zh: '打磨与交付', en: 'Refine & Deliver' },
-]);
-
-const clients = reactive([
-    '悦己', '山海间', '未央', '方所', '云迹', '半山', '渡口', '花间',
-]);
-
-const news = reactive([
-    { date: '2026.04', title: '山海间品牌全案上线' },
-    { date: '2026.02', title: 'Miwa 荣获 ADC 年度设计奖' },
-    { date: '2025.12', title: '方所书店空间焕新完成' },
-]);
-
-const stats = reactive([
-    { num: '50+', label: '项目作品' },
-    { num: '12', label: '合作品牌' },
-    { num: '8', label: '年经验' },
-    { num: '100%', label: '热情投入' },
-]);
+const iconMap = { sparkles: Sparkles, shapes: Shapes, monitor: Monitor, layers: Layers };
 
 onMounted(() => {
     // Hero 逐字弹跳入场
@@ -268,7 +245,7 @@ onMounted(() => {
     );
 
     // 客户名称滚动入场
-    gsap.fromTo('.client-name',
+    gsap.fromTo('.client-card',
         { y: 30, opacity: 0 },
         {
             y: 0, opacity: 1, stagger: 0.05, duration: 0.5, ease: 'power3.out',
@@ -446,40 +423,46 @@ onMounted(() => {
 }
 
 .service-card {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 20px;
-    padding: 2rem;
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
     transition: background 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
 
     &:hover {
-        background: rgba(255, 255, 255, 0.07);
-        border-color: rgba(255, 255, 255, 0.15);
-        transform: translateY(-4px);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.18);
+        transform: translateY(-6px);
     }
 
     .service-icon {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        opacity: 0.6;
+        margin-bottom: 2rem;
+        opacity: 0.5;
+        transition: opacity 0.4s ease;
+    }
+
+    &:hover .service-icon {
+        opacity: 0.9;
     }
 
     .service-zh {
-        margin: 0 0 0.25rem;
-        font-size: 1.25rem;
+        margin: 0 0 0.3rem;
+        font-size: 1.35rem;
     }
 
     .service-en {
-        margin: 0 0 0.75rem;
-        font-size: 0.85rem;
-        opacity: 0.35;
+        margin: 0 0 1rem;
+        font-size: 0.8rem;
+        opacity: 0.3;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
     }
 
     .service-desc {
         margin: 0;
         font-size: 0.9rem;
-        opacity: 0.5;
-        line-height: 1.6;
+        opacity: 0.45;
+        line-height: 1.7;
     }
 }
 
@@ -644,20 +627,38 @@ onMounted(() => {
 }
 
 .client-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 2.5rem;
-    max-width: 800px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-.client-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    opacity: 0.3;
-    transition: opacity 0.3s ease;
+.client-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    transition: border-color 0.4s ease, background 0.4s ease;
 
     &:hover {
-        opacity: 0.7;
+        border-color: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .client-zh {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .client-en {
+        font-size: 0.7rem;
+        opacity: 0.3;
+        letter-spacing: 0.08em;
     }
 }
 
