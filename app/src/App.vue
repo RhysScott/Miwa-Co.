@@ -17,10 +17,10 @@ import Nav from '@/components/Nav/Nav.vue';
 <style lang="scss" scoped>
 .app-layout {
   min-height: 100vh;
-
   background-repeat: no-repeat;
   background-size: cover;
   background-image: url('images/5.jpg');
+  background-attachment: fixed;
 }
 
 .app-main {
