@@ -198,7 +198,12 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { onMounted, ref } from 'vue';
-import { fetchHomeData } from '@/api/mock';
+import { getServices } from '@/api/services';
+import { getProjects } from '@/api/projects';
+import { getClients } from '@/api/clients';
+import { getStats } from '@/api/stats';
+import { getNewsList } from '@/api/news';
+import { getProcess } from '@/api/process';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -212,14 +217,9 @@ const stats = ref([]);
 const iconMap = { brain: Brain, code: Code, cpu: Cpu, globe: Globe };
 
 onMounted(async () => {
-    // 通过 API 获取数据
-    const data = await fetchHomeData();
-    services.value = data.services;
-    projects.value = data.projects;
-    process.value = data.process;
-    clients.value = data.clients;
-    news.value = data.news;
-    stats.value = data.stats;
+    // 通过各 API 模块获取数据
+    const results = await Promise.all([getServices(), getProjects(), getProcess(), getClients(), getNewsList(), getStats()]);
+    [services.value, projects.value, process.value, clients.value, news.value, stats.value] = results;
 
     // Hero 逐字弹跳入场
     const heroSplit = SplitText.create('.hero-zh, .hero-en', { type: 'chars,words' });
