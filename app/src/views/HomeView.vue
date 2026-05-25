@@ -103,11 +103,7 @@
             </div>
         </section>
 
-        <!-- 页脚 -->
-        <footer class="footer" v-if="footer">
-            <span>{{ footer.copyright }}</span>
-            <span>{{ footer.location }}</span>
-        </footer>
+        <SiteFooter v-if="footer" :footer="footer" />
     </div>
 </template>
 
@@ -122,6 +118,7 @@ import ClientCard from '@/components/home/ClientCard.vue';
 import NewsCard from '@/components/home/NewsCard.vue';
 import ProcessStep from '@/components/home/ProcessStep.vue';
 import ProjectCard from '@/components/home/ProjectCard.vue';
+import SiteFooter from '@/components/home/Footer.vue';
 import SectionHeader from '@/components/shared/SectionHeader.vue';
 import ServiceCard from '@/components/home/ServiceCard.vue';
 import StatItem from '@/components/home/StatItem.vue';
@@ -603,13 +600,4 @@ onMounted(async () => {
     }
 }
 
-// ---------- Footer ----------
-.footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    font-size: 0.8rem;
-    opacity: 0.25;
-}
 </style>
