@@ -74,7 +74,7 @@ import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 import { getProjectById, getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
-import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
+
 import SiteFooter from '@/components/home/Footer.vue';
 
 marked.use(markedHighlight({

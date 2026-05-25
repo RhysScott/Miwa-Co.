@@ -59,7 +59,7 @@
 import { onMounted, ref } from 'vue';
 import { getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
-import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
+
 import SiteFooter from '@/components/home/Footer.vue';
 
 const people = ref([]);

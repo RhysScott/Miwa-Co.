@@ -1,42 +1,64 @@
 <template>
     <div class="detail-page">
-        <LoadingSpinner v-if="!loaded" />
-        <template v-else-if="article">
-        <section class="detail-hero">
-            <div class="detail-hero-text font-error">
-                <h1>{{ article.title }}</h1>
-                <p class="detail-date">{{ article.date }}</p>
-            </div>
-        </section>
-
-        <section class="detail-layout">
-            <div class="detail-main">
-                <div class="detail-image" v-if="article.image">
-                    <img :src="article.image" :alt="article.title" />
-                </div>
-                <div class="detail-content" v-html="htmlContent" />
-            </div>
-
-            <aside class="detail-sidebar">
-                <h3 class="sidebar-title">更多动态</h3>
-                <nav class="sidebar-list">
-                    <router-link
-                        v-for="item in otherNews"
-                        :key="item.id"
-                        :to="`/news/${item.id}`"
-                        class="sidebar-item"
-                        :class="{ active: item.id === article.id }"
-                    >
-                        <span class="sidebar-item-date">{{ item.date }}</span>
-                        <span class="sidebar-item-title">{{ item.title }}</span>
-                    </router-link>
-                </nav>
-            </aside>
-        </section>
-
-        <SiteFooter v-if="footer" :footer="footer" />
-        </template>
-        <div v-else class="detail-page not-found">
+        <el-skeleton :loading="!loaded" animated>
+            <template #template>
+                <section class="detail-hero">
+                    <div class="detail-hero-text font-error">
+                        <el-skeleton-item variant="h1" style="width:280px" />
+                        <el-skeleton-item variant="text" style="width:120px;margin-top:0.75rem" />
+                    </div>
+                </section>
+                <section class="detail-layout">
+                    <div class="detail-main">
+                        <el-skeleton-item variant="image" style="width:100%;height:300px;border-radius:16px" />
+                        <el-skeleton-item variant="text" style="width:100%;height:1.5rem;margin-top:2rem" />
+                        <el-skeleton-item variant="text" style="width:100%;margin-top:1rem" />
+                        <el-skeleton-item variant="text" style="width:80%;margin-top:0.5rem" />
+                        <el-skeleton-item variant="text" style="width:90%;margin-top:0.5rem" />
+                        <el-skeleton-item variant="text" style="width:60%;margin-top:0.5rem" />
+                    </div>
+                    <aside class="detail-sidebar">
+                        <el-skeleton-item variant="text" style="width:60px;margin-bottom:1.25rem" />
+                        <el-skeleton-item variant="text" style="width:100%;margin-bottom:0.7rem" v-for="i in 4" :key="i" />
+                    </aside>
+                </section>
+            </template>
+            <template #default>
+                <template v-if="article">
+                <section class="detail-hero">
+                    <div class="detail-hero-text font-error">
+                        <h1>{{ article.title }}</h1>
+                        <p class="detail-date">{{ article.date }}</p>
+                    </div>
+                </section>
+                <section class="detail-layout">
+                    <div class="detail-main">
+                        <div class="detail-image" v-if="article.image">
+                            <img :src="article.image" :alt="article.title" />
+                        </div>
+                        <div class="detail-content" v-html="htmlContent" />
+                    </div>
+                    <aside class="detail-sidebar">
+                        <h3 class="sidebar-title">更多动态</h3>
+                        <nav class="sidebar-list">
+                            <router-link
+                                v-for="item in otherNews"
+                                :key="item.id"
+                                :to="`/news/${item.id}`"
+                                class="sidebar-item"
+                                :class="{ active: item.id === article.id }"
+                            >
+                                <span class="sidebar-item-date">{{ item.date }}</span>
+                                <span class="sidebar-item-title">{{ item.title }}</span>
+                            </router-link>
+                        </nav>
+                    </aside>
+                </section>
+                <SiteFooter v-if="footer" :footer="footer" />
+                </template>
+            </template>
+        </el-skeleton>
+        <div v-if="loaded && !article" class="detail-page not-found">
             <section class="detail-hero">
                 <div class="detail-hero-text font-error">
                     <h1>文章不存在</h1>
@@ -54,7 +76,7 @@ import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 import { getNewsById, getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
-import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
+
 import SiteFooter from '@/components/home/Footer.vue';
 
 marked.use(markedHighlight({

@@ -1,33 +1,58 @@
 <template>
     <div class="projects-page">
-        <LoadingSpinner v-if="!loaded" />
-        <template v-else-if="data">
-        <section class="projects-hero">
-            <div class="projects-hero-text font-error">
-                <h1>项目作品</h1>
-                <p class="en">Selected Works</p>
-            </div>
-        </section>
-
-        <section class="projects-grid-section">
-            <div class="projects-list">
-                <router-link v-for="(p, i) in data.projects" :key="p.id" :to="`/projects/${p.id}`" class="project-card">
-                    <div class="project-image">
-                        <img :src="p.image" :alt="p.zh" />
+        <el-skeleton :loading="!loaded" animated>
+            <template #template>
+                <section class="projects-hero">
+                    <div class="projects-hero-text font-error">
+                        <el-skeleton-item variant="h1" style="width:200px" />
+                        <el-skeleton-item variant="text" style="width:120px;margin-top:0.75rem" />
                     </div>
-                    <div class="project-body">
-                        <span class="project-num">{{ String(i + 1).padStart(2, '0') }}</span>
-                        <h3>{{ p.zh }}</h3>
-                        <p class="project-en">{{ p.en }}</p>
-                        <p class="project-desc">{{ p.desc }}</p>
-                        <p class="project-detail">{{ p.detail }}</p>
+                </section>
+                <section class="projects-grid-section">
+                    <div class="projects-list">
+                        <div v-for="i in 3" :key="i" class="project-card">
+                            <div class="project-image">
+                                <el-skeleton-item variant="image" style="width:100%;height:240px;border-radius:16px" />
+                            </div>
+                            <div class="project-body">
+                                <el-skeleton-item variant="text" style="width:3rem;height:3rem" />
+                                <el-skeleton-item variant="h3" style="width:60%" />
+                                <el-skeleton-item variant="text" style="width:40%;margin-top:0.3rem" />
+                                <el-skeleton-item variant="text" style="width:90%;margin-top:0.5rem" />
+                                <el-skeleton-item variant="text" style="width:70%" />
+                            </div>
+                        </div>
                     </div>
-                </router-link>
-            </div>
-        </section>
-
-        <SiteFooter v-if="footer" :footer="footer" />
-        </template>
+                </section>
+            </template>
+            <template #default>
+                <template v-if="data">
+                <section class="projects-hero">
+                    <div class="projects-hero-text font-error">
+                        <h1>项目作品</h1>
+                        <p class="en">Selected Works</p>
+                    </div>
+                </section>
+                <section class="projects-grid-section">
+                    <div class="projects-list">
+                        <router-link v-for="(p, i) in data.projects" :key="p.id" :to="`/projects/${p.id}`" class="project-card">
+                            <div class="project-image">
+                                <img :src="p.image" :alt="p.zh" />
+                            </div>
+                            <div class="project-body">
+                                <span class="project-num">{{ String(i + 1).padStart(2, '0') }}</span>
+                                <h3>{{ p.zh }}</h3>
+                                <p class="project-en">{{ p.en }}</p>
+                                <p class="project-desc">{{ p.desc }}</p>
+                                <p class="project-detail">{{ p.detail }}</p>
+                            </div>
+                        </router-link>
+                    </div>
+                </section>
+                <SiteFooter v-if="footer" :footer="footer" />
+                </template>
+            </template>
+        </el-skeleton>
     </div>
 </template>
 
@@ -35,7 +60,7 @@
 import { onMounted, ref } from 'vue';
 import { getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
-import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
+
 import SiteFooter from '@/components/home/Footer.vue';
 
 const data = ref(null);
