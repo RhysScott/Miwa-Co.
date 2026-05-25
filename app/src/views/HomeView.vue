@@ -66,7 +66,8 @@
             <div class="service-grid">
                 <div class="service-card" v-for="s in services" :key="s.zh">
                     <div class="card-icon-ring">
-                        <component :is="iconMap[s.icon]" :size="32" />
+                        <img v-if="s.image" :src="s.image" :alt="s.zh" class="service-img" />
+                        <component v-else :is="iconMap[s.icon]" :size="32" />
                     </div>
                     <h3 class="service-zh">{{ s.zh }}</h3>
                     <p class="service-en">{{ s.en }}</p>
@@ -160,14 +161,12 @@
                 <span class="label-zh">最新动态</span>
                 <span class="label-en">Latest</span>
             </div>
-            <div class="news-scroll">
-                <div class="news-list">
-                    <router-link to="/news" class="news-item" v-for="(n, idx) in news" :key="idx">
-                        <span class="news-date">{{ n.date }}</span>
-                        <span class="news-title">{{ n.title }}</span>
-                        <span class="news-arrow">→</span>
-                    </router-link>
-                </div>
+            <div class="news-grid">
+                <router-link to="/news" class="news-card" v-for="(n, idx) in news" :key="idx">
+                    <span class="news-date">{{ n.date }}</span>
+                    <span class="news-title">{{ n.title }}</span>
+                    <span class="news-arrow">→</span>
+                </router-link>
             </div>
         </section>
 
@@ -272,7 +271,7 @@ onMounted(async () => {
     );
 
     // 新闻列表滚动入场
-    gsap.fromTo('.news-item',
+    gsap.fromTo('.news-card',
         { y: 30, opacity: 0 },
         {
             y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power3.out',
@@ -475,7 +474,14 @@ onMounted(async () => {
         justify-content: center;
         margin-bottom: 2rem;
         color: rgba(0, 0, 0, 0.55);
+        overflow: hidden;
         transition: background 0.5s ease, color 0.5s ease, transform 0.5s ease;
+    }
+
+    .service-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     &:hover .card-icon-ring {
@@ -829,55 +835,55 @@ onMounted(async () => {
     border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.news-scroll {
-    max-height: 480px;
-    overflow-y: auto;
-    max-width: 700px;
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
 
-    // 滚动条美化
-    &::-webkit-scrollbar { width: 4px; }
-    &::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.12);
-        border-radius: 2px;
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
     }
 }
 
-.news-list {
+.news-card {
     display: flex;
     flex-direction: column;
-}
-
-.news-item {
-    display: flex;
-    align-items: baseline;
-    gap: 1.5rem;
-    padding: 1.25rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
     color: #1a1a1a;
     text-decoration: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+        border-color 0.4s ease,
+        background 0.4s ease,
+        transform 0.4s ease;
 
     &:hover {
-        opacity: 0.55;
-        transform: translateX(4px);
+        border-color: rgba(0, 0, 0, 0.15);
+        background: rgba(0, 0, 0, 0.02);
+        transform: translateY(-4px);
     }
 
     .news-date {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         opacity: 0.3;
-        flex-shrink: 0;
-        width: 5rem;
     }
 
     .news-title {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
+        line-height: 1.4;
         flex: 1;
     }
 
     .news-arrow {
-        font-size: 1rem;
+        font-size: 0.9rem;
         opacity: 0;
         transition: opacity 0.3s ease, transform 0.3s ease;
+        align-self: flex-end;
     }
 
     &:hover .news-arrow {
