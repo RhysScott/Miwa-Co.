@@ -17,7 +17,7 @@ import Nav from '@/components/Nav/Nav.vue';
 <style lang="scss" scoped>
 .app-layout {
   min-height: 100vh;
-  background-color: #0d0d0d;
+  background-color: #f8f8f8;
 }
 
 .app-main {
