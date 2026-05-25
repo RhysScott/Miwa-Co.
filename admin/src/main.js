@@ -1,0 +1,13 @@
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import App from './App.vue'
+import router from './router'
+import './styles/admin.scss'
+
+const app = createApp(App)
+app.use(createPinia())
+app.use(router)
+app.use(ElementPlus, { locale: { el: { table: { emptyText: '暂无数据' } } } })
+app.mount('#app')
