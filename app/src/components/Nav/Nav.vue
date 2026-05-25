@@ -196,12 +196,12 @@ import { useRouter } from 'vue-router';
     };
 
     onMounted(() => {
-        // 品牌文字入场：从左侧弹跳滑入
-        gsap.from('.brand', {
-            x: '-100%',
-            duration: 1.2,
-            ease: 'elastic.out(1, 0.5)'
-        });
+        // 品牌文字入场：逐字符蹦跳弹入（不放入 splitInstances，避免被菜单切换 revert）
+        const brandSplit = SplitText.create('.brand', { type: 'chars' });
+        gsap.fromTo(brandSplit.chars,
+            { y: -60, opacity: 0, rotation: -15 },
+            { y: 0, opacity: 1, rotation: 0, stagger: 0.03, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
+        );
 
         // 初始化 clip-path 为闭合状态
         gsap.set('#clip-path-element', { attr: { d: closedPath.value } });
