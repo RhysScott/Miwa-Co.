@@ -84,7 +84,7 @@
         <section class="news-preview" v-if="news.length">
             <SectionHeader zh="最新动态" en="Latest" />
             <div class="news-grid">
-                <NewsCard v-for="(n, idx) in news" :key="idx" :item="n" />
+                <NewsCard v-for="n in news" :key="n.id" :item="n" :to="`/news/${n.id}`" />
             </div>
         </section>
 

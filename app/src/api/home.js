@@ -33,13 +33,13 @@ const clientsMock = [
 ];
 
 const newsMock = [
-    { date: '2026.04', title: 'Miwa 发布企业级 AI Agent 开发框架 v2.0', image: '/images/1.jpg' },
-    { date: '2026.02', title: '与华为联合打造工业 IoT 边缘计算方案落地', image: '/images/2.jpg' },
-    { date: '2025.12', title: '智能客服平台日均调用量突破 5000 万次', image: '/images/3.jpg' },
-    { date: '2025.10', title: '获得 ISO 27001 信息安全认证', image: '/images/4.jpg' },
-    { date: '2025.08', title: '与蔚来达成战略合作，共建车载 AI 实验室', image: '/images/5.jpg' },
-    { date: '2025.07', title: '发布开源 IoT 中间件 MiwaLink v1.0', image: '/images/1.jpg' },
-    { date: '2025.05', title: '完成 A 轮融资，加速国际化布局', image: '/images/2.jpg' },
+    { id: 2, date: '2026.04', title: 'Miwa 发布企业级 AI Agent 开发框架 v2.0', image: '/images/1.jpg' },
+    { id: 3, date: '2026.02', title: '与华为联合打造工业 IoT 边缘计算方案落地', image: '/images/2.jpg' },
+    { id: 4, date: '2025.12', title: '智能客服平台日均调用量突破 5000 万次', image: '/images/3.jpg' },
+    { id: 5, date: '2025.10', title: '获得 ISO 27001 信息安全认证', image: '/images/4.jpg' },
+    { id: 6, date: '2025.08', title: '与蔚来达成战略合作，共建车载 AI 实验室', image: '/images/5.jpg' },
+    { id: 7, date: '2025.07', title: '发布开源 IoT 中间件 MiwaLink v1.0', image: '/images/1.jpg' },
+    { id: 8, date: '2025.05', title: '完成 A 轮融资，加速国际化布局', image: '/images/2.jpg' },
 ];
 
 const statsMock = [
