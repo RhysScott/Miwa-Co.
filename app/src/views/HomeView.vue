@@ -10,14 +10,50 @@
 
         <!-- 横向滚动服务词条 -->
         <section class="marquee">
-            <div class="marquee-track">
-                <span v-for="n in 3" :key="n" class="marquee-text">
-                    品牌设计&nbsp;&nbsp;/&nbsp;&nbsp;Branding&nbsp;&nbsp;/&nbsp;&nbsp;
-                    视觉识别&nbsp;&nbsp;/&nbsp;&nbsp;Visual Identity&nbsp;&nbsp;/&nbsp;&nbsp;
-                    数字体验&nbsp;&nbsp;/&nbsp;&nbsp;Digital&nbsp;&nbsp;/&nbsp;&nbsp;
-                    空间设计&nbsp;&nbsp;/&nbsp;&nbsp;Spatial&nbsp;&nbsp;/&nbsp;&nbsp;
-                    内容策划&nbsp;&nbsp;/&nbsp;&nbsp;Content&nbsp;&nbsp;/&nbsp;&nbsp;
-                </span>
+            <div class="marquee-inner">
+                <div class="marquee-track">
+                    <span class="marquee-item">品牌设计</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Branding</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">视觉识别</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Visual Identity</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">数字体验</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Digital</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">空间设计</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Spatial</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">内容策划</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Content</span>
+                </div>
+                <!-- 复制一份实现无缝滚动 -->
+                <div class="marquee-track" aria-hidden="true">
+                    <span class="marquee-item">品牌设计</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Branding</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">视觉识别</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Visual Identity</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">数字体验</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Digital</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">空间设计</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Spatial</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">内容策划</span>
+                    <span class="marquee-divider">/</span>
+                    <span class="marquee-item">Content</span>
+                </div>
             </div>
         </section>
 
@@ -28,7 +64,7 @@
                 <span class="en">Selected Works</span>
             </div>
             <div class="project-grid">
-                <div class="project-card" v-for="(p, i) in projects" :key="i" :style="{ backgroundImage: `url(${p.image})` }" @mouseenter="onCardEnter(i)" @mouseleave="onCardLeave(i)">
+                <div class="project-card" v-for="(p, i) in projects" :key="i" :style="{ backgroundImage: `url(${p.image})` }">
                     <div class="card-overlay">
                         <span class="card-num">0{{ i + 1 }}</span>
                         <div class="card-info">
@@ -73,15 +109,6 @@ const projects = reactive([
     { zh: '城市脉搏', en: 'Urban Pulse', image: '/images/3.jpg' },
     { zh: '自然共生', en: 'Nature & Co', image: '/images/4.jpg' },
 ]);
-
-// 卡片 hover：非悬停卡片降低透明度
-const onCardEnter = (i) => {
-    gsap.to('.project-card', { opacity: 0.4, duration: 0.3 });
-    gsap.to(`.project-card:nth-child(${i + 1})`, { opacity: 1, scale: 1.02, duration: 0.4 });
-};
-const onCardLeave = () => {
-    gsap.to('.project-card', { opacity: 1, scale: 1, duration: 0.4 });
-};
 
 onMounted(() => {
     // Hero 逐字弹跳入场
@@ -143,26 +170,38 @@ onMounted(() => {
 .marquee {
     width: 100%;
     overflow: hidden;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 1.5rem 0;
-    white-space: nowrap;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 2rem 0;
 
-    .marquee-track {
-        display: inline-flex;
-        animation: marquee 30s linear infinite;
+    .marquee-inner {
+        display: flex;
+        width: max-content;
+        animation: marquee 40s linear infinite;
     }
 
-    .marquee-text {
+    .marquee-track {
+        display: flex;
+        align-items: baseline;
+        gap: 1.5rem;
+    }
+
+    .marquee-item {
+        font-size: 2rem;
+        font-weight: bold;
+        white-space: nowrap;
+        transition: color 0.3s ease;
+    }
+
+    .marquee-divider {
         font-size: 1.5rem;
-        letter-spacing: 0.05em;
-        opacity: 0.5;
+        color: rgba(255, 255, 255, 0.2);
     }
 }
 
 @keyframes marquee {
     from { transform: translateX(0); }
-    to { transform: translateX(-33.333%); }
+    to { transform: translateX(-50%); }
 }
 
 // Projects
@@ -201,11 +240,12 @@ onMounted(() => {
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.5s ease;
 
     .card-overlay {
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.25);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.1) 50%);
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
@@ -232,6 +272,16 @@ onMounted(() => {
             opacity: 0.5;
         }
     }
+}
+
+// 项目卡片 hover：非悬停卡片降低透明度，当前卡片放大
+.project-grid:hover .project-card:not(:hover) {
+    opacity: 0.35;
+}
+
+.project-card:hover {
+    transform: scale(1.03);
+    z-index: 2;
 }
 
 // About
