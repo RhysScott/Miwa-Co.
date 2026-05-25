@@ -7,11 +7,29 @@
             </div>
         </section>
 
-        <section class="detail-body">
-            <div class="detail-image" v-if="article.image">
-                <img :src="article.image" :alt="article.title" />
+        <section class="detail-layout">
+            <div class="detail-main">
+                <div class="detail-image" v-if="article.image">
+                    <img :src="article.image" :alt="article.title" />
+                </div>
+                <div class="detail-content" v-html="htmlContent" />
             </div>
-            <div class="detail-content" v-html="htmlContent" />
+
+            <aside class="detail-sidebar">
+                <h3 class="sidebar-title">更多动态</h3>
+                <nav class="sidebar-list">
+                    <router-link
+                        v-for="item in otherNews"
+                        :key="item.id"
+                        :to="`/news/${item.id}`"
+                        class="sidebar-item"
+                        :class="{ active: item.id === article.id }"
+                    >
+                        <span class="sidebar-item-date">{{ item.date }}</span>
+                        <span class="sidebar-item-title">{{ item.title }}</span>
+                    </router-link>
+                </nav>
+            </aside>
         </section>
 
         <SiteFooter v-if="footer" :footer="footer" />
@@ -26,14 +44,15 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { marked } from 'marked';
-import { getNewsById } from '@/api/pages';
+import { getNewsById, getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
 import SiteFooter from '@/components/home/Footer.vue';
 
 const route = useRoute();
+const allNews = ref([]);
 const article = ref(null);
 const footer = ref(null);
 const loaded = ref(false);
@@ -43,15 +62,31 @@ const htmlContent = computed(() => {
     return marked(article.value.content);
 });
 
-onMounted(async () => {
-    const id = route.params.id;
+const otherNews = computed(() => {
+    return allNews.value.filter(n => n.id !== article.value?.id);
+});
+
+async function loadArticle(id) {
     article.value = await getNewsById(id);
     loaded.value = true;
     if (article.value) {
         document.title = `${article.value.title} - Miwa & Co.`;
     }
-    const home = await getHomeData();
+}
+
+onMounted(async () => {
+    const [newsList, home] = await Promise.all([
+        getPageData('news'),
+        getHomeData(),
+    ]);
+    allNews.value = newsList;
     footer.value = home.footer;
+    await loadArticle(route.params.id);
+});
+
+watch(() => route.params.id, (newId) => {
+    loadArticle(newId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
 
@@ -107,10 +142,23 @@ onMounted(async () => {
     }
 }
 
-.detail-body {
-    max-width: 680px;
+.detail-layout {
+    max-width: 1000px;
     margin: 0 auto;
     padding: 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 4rem;
+    align-items: flex-start;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+.detail-main {
+    min-width: 0;
 }
 
 .detail-image {
@@ -168,5 +216,67 @@ onMounted(async () => {
             margin-bottom: 0.5rem;
         }
     }
+}
+
+// ---------- sidebar ----------
+.detail-sidebar {
+    position: sticky;
+    top: 6rem;
+
+    @media (max-width: 768px) {
+        position: static;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        padding-top: 2rem;
+    }
+}
+
+.sidebar-title {
+    font-size: 0.75rem;
+    opacity: 0.3;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 1.25rem;
+}
+
+.sidebar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.sidebar-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: opacity 0.3s ease, padding-left 0.3s ease;
+
+    &:hover {
+        opacity: 0.6;
+    }
+
+    &.active {
+        padding-left: 0.75rem;
+        border-left: 2px solid #1a1a1a;
+
+        .sidebar-item-title {
+            opacity: 0.7;
+        }
+    }
+}
+
+.sidebar-item-date {
+    font-size: 0.7rem;
+    opacity: 0.25;
+    white-space: nowrap;
+}
+
+.sidebar-item-title {
+    font-size: 0.9rem;
+    line-height: 1.35;
+    opacity: 0.4;
 }
 </style>
