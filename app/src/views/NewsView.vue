@@ -7,18 +7,21 @@
             </div>
         </section>
 
-        <section class="news-list">
-            <article v-for="item in news" :key="item.id" class="news-article">
-                <div class="article-image">
-                    <img v-if="item.image" :src="item.image" :alt="item.title" />
-                    <div v-else class="article-image-placeholder" />
-                </div>
-                <div class="article-body">
-                    <span class="article-date">{{ item.date }}</span>
-                    <h2 class="article-title">{{ item.title }}</h2>
-                    <p class="article-content">{{ item.content }}</p>
-                </div>
-            </article>
+        <section class="news-grid-section">
+            <div class="news-grid">
+                <router-link v-for="item in news" :key="item.id" :to="`/news/${item.id}`" class="news-card">
+                    <div class="card-image">
+                        <img v-if="item.image" :src="item.image" :alt="item.title" />
+                        <div v-else class="card-image-placeholder" />
+                    </div>
+                    <div class="card-body">
+                        <span class="card-date">{{ item.date }}</span>
+                        <h2 class="card-title">{{ item.title }}</h2>
+                        <p class="card-excerpt">{{ item.excerpt }}</p>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </router-link>
+            </div>
         </section>
 
         <SiteFooter v-if="footer" :footer="footer" />
@@ -48,7 +51,7 @@ onMounted(async () => {
 }
 
 .news-hero {
-    min-height: 40vh;
+    min-height: 35vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -84,77 +87,97 @@ onMounted(async () => {
     }
 }
 
-.news-list {
-    max-width: 800px;
+.news-grid-section {
+    max-width: 960px;
     margin: 0 auto;
     padding: 4rem 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
 }
 
-.news-article {
+.news-grid {
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 2rem;
-    align-items: flex-start;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
 
-    &:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
     }
 }
 
-.article-image {
+.news-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    color: #1a1a1a;
+    text-decoration: none;
+    overflow: hidden;
+    transition:
+        border-color 0.4s ease,
+        background 0.4s ease,
+        transform 0.4s ease;
+
+    &:hover {
+        border-color: rgba(0, 0, 0, 0.15);
+        background: rgba(0, 0, 0, 0.01);
+        transform: translateY(-4px);
+
+        .card-arrow {
+            opacity: 0.4;
+            transform: translateX(4px);
+        }
+    }
+}
+
+.card-image {
     img {
         width: 100%;
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 16 / 10;
         object-fit: cover;
-        border-radius: 12px;
         display: block;
     }
 
-    .article-image-placeholder {
+    .card-image-placeholder {
         width: 100%;
-        aspect-ratio: 4 / 3;
-        border-radius: 12px;
+        aspect-ratio: 16 / 10;
         background: rgba(0, 0, 0, 0.04);
     }
 }
 
-.article-body {
+.card-body {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    flex: 1;
 }
 
-.article-date {
+.card-date {
     font-size: 0.75rem;
     opacity: 0.3;
     white-space: nowrap;
 }
 
-.article-title {
-    font-size: 1.5rem;
+.card-title {
+    font-size: 1.2rem;
     font-weight: bold;
     margin: 0;
     letter-spacing: -0.01em;
-    line-height: 1.3;
+    line-height: 1.35;
 }
 
-.article-content {
-    font-size: 0.95rem;
-    opacity: 0.45;
-    line-height: 1.7;
+.card-excerpt {
+    font-size: 0.85rem;
+    opacity: 0.4;
+    line-height: 1.6;
     margin: 0;
+    flex: 1;
 }
 
-@media (max-width: 640px) {
-    .news-article {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
+.card-arrow {
+    font-size: 0.9rem;
+    opacity: 0;
+    align-self: flex-end;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    margin-top: 0.25rem;
 }
 </style>
