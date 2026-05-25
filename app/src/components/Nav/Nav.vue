@@ -2,7 +2,7 @@
     <div class="nav-wrapper">
         <div class="nav-header">
             <!-- logo 展示，点击返回首页 -->
-<div class="brand font-error" @click="router.push('/')">Miwa & Co.</div>
+<div class="brand font-error" @click="onBrandClick">Miwa & Co.</div>
             <div class="menu-button" @click="toggleMenuState">
                 <!-- 根据菜单状态切换图标 -->
                 <Menu v-if="!isMenuActive" color="white" />
@@ -99,6 +99,11 @@ import { useRouter } from 'vue-router';
     const isMenuActive = ref(false);
     // 存储所有 SplitText 实例，用于关闭时 revert 还原文字状态
     let splitInstances = [];
+
+    // logo 点击：先播弹跳动画再跳转首页
+    const onBrandClick = () => {
+        gsap.fromTo('.brand', { scale: 1 }, { scale: 1.15, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.out', onComplete: () => router.push('/') });
+    };
 
     // 打开/关闭菜单：通过 GSAP 在两段式 clip-path 动画中间切换
     const toggleMenuState = () => {
@@ -234,6 +239,7 @@ import { useRouter } from 'vue-router';
         z-index: 10;
         // pointer-events: none 让点击穿透导航容器，仅品牌文字和菜单按钮可交互
         pointer-events: none;
+        user-select: none;
     }
 
     .nav-header {
@@ -251,6 +257,13 @@ import { useRouter } from 'vue-router';
         color: var(--logo-color);
         pointer-events: all;
         cursor: pointer;
+        transition: transform 0.3s ease, text-shadow 0.3s ease;
+        transform-origin: left center;
+
+        &:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
     }
 
     .menu-button {
@@ -295,6 +308,7 @@ import { useRouter } from 'vue-router';
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
+            user-select: text;
 
             h1 {
                 margin: 0;
