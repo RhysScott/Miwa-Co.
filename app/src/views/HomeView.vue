@@ -385,7 +385,7 @@ onMounted(async () => {
 
 // ---------- Section header ----------
 .section-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 
     .label-zh {
         font-size: 0.75rem;
@@ -409,7 +409,7 @@ onMounted(async () => {
     overflow: hidden;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    padding: 2.5rem 0;
+    padding: 1.5rem 0;
 
     .marquee-inner {
         display: flex;
@@ -446,7 +446,7 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 6rem 2rem;
+    padding: 3rem 2rem;
 }
 
 .service-grid {
@@ -574,7 +574,7 @@ onMounted(async () => {
 
 // ---------- Projects ----------
 .projects {
-    padding: 8rem 2rem;
+    padding: 5rem 2rem;
 }
 
 .project-grid {
@@ -658,7 +658,7 @@ onMounted(async () => {
 
 // ---------- Process ----------
 .process {
-    padding: 8rem 2rem;
+    padding: 5rem 2rem;
 }
 
 .process-track {
