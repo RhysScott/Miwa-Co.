@@ -2,11 +2,11 @@
     <div class="nav-wrapper">
         <div class="nav-header">
             <!-- logo 展示，点击返回首页 -->
-<div class="brand font-error" @click="onBrandClick">Miwa & Co.</div>
+            <div class="brand font-error" @click="onBrandClick">Miwa & Co.</div>
             <div class="menu-button" @click="toggleMenuState">
                 <!-- 根据菜单状态切换图标 -->
-                <Menu v-if="!isMenuActive" color="white" />
-                <CircleX color="white" v-else />
+                <Menu v-if="!isMenuActive" :color="menuIconColor" />
+                <CircleX v-else />
             </div>
         </div>
 
@@ -62,7 +62,7 @@
     import { CircleX, Menu } from '@lucide/vue';
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
     const router = useRouter();
@@ -100,9 +100,37 @@ import { useRouter } from 'vue-router';
     // 存储所有 SplitText 实例，用于关闭时 revert 还原文字状态
     let splitInstances = [];
 
+    // 滚动状态：控制 logo 显隐 & 菜单按钮颜色
+    const scrollY = ref(0);
+    const isLogoHidden = ref(false);
+    const menuIconColor = computed(() => (scrollY.value > 80 ? '#111' : 'white'));
+
+    const onScroll = () => {
+        scrollY.value = window.scrollY;
+        const shouldHide = window.scrollY > 80;
+        if (shouldHide && !isLogoHidden.value) {
+            isLogoHidden.value = true;
+            gsap.to('.brand', { y: -60, opacity: 0, duration: 0.35, ease: 'power2.in' });
+        } else if (!shouldHide && isLogoHidden.value) {
+            isLogoHidden.value = false;
+            gsap.to('.brand', { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' });
+        }
+    };
+
     // logo 点击：先播弹跳动画再跳转首页
     const onBrandClick = () => {
-        gsap.fromTo('.brand', { scale: 1 }, { scale: 1.15, duration: 0.15, yoyo: true, repeat: 1, ease: 'power2.out', onComplete: () => router.push('/') });
+        gsap.fromTo(
+            '.brand',
+            { scale: 1 },
+            {
+                scale: 1.15,
+                duration: 0.15,
+                yoyo: true,
+                repeat: 1,
+                ease: 'power2.out',
+                onComplete: () => router.push('/')
+            }
+        );
     };
 
     // 打开/关闭菜单：通过 GSAP 在两段式 clip-path 动画中间切换
@@ -128,7 +156,9 @@ import { useRouter } from 'vue-router';
                         onStart: () => gsap.to('.brand', { color: 'var(--logo-color-menu)', duration: 0.3 }),
                         onComplete: () => {
                             // links 中文大字从右侧弹入
-                            const linksSplit = SplitText.create('.links-section .nav-item .zh', { type: 'chars,words' });
+                            const linksSplit = SplitText.create('.links-section .nav-item .zh', {
+                                type: 'chars,words'
+                            });
                             splitInstances.push(linksSplit);
                             gsap.fromTo(
                                 linksSplit.chars,
@@ -136,9 +166,15 @@ import { useRouter } from 'vue-router';
                                 { stagger: 0.01, x: 0, opacity: 1, duration: 1, ease: 'elastic.out(1, 0.5)' }
                             );
                             // links 英文副标题淡入
-                            gsap.fromTo('.links-section .nav-item .en', { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.05 });
+                            gsap.fromTo(
+                                '.links-section .nav-item .en',
+                                { opacity: 0 },
+                                { opacity: 1, duration: 0.6, stagger: 0.05 }
+                            );
                             // info-section 中文从左侧弹入
-                            const infoSplit = SplitText.create('.info-section h1 .zh, .info-section p', { type: 'chars,words' });
+                            const infoSplit = SplitText.create('.info-section h1 .zh, .info-section p', {
+                                type: 'chars,words'
+                            });
                             splitInstances.push(infoSplit);
                             gsap.fromTo(
                                 infoSplit.chars,
@@ -196,9 +232,13 @@ import { useRouter } from 'vue-router';
     };
 
     onMounted(() => {
+        // 滚动监听：控制 logo 显隐
+        window.addEventListener('scroll', onScroll, { passive: true });
+
         // 品牌文字入场：逐字符蹦跳弹入（不放入 splitInstances，避免被菜单切换 revert）
         const brandSplit = SplitText.create('.brand', { type: 'chars' });
-        gsap.fromTo(brandSplit.chars,
+        gsap.fromTo(
+            brandSplit.chars,
             { y: -60, opacity: 0, rotation: -15 },
             { y: 0, opacity: 1, rotation: 0, stagger: 0.03, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
         );
@@ -224,6 +264,10 @@ import { useRouter } from 'vue-router';
             reverseMidPath.value = `M 0 ${screenSize.height / 2} Q ${screenSize.width / 2} ${screenSize.height * 0.25} ${screenSize.width} ${screenSize.height / 2}  L ${screenSize.width} ${screenSize.height} L 0 ${screenSize.height} Z`;
             reverseEndPath.value = `M 0 ${screenSize.height} Q ${screenSize.width / 2}  ${screenSize.height} ${screenSize.width} ${screenSize.height}  L ${screenSize.width} ${screenSize.height} L 0 ${screenSize.height} Z`;
         });
+    });
+
+    onUnmounted(() => {
+        window.removeEventListener('scroll', onScroll);
     });
 </script>
 
@@ -256,7 +300,9 @@ import { useRouter } from 'vue-router';
         color: var(--logo-color);
         pointer-events: all;
         cursor: pointer;
-        transition: transform 0.3s ease, text-shadow 0.3s ease;
+        transition:
+            transform 0.3s ease,
+            text-shadow 0.3s ease;
         transform-origin: left center;
 
         &:hover {
@@ -331,7 +377,9 @@ import { useRouter } from 'vue-router';
                 margin: 0;
                 color: #666;
                 font-size: 2rem;
-                transition: color 0.3s ease, transform 0.3s ease;
+                transition:
+                    color 0.3s ease,
+                    transform 0.3s ease;
                 cursor: default;
             }
 
@@ -358,7 +406,9 @@ import { useRouter } from 'vue-router';
                 align-items: flex-end;
                 gap: 0.15rem;
                 line-height: 1;
-                transition: color 0.3s ease, transform 0.3s ease;
+                transition:
+                    color 0.3s ease,
+                    transform 0.3s ease;
 
                 .zh {
                     font-size: 5rem;

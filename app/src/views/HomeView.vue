@@ -332,6 +332,7 @@ onMounted(async () => {
     .hero-text {
         position: relative;
         z-index: 1;
+        color: rgba(255, 255, 255, 0.95);
     }
 
     .hero-zh {
@@ -351,7 +352,7 @@ onMounted(async () => {
         bottom: 2rem;
         z-index: 1;
         font-size: 1.25rem;
-        opacity: 0.3;
+        color: rgba(255, 255, 255, 0.55);
         animation: float 2s ease-in-out infinite;
     }
 }
@@ -579,14 +580,16 @@ onMounted(async () => {
 
     .card-num {
         font-size: 0.75rem;
-        opacity: 0.4;
+        opacity: 0.55;
         letter-spacing: 0.05em;
+        color: rgba(255, 255, 255, 0.8);
     }
 
     .card-info {
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
+        color: rgba(255, 255, 255, 0.95);
 
         .card-zh {
             font-size: 1.75rem;
@@ -639,7 +642,7 @@ onMounted(async () => {
         font-size: 3rem;
         font-weight: bold;
         white-space: nowrap;
-        background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
+        background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
