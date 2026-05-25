@@ -168,6 +168,21 @@ import { onMounted, reactive } from 'vue';
         justify-content: center;
         text-align: center;
         padding: 2rem;
+        background: url('/images/5.jpg') center / cover no-repeat;
+        position: relative;
+
+        // 暗色叠加层，保证文字可读
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 1;
+        }
 
         .hero-zh {
             font-size: clamp(3rem, 8vw, 8rem);
@@ -186,9 +201,10 @@ import { onMounted, reactive } from 'vue';
     .marquee {
         width: 100%;
         overflow: hidden;
-        border-top: 1px solid rgba(255, 255, 255, 0.12);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        padding: 2rem 0;
+        background: #0d0d0d;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 2.5rem 0;
 
         .marquee-inner {
             display: flex;
@@ -199,47 +215,45 @@ import { onMounted, reactive } from 'vue';
         .marquee-track {
             display: flex;
             align-items: baseline;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .marquee-item {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
             white-space: nowrap;
-            transition: color 0.3s ease;
         }
 
         .marquee-divider {
             font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.15);
         }
     }
 
     @keyframes marquee {
-        from {
-            transform: translateX(0);
-        }
-        to {
-            transform: translateX(-50%);
-        }
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
     }
 
     // Projects
     .projects {
         padding: 8rem 2rem;
+        background: #0d0d0d;
     }
 
     .section-label {
         margin-bottom: 3rem;
 
         .zh {
-            font-size: 1rem;
-            opacity: 0.4;
+            font-size: 0.875rem;
+            opacity: 0.35;
             display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         .en {
-            font-size: 2rem;
+            font-size: 2.5rem;
         }
     }
 
@@ -267,7 +281,7 @@ import { onMounted, reactive } from 'vue';
         .card-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.1) 50%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, transparent 50%);
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
@@ -275,8 +289,9 @@ import { onMounted, reactive } from 'vue';
         }
 
         .card-num {
-            font-size: 0.875rem;
-            opacity: 0.5;
+            font-size: 0.75rem;
+            opacity: 0.4;
+            letter-spacing: 0.05em;
         }
 
         .card-info {
@@ -285,18 +300,17 @@ import { onMounted, reactive } from 'vue';
             gap: 0.25rem;
 
             .card-zh {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
                 font-weight: bold;
             }
 
             .card-en {
                 font-size: 0.875rem;
-                opacity: 0.5;
+                opacity: 0.45;
             }
         }
     }
 
-    // 项目卡片 hover：非悬停卡片降低透明度，当前卡片放大
     .project-grid:hover .project-card:not(:hover) {
         opacity: 0.35;
     }
@@ -309,7 +323,8 @@ import { onMounted, reactive } from 'vue';
     // About
     .about {
         padding: 8rem 2rem 6rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: #0d0d0d;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .about-grid {
@@ -325,13 +340,15 @@ import { onMounted, reactive } from 'vue';
 
     .about-label {
         .zh {
-            font-size: 1rem;
-            opacity: 0.4;
+            font-size: 0.875rem;
+            opacity: 0.35;
             display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         .en {
-            font-size: 2rem;
+            font-size: 2.5rem;
         }
     }
 
@@ -344,7 +361,7 @@ import { onMounted, reactive } from 'vue';
 
         .about-en {
             font-size: 1rem;
-            opacity: 0.4;
+            opacity: 0.35;
             margin-bottom: 0.5rem;
         }
     }
