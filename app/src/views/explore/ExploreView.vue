@@ -1,46 +1,79 @@
 <template>
     <div class="explore-page">
-        <LoadingSpinner v-if="!loaded" />
-        <template v-else-if="data">
-        <section class="explore-hero">
-            <div class="explore-hero-text font-error">
-                <h1>探索 Miwa</h1>
-                <p class="en">Explore What We Build</p>
-            </div>
-        </section>
-
-        <!-- 服务能力 -->
-        <section class="explore-services">
-            <h2 class="section-title font-error">
-                <span class="zh">服务能力</span>
-                <span class="label-en">Capabilities</span>
-            </h2>
-            <div class="services-grid">
-                <div v-for="s in data.services" :key="s.zh" class="service-card">
-                    <h3>{{ s.zh }}</h3>
-                    <p class="service-en">{{ s.en }}</p>
-                    <p class="service-desc">{{ s.desc }}</p>
-                    <p class="service-detail">{{ s.detail }}</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 案例 -->
-        <section class="explore-cases">
-            <h2 class="section-title font-error">
-                <span class="zh">精选案例</span>
-                <span class="label-en">Case Studies</span>
-            </h2>
-            <div class="cases-list">
-                <div v-for="c in data.cases" :key="c.zh" class="case-card">
-                    <h3>{{ c.zh }}</h3>
-                    <p>{{ c.detail }}</p>
-                </div>
-            </div>
-        </section>
-
-        <SiteFooter v-if="footer" :footer="footer" />
-        </template>
+        <el-skeleton :loading="!loaded" animated>
+            <template #template>
+                <section class="explore-hero">
+                    <div class="explore-hero-text font-error">
+                        <el-skeleton-item variant="h1" style="width:240px" />
+                        <el-skeleton-item variant="text" style="width:200px;margin-top:0.75rem" />
+                    </div>
+                </section>
+                <section class="explore-services">
+                    <div class="section-title font-error" style="text-align:center;margin-bottom:3rem">
+                        <el-skeleton-item variant="text" style="width:120px;margin:0 auto" />
+                        <el-skeleton-item variant="text" style="width:80px;margin:0.3rem auto 0" />
+                    </div>
+                    <div class="services-grid">
+                        <div v-for="i in 4" :key="i" class="sk-card">
+                            <el-skeleton-item variant="h3" style="width:120px" />
+                            <el-skeleton-item variant="text" style="width:80px;margin-top:0.3rem" />
+                            <el-skeleton-item variant="text" style="width:100%;margin-top:1rem" />
+                            <el-skeleton-item variant="text" style="width:70%;margin-top:0.4rem" />
+                        </div>
+                    </div>
+                </section>
+                <section class="explore-cases">
+                    <div class="section-title font-error" style="text-align:center;margin-bottom:3rem">
+                        <el-skeleton-item variant="text" style="width:120px;margin:0 auto" />
+                        <el-skeleton-item variant="text" style="width:80px;margin:0.3rem auto 0" />
+                    </div>
+                    <div class="cases-list">
+                        <div v-for="i in 3" :key="i" class="sk-card">
+                            <el-skeleton-item variant="h3" style="width:60%" />
+                            <el-skeleton-item variant="text" style="width:90%;margin-top:0.6rem" />
+                            <el-skeleton-item variant="text" style="width:70%;margin-top:0.4rem" />
+                        </div>
+                    </div>
+                </section>
+            </template>
+            <template #default>
+                <template v-if="data">
+                <section class="explore-hero">
+                    <div class="explore-hero-text font-error">
+                        <h1>探索 Miwa</h1>
+                        <p class="en">Explore What We Build</p>
+                    </div>
+                </section>
+                <section class="explore-services">
+                    <h2 class="section-title font-error">
+                        <span class="zh">服务能力</span>
+                        <span class="label-en">Capabilities</span>
+                    </h2>
+                    <div class="services-grid">
+                        <div v-for="s in data.services" :key="s.zh" class="service-card">
+                            <h3>{{ s.zh }}</h3>
+                            <p class="service-en">{{ s.en }}</p>
+                            <p class="service-desc">{{ s.desc }}</p>
+                            <p class="service-detail">{{ s.detail }}</p>
+                        </div>
+                    </div>
+                </section>
+                <section class="explore-cases">
+                    <h2 class="section-title font-error">
+                        <span class="zh">精选案例</span>
+                        <span class="label-en">Case Studies</span>
+                    </h2>
+                    <div class="cases-list">
+                        <div v-for="c in data.cases" :key="c.zh" class="case-card">
+                            <h3>{{ c.zh }}</h3>
+                            <p>{{ c.detail }}</p>
+                        </div>
+                    </div>
+                </section>
+                <SiteFooter v-if="footer" :footer="footer" />
+                </template>
+            </template>
+        </el-skeleton>
     </div>
 </template>
 
@@ -48,7 +81,6 @@
 import { onMounted, ref } from 'vue';
 import { getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
-import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import SiteFooter from '@/components/home/Footer.vue';
 
 const data = ref(null);
@@ -79,12 +111,24 @@ onMounted(async () => {
     padding: 6rem 2rem 3rem;
     background: url('/images/5.jpg') center / cover no-repeat;
     position: relative;
+    isolation: isolate;
 
     &::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.25);
+        z-index: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.5) 100%);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        opacity: 0.12;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
+        background-size: 28px 28px;
     }
 
     .explore-hero-text {
@@ -223,6 +267,12 @@ onMounted(async () => {
         line-height: 1.7;
         margin: 0;
     }
+}
+
+.sk-card {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 24px;
+    padding: 2rem;
 }
 
 </style>

@@ -256,14 +256,26 @@ onMounted(async () => {
     justify-content: center;
     text-align: center;
     padding: 2rem;
-    background: url('/images/5.jpg') center / cover no-repeat;
+    background: url('/images/1.jpg') center / cover no-repeat;
     position: relative;
+    isolation: isolate;
 
     &::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.25);
+        z-index: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.45) 100%);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        opacity: 0.1;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
+        background-size: 28px 28px;
     }
 
     .hero-text {

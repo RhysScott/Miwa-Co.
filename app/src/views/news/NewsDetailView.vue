@@ -50,26 +50,28 @@
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
 import hljs from 'highlight.js';
 import { getNewsById, getPageData } from '@/api/pages';
 import { getHomeData } from '@/api/home';
 import LoadingSpinner from '@/components/shared/LoadingSpinner.vue';
 import SiteFooter from '@/components/home/Footer.vue';
 
-const route = useRoute();
-const allNews = ref([]);
-const article = ref(null);
-const footer = ref(null);
-const loaded = ref(false);
-
-marked.setOptions({
+marked.use(markedHighlight({
+    langPrefix: 'hljs language-',
     highlight(code, lang) {
         if (lang && hljs.getLanguage(lang)) {
             return hljs.highlight(code, { language: lang }).value;
         }
         return hljs.highlightAuto(code).value;
     },
-});
+}));
+
+const route = useRoute();
+const allNews = ref([]);
+const article = ref(null);
+const footer = ref(null);
+const loaded = ref(false);
 
 const htmlContent = computed(() => {
     if (!article.value) return '';
@@ -125,14 +127,26 @@ watch(() => route.params.id, (newId) => {
     justify-content: center;
     text-align: center;
     padding: 6rem 2rem 3rem;
-    background: url('/images/5.jpg') center / cover no-repeat;
+    background: url('/images/2.jpg') center / cover no-repeat;
     position: relative;
+    isolation: isolate;
 
     &::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.25);
+        z-index: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.5) 100%);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        opacity: 0.12;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
+        background-size: 28px 28px;
     }
 
     .detail-hero-text {

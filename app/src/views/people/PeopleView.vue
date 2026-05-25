@@ -1,32 +1,57 @@
 <template>
     <div class="people-page">
-        <LoadingSpinner v-if="!loaded" />
-        <template v-else-if="people.length">
-        <section class="people-hero">
-            <div class="people-hero-text font-error">
-                <h1>团队成员</h1>
-                <p class="en">People</p>
-            </div>
-        </section>
-
-        <section class="people-grid-section">
-            <div class="people-grid">
-                <router-link v-for="p in people" :key="p.id" :to="`/people/${p.id}`" class="person-card">
-                    <div class="person-avatar">
-                        <img :src="p.image" :alt="p.name" />
+        <el-skeleton :loading="!loaded" animated>
+            <template #template>
+                <section class="people-hero">
+                    <div class="people-hero-text font-error">
+                        <el-skeleton-item variant="h1" style="width:200px" />
+                        <el-skeleton-item variant="text" style="width:80px;margin-top:0.75rem" />
                     </div>
-                    <div class="person-info">
-                        <h3>{{ p.name }}</h3>
-                        <span class="person-en">{{ p.en }}</span>
-                        <span class="person-role">{{ p.role }} · {{ p.roleEn }}</span>
-                        <p class="person-bio">{{ p.bio }}</p>
+                </section>
+                <section class="people-grid-section">
+                    <div class="people-grid">
+                        <div v-for="i in 6" :key="i" class="person-card">
+                            <div class="person-avatar">
+                                <el-skeleton-item variant="image" style="width:72px;height:72px;border-radius:50%" />
+                            </div>
+                            <div class="person-info">
+                                <el-skeleton-item variant="h3" style="width:80px" />
+                                <el-skeleton-item variant="text" style="width:100px;margin-top:0.25rem" />
+                                <el-skeleton-item variant="text" style="width:160px;margin-top:0.25rem" />
+                                <el-skeleton-item variant="text" style="width:90%;margin-top:0.25rem" />
+                                <el-skeleton-item variant="text" style="width:70%;margin-top:0.25rem" />
+                            </div>
+                        </div>
                     </div>
-                </router-link>
-            </div>
-        </section>
-
-        <SiteFooter v-if="footer" :footer="footer" />
-        </template>
+                </section>
+            </template>
+            <template #default>
+                <template v-if="people.length">
+                <section class="people-hero">
+                    <div class="people-hero-text font-error">
+                        <h1>团队成员</h1>
+                        <p class="en">People</p>
+                    </div>
+                </section>
+                <section class="people-grid-section">
+                    <div class="people-grid">
+                        <router-link v-for="p in people" :key="p.id" :to="`/people/${p.id}`" class="person-card">
+                            <div class="person-avatar">
+                                <img :src="p.image" :alt="p.name" />
+                            </div>
+                            <div class="person-info">
+                                <h3>{{ p.name }}</h3>
+                                <span class="person-en">{{ p.en }}</span>
+                                <span class="person-role">{{ p.role }} · {{ p.roleEn }}</span>
+                                <p class="person-bio">{{ p.bio }}</p>
+                            </div>
+                        </router-link>
+                    </div>
+                </section>
+                <SiteFooter v-if="footer" :footer="footer" />
+                </template>
+            </template>
+        </el-skeleton>
     </div>
 </template>
 
@@ -63,14 +88,26 @@ onMounted(async () => {
     justify-content: center;
     text-align: center;
     padding: 6rem 2rem 3rem;
-    background: url('/images/5.jpg') center / cover no-repeat;
+    background: url('/images/4.jpg') center / cover no-repeat;
     position: relative;
+    isolation: isolate;
 
     &::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.25);
+        z-index: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.5) 100%);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        opacity: 0.12;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
+        background-size: 28px 28px;
     }
 
     .people-hero-text {
