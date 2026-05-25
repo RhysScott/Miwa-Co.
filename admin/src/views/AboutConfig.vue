@@ -2,53 +2,98 @@
   <div>
     <div class="page-header">
       <h2>关于页设置</h2>
-      <el-button type="primary" @click="handleSave">保存</el-button>
     </div>
+
+    <!-- Chinese paragraphs -->
+    <el-card style="margin-bottom:20px">
+      <template #header>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>中文段落</strong>
+          <el-button size="small" type="primary" @click="addParagraph('zh')">新增段落</el-button>
+        </div>
+      </template>
+      <div v-loading="loading">
+        <div v-if="zhParagraphs.length === 0" style="color:#909399;padding:20px;text-align:center">暂无段落，点击上方按钮新增</div>
+        <div v-for="(p, i) in zhParagraphs" :key="p.id" style="display:flex;gap:12px;margin-bottom:12px;align-items:flex-start">
+          <el-input v-model="p.content" type="textarea" :rows="3" style="flex:1" />
+          <el-button size="small" @click="saveParagraph(p)">保存</el-button>
+          <el-button size="small" type="danger" @click="delParagraph(p.id)">删除</el-button>
+        </div>
+      </div>
+    </el-card>
+
+    <!-- English paragraphs -->
+    <el-card style="margin-bottom:20px">
+      <template #header>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>英文段落</strong>
+          <el-button size="small" type="primary" @click="addParagraph('en')">新增段落</el-button>
+        </div>
+      </template>
+      <div v-loading="loading">
+        <div v-if="enParagraphs.length === 0" style="color:#909399;padding:20px;text-align:center">暂无段落，点击上方按钮新增</div>
+        <div v-for="p in enParagraphs" :key="p.id" style="display:flex;gap:12px;margin-bottom:12px;align-items:flex-start">
+          <el-input v-model="p.content" type="textarea" :rows="3" style="flex:1" />
+          <el-button size="small" @click="saveParagraph(p)">保存</el-button>
+          <el-button size="small" type="danger" @click="delParagraph(p.id)">删除</el-button>
+        </div>
+      </div>
+    </el-card>
+
+    <!-- Values link -->
     <el-card>
-      <el-form label-width="100px">
-        <el-divider content-position="left">中文段落</el-divider>
-        <el-form-item>
-          <el-input v-model="zhJson" type="textarea" :rows="6" placeholder='["段落1","段落2"]' />
-        </el-form-item>
-
-        <el-divider content-position="left">英文段落</el-divider>
-        <el-form-item>
-          <el-input v-model="enJson" type="textarea" :rows="6" placeholder='["Paragraph 1","Paragraph 2"]' />
-        </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" @click="handleSave">保存</el-button>
-        </el-form-item>
-      </el-form>
+      <template #header><strong>价值观</strong></template>
+      <p style="color:#909399">价值观在独立页面管理。</p>
+      <el-button @click="$router.push('/values')">前往价值观管理</el-button>
     </el-card>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ref, computed, onMounted } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import request from '@/api'
 
-const zhJson = ref('[]')
-const enJson = ref('[]')
+const loading = ref(false)
+const paragraphs = ref([])
 
-async function fetchConfig() {
+const zhParagraphs = computed(() =>
+  paragraphs.value.filter(p => p.lang === 'zh').sort((a, b) => a.sortOrder - b.sortOrder)
+)
+const enParagraphs = computed(() =>
+  paragraphs.value.filter(p => p.lang === 'en').sort((a, b) => a.sortOrder - b.sortOrder)
+)
+
+async function fetchParagraphs() {
+  loading.value = true
+  try { paragraphs.value = await request.get('/admin/paragraphs') } catch {}
+  loading.value = false
+}
+
+async function addParagraph(lang) {
+  const sortOrder = paragraphs.value.filter(p => p.lang === lang).length
   try {
-    const data = await request.get('/about')
-    if (data.zh) zhJson.value = JSON.stringify(data.zh, null, 2)
-    if (data.en) enJson.value = JSON.stringify(data.en, null, 2)
+    await request.post('/admin/paragraphs', { lang, content: '', sortOrder })
+    ElMessage.success('已新增段落')
+    fetchParagraphs()
   } catch {}
 }
 
-async function handleSave() {
+async function saveParagraph(p) {
   try {
-    await request.put('/admin/about', {
-      zh: JSON.parse(zhJson.value),
-      en: JSON.parse(enJson.value),
-    })
+    await request.put(`/admin/paragraphs/${p.id}`, { lang: p.lang, content: p.content, sortOrder: p.sortOrder })
     ElMessage.success('保存成功')
   } catch {}
 }
 
-onMounted(fetchConfig)
+async function delParagraph(id) {
+  try {
+    await ElMessageBox.confirm('确定删除？', '提示', { type: 'warning' })
+    await request.delete(`/admin/paragraphs/${id}`)
+    ElMessage.success('删除成功')
+    fetchParagraphs()
+  } catch {}
+}
+
+onMounted(fetchParagraphs)
 </script>

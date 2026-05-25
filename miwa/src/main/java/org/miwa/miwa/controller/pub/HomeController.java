@@ -2,74 +2,109 @@ package org.miwa.miwa.controller.pub;
 
 import lombok.RequiredArgsConstructor;
 import org.miwa.miwa.dto.Result;
+import org.miwa.miwa.entity.*;
 import org.miwa.miwa.service.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final HomeConfigService homeConfigService;
     private final ServiceItemService serviceItemService;
     private final ProjectService projectService;
-    private final NewsService newsService;
     private final PeopleService peopleService;
     private final FooterConfigService footerConfigService;
-    private final AboutConfigService aboutConfigService;
+    private final HomeMarqueeService marqueeService;
+    private final HomeStatService statService;
+    private final HomeProcessService processService;
+    private final HomeClientService clientService;
+    private final HomePhilosophyService philosophyService;
+    private final HomeHeroService heroService;
 
     @GetMapping("/home")
     public Result<Map<String, Object>> home() {
-        Map<String, Object> config = homeConfigService.getConfig();
-        if (config == null) {
-            config = buildDefault();
-        } else {
-            enrichWithData(config);
-        }
-        return Result.ok(config);
-    }
-
-    private void enrichWithData(Map<String, Object> config) {
-        // Always add fresh data from DB tables
-        config.put("services", serviceItemService.list());
-        config.put("projects", projectService.list());
-        config.put("people", peopleService.list());
-        // Ensure defaults for fields not in config JSON
-        config.putIfAbsent("hero", buildDefaultHero());
-        config.putIfAbsent("about", Collections.emptyMap());
-        Map<String, Object> footer = footerConfigService.getConfig();
-        config.putIfAbsent("footer", footer != null ? footer : Collections.emptyMap());
-    }
-
-    private Map<String, String> buildDefaultHero() {
-        Map<String, String> hero = new LinkedHashMap<>();
-        hero.put("zh", "让技术回归简单");
-        hero.put("en", "Technology, Made Simple");
-        hero.put("sub", "AI 应用 · 软件工程 · 物联网 — 从概念到落地，全程可信赖");
-        return hero;
-    }
-
-    private Map<String, Object> buildDefault() {
         Map<String, Object> data = new LinkedHashMap<>();
+
+        // Hero
+        HomeHero heroEntity = heroService.get();
         Map<String, String> hero = new LinkedHashMap<>();
-        hero.put("zh", "让技术回归简单");
-        hero.put("en", "Technology, Made Simple");
-        hero.put("sub", "AI 应用 · 软件工程 · 物联网 — 从概念到落地，全程可信赖");
+        if (heroEntity != null) {
+            hero.put("zh", heroEntity.getZh());
+            hero.put("en", heroEntity.getEn());
+            hero.put("sub", heroEntity.getSub() != null ? heroEntity.getSub() : "");
+        } else {
+            hero.put("zh", "让技术回归简单");
+            hero.put("en", "Technology, Made Simple");
+            hero.put("sub", "AI 应用 · 软件工程 · 物联网 — 从概念到落地，全程可信赖");
+        }
         data.put("hero", hero);
-        data.put("marquee", Collections.emptyList());
+
+        // Marquee
+        data.put("marquee", marqueeService.list().stream().map(m -> {
+            Map<String, String> item = new LinkedHashMap<>();
+            item.put("zh", m.getZh());
+            item.put("en", m.getEn());
+            return item;
+        }).collect(Collectors.toList()));
+
+        // Services
         data.put("services", serviceItemService.list());
-        data.put("stats", Collections.emptyList());
+
+        // Stats
+        data.put("stats", statService.list().stream().map(s -> {
+            Map<String, String> item = new LinkedHashMap<>();
+            item.put("num", s.getNum());
+            item.put("zh", s.getZh());
+            item.put("en", s.getEn());
+            return item;
+        }).collect(Collectors.toList()));
+
+        // Projects
         data.put("projects", projectService.list());
-        data.put("process", Collections.emptyList());
-        data.put("clients", Collections.emptyList());
-        data.put("philosophy", Collections.emptyMap());
+
+        // Process
+        data.put("process", processService.list().stream().map(p -> {
+            Map<String, String> item = new LinkedHashMap<>();
+            item.put("zh", p.getZh());
+            item.put("en", p.getEn());
+            item.put("desc", p.getDescCn());
+            return item;
+        }).collect(Collectors.toList()));
+
+        // Clients
+        data.put("clients", clientService.list().stream().map(c -> {
+            Map<String, String> item = new LinkedHashMap<>();
+            item.put("name", c.getName());
+            item.put("zh", c.getZh());
+            return item;
+        }).collect(Collectors.toList()));
+
+        // Philosophy
+        HomePhilosophy ph = philosophyService.get();
+        Map<String, String> philosophy = new LinkedHashMap<>();
+        if (ph != null) {
+            philosophy.put("zh", ph.getZh());
+            philosophy.put("en", ph.getEn());
+            philosophy.put("sub", ph.getSub());
+        }
+        data.put("philosophy", philosophy);
+
+        // About (home page about section — kept as empty, about page has its own endpoint)
         data.put("about", Collections.emptyMap());
+
+        // Footer
         Map<String, Object> footer = footerConfigService.getConfig();
         data.put("footer", footer != null ? footer : Collections.emptyMap());
-        return data;
+
+        // People (not used in HomeView but kept for API compatibility)
+        data.put("people", peopleService.list());
+
+        return Result.ok(data);
     }
 }
