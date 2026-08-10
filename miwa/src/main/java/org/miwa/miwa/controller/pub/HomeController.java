@@ -39,9 +39,9 @@ public class HomeController {
             hero.put("en", heroEntity.getEn());
             hero.put("sub", heroEntity.getSub() != null ? heroEntity.getSub() : "");
         } else {
-            hero.put("zh", "让技术回归简单");
-            hero.put("en", "Technology, Made Simple");
-            hero.put("sub", "AI 应用 · 软件工程 · 物联网 — 从概念到落地，全程可信赖");
+            hero.put("zh", "让 AI 重塑伟大");
+            hero.put("en", "Make Tech Great Agent");
+            hero.put("sub", "AI Agent · 智能工程 · 自主系统 — 从概念到落地，全程可信赖");
         }
         data.put("hero", hero);
 

@@ -43,11 +43,24 @@
                     </div>
                 </section>
 
-                <!-- 服务能力 — 全页 -->
+                <!-- 服务能力 -->
                 <section class="services">
-                    <SectionHeader zh="我们的服务" en="What We Do" />
-                    <div v-if="services.length" class="service-grid">
-                        <ServiceCard v-for="s in services" :key="s.zh" :service="s" :icon="iconMap[s.icon]" />
+                    <div class="services-top">
+                        <div>
+                            <SectionHeader zh="我们的服务" en="What We Do" />
+                        </div>
+                        <p class="services-intro">从 AI 应用到物联网，从架构设计到持续交付。<br />我们提供端到端的技术服务，帮助企业将想法变为现实。</p>
+                    </div>
+                    <div v-if="services.length" class="service-list">
+                        <div v-for="(s, i) in services" :key="s.zh" class="service-row">
+                            <div class="service-row-left">
+                                <span class="service-row-num">{{ String(i + 1).padStart(2, '0') }}</span>
+                                <h3 class="service-row-zh">{{ s.zh }}</h3>
+                                <span class="service-row-en">{{ s.en }}</span>
+                            </div>
+                            <p class="service-row-desc">{{ s.desc }}</p>
+                            <span class="service-row-arrow">→</span>
+                        </div>
                     </div>
                     <div v-else class="empty-hint font-error">
                         <p class="en">No services yet</p>
@@ -125,25 +138,24 @@
                             <p v-for="(p, i) in about.zh" :key="'zh'+i">{{ p }}</p>
                             <p v-for="(p, i) in about.en" :key="'en'+i" class="about-en">{{ p }}</p>
                         </div>
-                        <div class="about-cta">
+                        <div v-if="about.cta" class="about-cta">
                             <p class="cta-text">{{ about.cta.zh }}</p>
-                            <a :href="'mailto:' + about.cta.email" class="cta-link">{{ about.cta.email }} →</a>
+                            <a v-if="about.cta.email" :href="'mailto:' + about.cta.email" class="cta-link">{{ about.cta.email }} →</a>
                         </div>
                     </div>
                 </section>
 
-                <SiteFooter v-if="footer && (footer.copyright || footer.location)" :footer="footer" />
+                <SiteFooter v-if="footer && (footer.email || footer.phone || footer.address)" :footer="footer" />
             </template>
         </el-skeleton>
     </div>
 </template>
 
 <script setup>
-import { Brain, Code, Cpu, Globe } from '@lucide/vue';
+import { Brain, Code, Cpu, Globe, CpuIcon, Compass } from '@lucide/vue';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
-import { onMounted, ref, nextTick } from 'vue';
+import { onMounted, onUnmounted, ref, nextTick } from 'vue';
 import { getHomeData } from '@/api/home';
 import ClientCard from '@/components/home/ClientCard.vue';
 import NewsCard from '@/components/home/NewsCard.vue';
@@ -154,7 +166,7 @@ import SectionHeader from '@/components/shared/SectionHeader.vue';
 import ServiceCard from '@/components/home/ServiceCard.vue';
 import StatItem from '@/components/home/StatItem.vue';
 
-gsap.registerPlugin(SplitText, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
 const loaded = ref(false);
 const hero = ref(null);
@@ -169,7 +181,8 @@ const philosophy = ref(null);
 const about = ref(null);
 const footer = ref(null);
 
-const iconMap = { brain: Brain, code: Code, cpu: Cpu, globe: Globe };
+const iconMap = { brain: Brain, code: Code, cpu: Cpu, chip: Cpu, compass: Compass, globe: Globe };
+let scrollTriggers = [];
 
 onMounted(async () => {
     const data = await getHomeData();
@@ -187,102 +200,91 @@ onMounted(async () => {
     loaded.value = true;
     await nextTick();
 
-    // Hero 逐字弹跳入场
-    const heroSplit = SplitText.create('.hero-zh, .hero-en, .hero-sub', { type: 'chars,words' });
-    gsap.fromTo(heroSplit.chars,
-        { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.02, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
-    );
-
-    // 服务卡片滚动入场（awwwards 风格：弹性缩放 + 交错延迟）
-    gsap.fromTo('.service-card',
-        { y: 120, opacity: 0, scale: 0.85, rotation: 1 },
-        {
-            y: 0, opacity: 1, scale: 1, rotation: 0,
-            stagger: 0.12, duration: 1, ease: 'expo.out',
-            scrollTrigger: { trigger: '.services', start: 'top 75%' }
-        }
-    );
-
-    // 项目卡片滚动入场（awwwards 风格：缩放弹入）
-    gsap.fromTo('.project-card',
-        { y: 120, opacity: 0, scale: 0.88 },
-        {
-            y: 0, opacity: 1, scale: 1,
-            stagger: 0.14, duration: 1, ease: 'expo.out',
-            scrollTrigger: { trigger: '.projects', start: 'top 75%' }
-        }
-    );
-
-    // 流程步骤滚动入场（awwwards 风格：底部弹入）
-    gsap.fromTo('.process-step',
-        { y: 60, opacity: 0, scale: 0.9 },
-        {
-            y: 0, opacity: 1, scale: 1,
-            stagger: 0.15, duration: 0.8, ease: 'expo.out',
-            scrollTrigger: { trigger: '.process', start: 'top 80%' }
-        }
-    );
-
-    // 客户名称滚动入场
-    gsap.fromTo('.client-card',
+    // Hero 简单淡入（不依赖 SplitText 付费插件）
+    gsap.fromTo('.hero-text',
         { y: 30, opacity: 0 },
-        {
-            y: 0, opacity: 1, stagger: 0.06, duration: 0.5, ease: 'power3.out',
-            scrollTrigger: { trigger: '.clients', start: 'top 85%' }
-        }
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
     );
 
-    // 新闻列表滚动入场
-    gsap.fromTo('.news-card',
+    const animate = (selector, fromVars, toVars, start) => {
+        const elements = document.querySelectorAll(selector);
+        if (!elements.length) return;
+        const st = ScrollTrigger.create({
+            trigger: elements[0].closest('section') || elements[0],
+            start: start || 'top 80%',
+            once: true,
+            onEnter: () => {
+                gsap.fromTo(elements, fromVars, { ...toVars, duration: toVars.duration || 0.8 });
+            }
+        });
+        scrollTriggers.push(st);
+    };
+
+    animate('.service-card',
+        { y: 60, opacity: 0, scale: 0.95 },
+        { y: 0, opacity: 1, scale: 1, stagger: 0.1, duration: 0.8, ease: 'power3.out' },
+        'top 75%'
+    );
+
+    animate('.project-card',
+        { y: 60, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.12, duration: 0.8, ease: 'power3.out' },
+        'top 75%'
+    );
+
+    animate('.process-step',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.12, duration: 0.7, ease: 'power3.out' },
+        'top 80%'
+    );
+
+    animate('.client-card',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.06, duration: 0.5, ease: 'power3.out' },
+        'top 85%'
+    );
+
+    animate('.news-card',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.08, duration: 0.5, ease: 'power3.out' },
+        'top 85%'
+    );
+
+    animate('.stat-item',
+        { y: 40, opacity: 0, scale: 0.9 },
+        { y: 0, opacity: 1, scale: 1, stagger: 0.12, duration: 0.7, ease: 'power3.out' },
+        'top 80%'
+    );
+
+    animate('.philosophy-quote',
         { y: 30, opacity: 0 },
-        {
-            y: 0, opacity: 1, stagger: 0.1, duration: 0.5, ease: 'power3.out',
-            scrollTrigger: { trigger: '.news-preview', start: 'top 85%' }
-        }
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+        'top 70%'
     );
 
-    // 数据数字滚动入场
-    gsap.fromTo('.stat-item',
-        { y: 60, opacity: 0, scale: 0.8 },
-        {
-            y: 0, opacity: 1, scale: 1, stagger: 0.15, duration: 0.8, ease: 'elastic.out(1, 0.7)',
-            scrollTrigger: { trigger: '.stats', start: 'top 80%' }
-        }
+    animate('.about-text p',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out' },
+        'top 70%'
     );
+});
 
-    // 理念语录入场
-    const quoteSplit = SplitText.create('.quote-zh, .quote-sub, .quote-en', { type: 'chars,words' });
-    gsap.fromTo(quoteSplit.chars,
-        { y: 40, opacity: 0 },
-        {
-            y: 0, opacity: 1, stagger: 0.015, duration: 0.6, ease: 'power3.out',
-            scrollTrigger: { trigger: '.philosophy', start: 'top 70%' }
-        }
-    );
-
-    // About 文本滚动入场
-    const aboutSplit = SplitText.create('.about-text p', { type: 'lines' });
-    gsap.fromTo(aboutSplit.lines,
-        { y: 40, opacity: 0 },
-        {
-            y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: 'power3.out',
-            scrollTrigger: { trigger: '.about', start: 'top 70%' }
-        }
-    );
+onUnmounted(() => {
+    scrollTriggers.forEach(st => st.kill());
+    scrollTriggers = [];
 });
 </script>
 
 <style lang="scss" scoped>
 .home {
-    color: #1a1a1a;
-    background: #f8f8f8;
+    color: #e5e5e5;
+    background: #0a0a0a;
 }
 
 .empty-hint {
     text-align: center;
     padding: 3rem 2rem;
-    opacity: 0.2;
+    opacity: 0.3;
     font-size: 0.9rem;
 }
 
@@ -302,13 +304,13 @@ onMounted(async () => {
         content: '';
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.25);
+        background: rgba(0, 0, 0, 0.4);
     }
 
     .hero-text {
         position: relative;
         z-index: 1;
-        color: rgba(255, 255, 255, 0.95);
+        color: #fff;
     }
 
     .hero-zh {
@@ -321,13 +323,13 @@ onMounted(async () => {
     .hero-en {
         font-size: clamp(1rem, 2.5vw, 2rem);
         margin-top: 1rem;
-        opacity: 0.6;
+        opacity: 0.7;
     }
 
     .hero-sub {
         font-size: clamp(0.85rem, 1.5vw, 1.15rem);
         margin-top: 1.5rem;
-        opacity: 0.4;
+        opacity: 0.5;
         max-width: 600px;
         line-height: 1.6;
     }
@@ -337,7 +339,7 @@ onMounted(async () => {
         bottom: 2rem;
         z-index: 1;
         font-size: 1.25rem;
-        color: rgba(255, 255, 255, 0.55);
+        color: rgba(255, 255, 255, 0.5);
         animation: float 2s ease-in-out infinite;
     }
 }
@@ -351,8 +353,8 @@ onMounted(async () => {
 .marquee {
     width: 100%;
     overflow: hidden;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 1.5rem 0;
 
     .marquee-inner {
@@ -371,11 +373,12 @@ onMounted(async () => {
         font-size: 2.5rem;
         font-weight: bold;
         white-space: nowrap;
+        color: #fff;
     }
 
     .marquee-divider {
         font-size: 1.5rem;
-        color: rgba(0, 0, 0, 0.12);
+        color: rgba(255, 255, 255, 0.2);
     }
 
     @media (max-width: 640px) {
@@ -391,33 +394,140 @@ onMounted(async () => {
     to { transform: translateX(-50%); }
 }
 
-// ---------- Services (full-page) ----------
+// ---------- Services ----------
 .services {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 3rem 2rem;
+    padding: 5rem 2rem 3rem;
 }
 
-.service-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
+.services-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
 
-    @media (max-width: 1024px) {
-        grid-template-columns: repeat(2, 1fr);
+    .services-intro {
+        max-width: 380px;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        opacity: 0.45;
+        margin: 0;
+        color: #e5e5e5;
+        flex-shrink: 0;
     }
-    @media (max-width: 640px) {
+}
+
+.service-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.service-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 32px;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        padding-left: 0.5rem;
+
+        .service-row-arrow {
+            opacity: 0.8;
+            transform: translateX(4px);
+        }
+    }
+
+    .service-row-left {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        min-width: 0;
+    }
+
+    .service-row-num {
+        font-size: 0.75rem;
+        font-weight: 500;
+        opacity: 0.25;
+        font-family: 'JetBrainsMono', monospace;
+        color: #e5e5e5;
+        flex-shrink: 0;
+    }
+
+    .service-row-zh {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .service-row-en {
+        font-size: 0.65rem;
+        opacity: 0.35;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 500;
+        color: #e5e5e5;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .service-row-desc {
+        margin: 0;
+        font-size: 0.85rem;
+        opacity: 0.45;
+        line-height: 1.5;
+        color: #e5e5e5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .service-row-arrow {
+        font-size: 1rem;
+        opacity: 0;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        color: #fff;
+        text-align: right;
+    }
+
+    @media (max-width: 768px) {
         grid-template-columns: 1fr;
+        gap: 0.5rem;
+        padding: 1rem 0;
+
+        .service-row-left {
+            gap: 0.75rem;
+        }
+
+        .service-row-desc,
+        .service-row-arrow {
+            display: none;
+        }
+
+        .service-row-zh {
+            font-size: 1rem;
+        }
     }
 }
 
 // ---------- Stats ----------
 .stats {
     padding: 4rem 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .stats-grid {
@@ -441,8 +551,8 @@ onMounted(async () => {
 
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
 
     @media (max-width: 1024px) {
         grid-template-columns: repeat(2, 1fr);
@@ -453,12 +563,11 @@ onMounted(async () => {
 }
 
 .project-grid:hover :deep(.project-card:not(:hover)) {
-    opacity: 0.3;
+    opacity: 0.5;
 }
 
 .project-grid :deep(.project-card:hover) {
     transform: scale(1.02);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.13);
     z-index: 2;
 }
 
@@ -482,7 +591,7 @@ onMounted(async () => {
     left: calc(1rem + 24px);
     right: calc(1rem + 24px);
     height: 0;
-    border-top: 1px dashed rgba(0, 0, 0, 0.12);
+    border-top: 1px dashed rgba(255, 255, 255, 0.15);
     z-index: 0;
 }
 
@@ -500,7 +609,7 @@ onMounted(async () => {
         width: 0;
         height: auto;
         border-top: none;
-        border-left: 1px dashed rgba(0, 0, 0, 0.12);
+        border-left: 1px dashed rgba(255, 255, 255, 0.15);
     }
 }
 
@@ -527,7 +636,7 @@ onMounted(async () => {
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 
     .philosophy-quote {
         text-align: center;
@@ -539,11 +648,12 @@ onMounted(async () => {
             line-height: 1.5;
             margin: 0 0 2rem;
             letter-spacing: -0.02em;
+            color: #fff;
         }
 
         .quote-sub {
             font-size: 1rem;
-            opacity: 0.4;
+            opacity: 0.5;
             line-height: 1.7;
             margin: 0 0 1.5rem;
             max-width: 550px;
@@ -553,7 +663,7 @@ onMounted(async () => {
 
         .quote-en {
             font-size: 1.15rem;
-            opacity: 0.3;
+            opacity: 0.4;
             margin: 0;
             line-height: 1.6;
         }
@@ -563,7 +673,7 @@ onMounted(async () => {
 // ---------- News ----------
 .news-preview {
     padding: 5rem 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .news-grid {
@@ -587,7 +697,7 @@ onMounted(async () => {
     flex-direction: column;
     justify-content: center;
     padding: 3rem 2rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .about-grid {
@@ -608,11 +718,12 @@ onMounted(async () => {
         font-size: 1.6rem;
         line-height: 1.5;
         letter-spacing: -0.01em;
+        color: #fff;
     }
 
     .about-en {
         font-size: 1rem;
-        opacity: 0.28;
+        opacity: 0.4;
         margin-bottom: 0.5rem;
     }
 
@@ -639,22 +750,22 @@ onMounted(async () => {
 
     .cta-text {
         font-size: 1rem;
-        opacity: 0.35;
+        opacity: 0.5;
         margin: 0 0 0.75rem;
     }
 
     .cta-link {
         font-size: 2.25rem;
         font-weight: bold;
-        color: #1a1a1a;
+        color: #fff;
         text-decoration: none;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         padding-bottom: 0.35rem;
         letter-spacing: -0.01em;
         transition: border-color 0.3s ease, opacity 0.3s ease;
 
         &:hover {
-            border-color: rgba(0, 0, 0, 0.6);
+            border-color: rgba(255, 255, 255, 0.6);
         }
 
         @media (max-width: 640px) {

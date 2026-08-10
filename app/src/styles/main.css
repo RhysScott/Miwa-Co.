@@ -4,14 +4,13 @@
   --base-300: #222225;
 
   --logo-color: var(--base-100);
-  --logo-color-menu: var(--base-200);
-
+  --logo-color-menu: var(--base-100);
 
 }
 
 @font-face {
     font-family: "JetBrainsMono";
-    src: url("fonts/JetBrainsMono-Regular-2.ttf")
+    src: url("/fonts/JetBrainsMono-Regular-2.ttf")
 }
 
 .jetbrain-mono {
@@ -20,7 +19,7 @@
 
 @font-face {
     font-family: "猫啃网故障黑";
-    src: url("fonts/猫啃网故障黑.otf")
+    src: url("/fonts/猫啃网故障黑.otf")
 }
 
 .font-error {

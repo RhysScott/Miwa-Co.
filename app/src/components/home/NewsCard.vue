@@ -25,24 +25,24 @@ defineProps({
 .news-card {
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
-    color: #1a1a1a;
+    color: #e5e5e5;
     text-decoration: none;
     overflow: hidden;
     transition:
-        border-color 0.4s ease,
-        background 0.4s ease,
-        transform 0.4s ease,
-        box-shadow 0.4s ease;
+        border-color 0.3s ease,
+        background 0.3s ease,
+        transform 0.3s ease;
+    background: #141414;
 
     &:hover {
-        border-color: rgba(0, 0, 0, 0.15);
-        background: rgba(0, 0, 0, 0.01);
+        border-color: rgba(255, 255, 255, 0.2);
+        background: #1a1a1a;
         transform: translateY(-4px);
 
         .news-card-arrow {
-            opacity: 0.4;
+            opacity: 0.6;
             transform: translateX(4px);
         }
     }
@@ -59,7 +59,7 @@ defineProps({
     .news-card-placeholder {
         width: 100%;
         aspect-ratio: 16 / 9;
-        background: rgba(0, 0, 0, 0.04);
+        background: #1a1a1a;
     }
 }
 
@@ -73,24 +73,28 @@ defineProps({
 
 .news-card-date {
     font-size: 0.75rem;
-    opacity: 0.3;
+    opacity: 0.4;
     white-space: nowrap;
+    color: #e5e5e5;
+    font-family: 'JetBrainsMono', monospace;
 }
 
 .news-card-title {
     font-size: 1.1rem;
-    font-weight: bold;
+    font-weight: 600;
     margin: 0;
     letter-spacing: -0.01em;
     line-height: 1.35;
+    color: #fff;
 }
 
 .news-card-excerpt {
     font-size: 0.85rem;
-    opacity: 0.4;
+    opacity: 0.5;
     line-height: 1.6;
     margin: 0;
     flex: 1;
+    color: #e5e5e5;
 }
 
 .news-card-arrow {
@@ -99,6 +103,7 @@ defineProps({
     align-self: flex-end;
     transition: opacity 0.3s ease, transform 0.3s ease;
     margin-top: auto;
+    color: #fff;
 }
 
 // ========== compact variant (home page) ==========

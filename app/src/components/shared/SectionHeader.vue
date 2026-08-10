@@ -18,11 +18,12 @@ defineProps({
 
     .label-zh {
         font-size: 0.75rem;
-        opacity: 0.3;
+        opacity: 0.4;
         display: block;
         text-transform: uppercase;
         letter-spacing: 0.15em;
         margin-bottom: 0.35rem;
+        color: #e5e5e5;
     }
 
     .label-en {
@@ -30,6 +31,7 @@ defineProps({
         font-weight: bold;
         letter-spacing: -0.02em;
         white-space: nowrap;
+        color: #fff;
     }
 
     @media (max-width: 640px) {

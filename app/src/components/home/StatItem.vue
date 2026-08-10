@@ -1,7 +1,7 @@
 <template>
     <div class="stat-item">
         <span class="stat-num">{{ stat.num }}</span>
-        <span class="stat-label">{{ stat.label }}</span>
+        <span class="stat-label">{{ stat.zh }}</span>
     </div>
 </template>
 
@@ -25,17 +25,15 @@ defineProps({
         line-height: 1;
         letter-spacing: -0.03em;
         white-space: nowrap;
-        background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #fff;
     }
 
     .stat-label {
         font-size: 0.85rem;
-        opacity: 0.35;
+        opacity: 0.5;
         font-weight: 500;
         white-space: nowrap;
+        color: #e5e5e5;
     }
 
     @media (max-width: 640px) {

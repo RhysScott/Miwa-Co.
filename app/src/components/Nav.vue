@@ -65,13 +65,10 @@
 <script setup>
     import { CircleX, Menu } from '@lucide/vue';
 import { gsap } from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
     const router = useRouter();
-
-    gsap.registerPlugin(SplitText);
 
     // 视口尺寸，用于动态计算 SVG clip-path 坐标
     const screenSize = reactive({
@@ -101,13 +98,11 @@ import { useRouter } from 'vue-router';
     );
 
     const isMenuActive = ref(false);
-    // 存储所有 SplitText 实例，用于关闭时 revert 还原文字状态
-    let splitInstances = [];
 
     // 滚动状态：控制 logo 显隐 & 菜单按钮颜色
     const scrollY = ref(0);
     const isLogoHidden = ref(false);
-    const menuIconColor = computed(() => (scrollY.value > 80 ? '#111' : 'white'));
+    const menuIconColor = computed(() => 'white');
 
     const onScroll = () => {
         scrollY.value = window.scrollY;
@@ -142,10 +137,6 @@ import { useRouter } from 'vue-router';
         isMenuActive.value = !isMenuActive.value;
         const clipPathElement = '#clip-path-element';
 
-        // 每次切换前还原上一次的文字拆分，避免重复 split 造成文字变形
-        splitInstances.forEach(s => s.revert());
-        splitInstances = [];
-
         if (isMenuActive.value) {
             // 打开：clip-path 分两步走 —— 先弧线展开，再铺满全屏
             gsap.timeline()
@@ -160,14 +151,10 @@ import { useRouter } from 'vue-router';
                         onStart: () => gsap.to('.brand', { color: 'var(--logo-color-menu)', duration: 0.3 }),
                         onComplete: () => {
                             // links 中文大字从右侧弹入
-                            const linksSplit = SplitText.create('.links-section .nav-item .zh', {
-                                type: 'chars,words'
-                            });
-                            splitInstances.push(linksSplit);
                             gsap.fromTo(
-                                linksSplit.chars,
+                                '.links-section .nav-item .zh',
                                 { x: 100, opacity: 0 },
-                                { stagger: 0.01, x: 0, opacity: 1, duration: 1, ease: 'elastic.out(1, 0.5)' }
+                                { stagger: 0.08, x: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
                             );
                             // links 英文副标题淡入
                             gsap.fromTo(
@@ -176,14 +163,10 @@ import { useRouter } from 'vue-router';
                                 { opacity: 1, duration: 0.6, stagger: 0.05 }
                             );
                             // info-section 中文从左侧弹入
-                            const infoSplit = SplitText.create('.info-section h1 .zh, .info-section p', {
-                                type: 'chars,words'
-                            });
-                            splitInstances.push(infoSplit);
                             gsap.fromTo(
-                                infoSplit.chars,
+                                '.info-section h1 .zh, .info-section p',
                                 { x: -100, opacity: 0 },
-                                { stagger: 0.01, x: 0, opacity: 1, duration: 1, ease: 'elastic.out(1, 0.5)' }
+                                { stagger: 0.08, x: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
                             );
                             // info 英文副标题淡入
                             gsap.fromTo('.info-section h1 .en', { opacity: 0 }, { opacity: 1, duration: 0.6 });
@@ -194,24 +177,20 @@ import { useRouter } from 'vue-router';
         } else {
             // 关闭：先让文字侧滑出去，再收起 clip-path
             // links 中文向右侧滑出，英文淡出
-            const linksSplit = SplitText.create('.links-section .nav-item .zh', { type: 'chars,words' });
-            splitInstances.push(linksSplit);
-            gsap.to(linksSplit.chars, {
+            gsap.to('.links-section .nav-item .zh', {
                 x: 100,
                 opacity: 0,
-                stagger: 0.01,
-                duration: 0.4,
+                stagger: 0.05,
+                duration: 0.3,
                 ease: 'power2.in'
             });
             gsap.to('.links-section .nav-item .en', { opacity: 0, duration: 0.3 });
             // info-section 中文向左侧滑出，英文淡出
-            const infoSplit = SplitText.create('.info-section h1 .zh, .info-section p', { type: 'chars,words' });
-            splitInstances.push(infoSplit);
-            gsap.to(infoSplit.chars, {
+            gsap.to('.info-section h1 .zh, .info-section p', {
                 x: -100,
                 opacity: 0,
-                stagger: 0.01,
-                duration: 0.4,
+                stagger: 0.05,
+                duration: 0.3,
                 ease: 'power2.in'
             });
             gsap.to('.info-section h1 .en', { opacity: 0, duration: 0.3 });
@@ -239,12 +218,11 @@ import { useRouter } from 'vue-router';
         // 滚动监听：控制 logo 显隐
         window.addEventListener('scroll', onScroll, { passive: true });
 
-        // 品牌文字入场：逐字符蹦跳弹入（不放入 splitInstances，避免被菜单切换 revert）
-        const brandSplit = SplitText.create('.brand', { type: 'chars' });
+        // 品牌文字入场
         gsap.fromTo(
-            brandSplit.chars,
-            { y: -60, opacity: 0, rotation: -15 },
-            { y: 0, opacity: 1, rotation: 0, stagger: 0.03, duration: 0.8, ease: 'elastic.out(1, 0.5)' }
+            '.brand',
+            { y: -30, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
         );
 
         // 初始化 clip-path 为闭合状态
@@ -336,7 +314,7 @@ import { useRouter } from 'vue-router';
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: #f8f8f8;
+        background-color: #0a0a0a;
         z-index: 1;
         clip-path: url(#menuClip);
         pointer-events: none;
@@ -369,7 +347,7 @@ import { useRouter } from 'vue-router';
 
             h1 {
                 margin: 0;
-                color: #111;
+                color: #fff;
                 font-weight: bold;
                 display: flex;
                 flex-direction: column;
@@ -382,13 +360,13 @@ import { useRouter } from 'vue-router';
                 .en {
                     font-size: 1.25rem;
                     font-weight: normal;
-                    color: #999;
+                    color: #888;
                 }
             }
 
             p {
                 margin: 0;
-                color: #666;
+                color: #aaa;
                 font-size: 2rem;
                 transition:
                     color 0.3s ease,
@@ -397,7 +375,7 @@ import { useRouter } from 'vue-router';
             }
 
             p:hover {
-                color: #111;
+                color: #fff;
                 transform: translateX(6px);
             }
 
@@ -423,7 +401,7 @@ import { useRouter } from 'vue-router';
             gap: 1rem;
 
             .nav-item {
-                color: #111;
+                color: #fff;
                 text-decoration: none;
                 display: flex;
                 flex-direction: column;
@@ -442,7 +420,7 @@ import { useRouter } from 'vue-router';
                 .en {
                     font-size: 1rem;
                     font-weight: normal;
-                    color: #999;
+                    color: #888;
                 }
             }
 
@@ -454,11 +432,11 @@ import { useRouter } from 'vue-router';
             }
 
             .nav-item:hover {
-                color: #111;
+                color: #fff;
                 transform: translateX(-8px);
             }
             .nav-item:hover .en {
-                color: #111;
+                color: #fff;
             }
 
             @media (max-width: 640px) {
